@@ -26,11 +26,13 @@ public class InstallationController {
         return "ViewInstallReqManeger"; // Thymeleaf template name
     }
 
-    @GetMapping("/installation/{installationId}")
-    public String showCustomerDetails(@PathVariable Long installationId, Model model) {
+    @GetMapping("/installations/{installationId}")
+    public String showInstallationDetails(@PathVariable Long installationId, Model model) {
         InstallationDB installation = installationRepository.findById(Math.toIntExact(installationId))
-                .orElseThrow(() -> new IllegalArgumentException("Invalid customer id: " + installationId));
-        model.addAttribute("installations", installation);
+                .orElseThrow(() -> new IllegalArgumentException("Invalid installation id: " + installationId));
+        model.addAttribute("installation", installation);
         return "installationDetails";
     }
+
+
 }

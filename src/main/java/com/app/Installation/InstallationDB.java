@@ -13,8 +13,20 @@ public class InstallationDB {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "CUSTOMER_ID")
     private int customerId;
+
+    @Column(name = "CAR_MODEL")
     private String carModel;
+
+
+    @Column(name = "AVAILABILITY")
+    private String availability;
+
+    @Column(name = "CHECKED")
+    private String checked;
+
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="INSTALLDATE")
     private Date installDate;
@@ -23,10 +35,7 @@ public class InstallationDB {
     @Column(name="OTHERDATE")
     private Date otherDate;
 
-    private String AVAILABILITY;
 
-    // Getters and setters
-    private String CHECKED;
     public int getId() {
         return id;
     }
@@ -75,20 +84,20 @@ public class InstallationDB {
         this.otherDate = otherDate;
     }
 
-    public String getAVAILABILITY() {
-        return AVAILABILITY;
+    public String getAvailability() {
+        return availability;
     }
 
-    public void setAVAILABILITY(String AVAILABILITY) {
-        this.AVAILABILITY = AVAILABILITY;
+    public void setAvailability(String availability) {
+        this.availability = availability;
     }
 
-    public String getCHECKED() {
-        return CHECKED;
+    public String getChecked() {
+        return checked;
     }
 
-    public void setCHECKED(String CHECKED) {
-        this.CHECKED = CHECKED;
+    public void setChecked(String checked) {
+        this.checked = checked;
     }
 }
 
