@@ -182,7 +182,7 @@ ProductRepository productRepository;
     public String showEditForm(@PathVariable int id, Model model) {
         Optional<CustomerDb> customer = customerService.findById(id);
         model.addAttribute("customer", customer);
-        return "edit-customer"; // Create an edit-customer.html page
+        return "edit-customer";
     }
 
 
