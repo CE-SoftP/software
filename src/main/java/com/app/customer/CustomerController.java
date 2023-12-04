@@ -106,7 +106,7 @@ ProductRepository productRepository;
             return "profile";
         } else {
 
-            return "redirect:/login"; 
+            return "redirect:/login";
         }
 
     }

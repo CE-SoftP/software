@@ -30,7 +30,7 @@ public class InstallationController {
     public String showCustomerDetails(@PathVariable Long installationId, Model model) {
         InstallationDB installation = installationRepository.findById(Math.toIntExact(installationId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid customer id: " + installationId));
-        model.addAttribute("customer", installation);
+        model.addAttribute("installations", installation);
         return "installationDetails";
     }
 }
