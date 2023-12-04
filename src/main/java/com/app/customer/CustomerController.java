@@ -31,6 +31,8 @@ public class CustomerController {
 @Autowired
 CatagroisRepositary catagroisRepositary;
 
+@Autowired
+ProductRepository productRepository;
     @Autowired
     AppointmentService appointmentService;
 
@@ -104,21 +106,9 @@ CatagroisRepositary catagroisRepositary;
             return "profile";
         } else {
 
-            return "redirect:/login"; // or another appropriate action
+            return "redirect:/login"; 
         }
-//        String loggedInUsername = (String) session.getAttribute("loggedInUser");
-//
-//        if (loggedInUsername != null) {
-//            CustomerDb user = customerService.findByUsername(loggedInUsername);
-//
-//            // Add user information to the model
-//            model.addAttribute("user", user);
-//
-//            return "profile";
-//        } else {
-//            // Handle the case when the username is not found in the session
-//            return "redirect:/login"; // or another appropriate action
-//        }
+
     }
 
     @PostMapping(value = "/search")
@@ -137,45 +127,13 @@ CatagroisRepositary catagroisRepositary;
             model.addAttribute("userRole", logInResult );
             model.addAttribute("categories", productList);
             session.setAttribute("loggedInUser", user);
-
-
+            List<ProductDb> products=productRepository.findAll();
+            model.addAttribute("products", products);
             return "Home";
-//        DataService.UserResult userResult = customerService.searchAccountForProfile(data);
-//
-//        if ("Not Found".equals(userResult.getRole())) {
-//            return "Login";
-//        } else {
-//            List<Catagroies> productList = catagroisRepositary.findAll();
-//            model.addAttribute("userRole", userResult.getRole());
-//            model.addAttribute("categories", productList);
-//
-//            // Add user information to the model
-//            model.addAttribute("user", userResult.getUser());
-//
-//            return "Home";
-        }
-      //  String logInResult = customerService.searchAccount(data);
-//        logger.info(logInResult);
-//        if(logInResult.equals("Not Found")) {
-//            return "Login";
-//        }
-//        else{
-//
-//            List<Catagroies> productList = catagroisRepositary.findAll();
-//            model.addAttribute("userRole", logInResult );
-//           model.addAttribute("categories", productList);
-//            model.addAttribute("user", userResult.getUser());
-//
-//            return "Home";
-//
-//        }
-    }
+    }}
     //FOR IMAAAAAAAAAAAAAAAAAAAAAGE profile
     @PostMapping(value = "/update-profile-image")
     public ResponseEntity<String> updateProfileImage(@RequestParam("image") MultipartFile image) {
-        // Implement logic to update the user's profile image in the database
-        // You can use the user's ID to identify the user and update the profile image
-        // Example: userService.updateProfileImage(userId, image);
         return ResponseEntity.ok("Profile image updated successfully");
     }
    /* @PostMapping("/update-profile")

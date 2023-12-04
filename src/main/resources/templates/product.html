@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MY MARKET</title>
+  <title >Product List</title>
   <style>
 
 
@@ -169,7 +169,7 @@
       </form>
     </div>
 
-    <div class="square" th:onclick="'/product/' + ${product.getProductId()}">
+    <div th:id="${product.getProductName()}" class="square" th:onclick="'/product/' + ${product.getProductId()}">
       <a th:href="@{'/product/' + ${product.getProductId()}}">
         <img th:src="${product.getImage()}" th:alt="${product.getProductName()}">
         <p th:text="${product.getProductName()}"></p>

@@ -89,38 +89,45 @@ public class ProductService {
 
 public String addToCart(int productId,int userId) {
 
-
     Optional<ProductDb> productOptional = productRepository.findById(productId);
+    List<CardDb> order = cardRepository.findByCustomerDbId(userId);
+    int totalPrice = 0;
+    for (CardDb card : order) {
+        totalPrice += card.getTotalPrice();
+    }
+
     if (productOptional.isPresent()) {
         ProductDb product = productOptional.get();
-        int number = product.getNumberOf();
-        number -= 1;
-        product.setNumberOf(number);
-        if (number == 0) {
-            product.setAvailable("false");
+        totalPrice += product.getPrice();
+        if (totalPrice <= 1000) {
+            int number = product.getNumberOf();
+            if (number == 0) {
+                return "the product not available for now";
+            }
+            number -= 1;
+            product.setNumberOf(number);
+            if (number == 0) {
+                product.setAvailable("false");
+            }
+
+            productRepository.save(product);
+            Optional<CustomerDb> customerDbOptional = customerRepository.findById(userId);
+            CustomerDb customer = customerDbOptional.get();
+            CardDb cartItem = new CardDb();
+            cartItem.setProductDb(product);
+            cartItem.setCustomerDb(customer);
+            cartItem.setTotalPrice(product.getPrice());
+            cartItem.setCardId(2);
+
+            cardRepository.save(cartItem);
+
+            return "product is added successfully";
         }
-        productRepository.save(product);
 
+        return "The Cart is full";
 
-
-Optional<CustomerDb> customerDbOptional =customerRepository.findById(userId);
-   CustomerDb customer=customerDbOptional.get();
-        // Create a new CartDb instance
-        CardDb cartItem = new CardDb();
-        cartItem.setProductDb(product);
-        cartItem.setCustomerDb(customer);
-
-         cartItem.setCardId(2);
-        cardRepository.save(cartItem);
-
-
-
-        return "redirect:/product/{productId}";
-    }
-    return "product";
 }
-
-
+    return "the product not available for now ";}
 
 
     public List<ProductDb> getProductsByUserId(int userId) {
@@ -139,11 +146,7 @@ Optional<CustomerDb> customerDbOptional =customerRepository.findById(userId);
    productRepository.deleteAllById(Collections.singleton(productId));
     return "delete successfully";
 }
-    public List<ProductDb> searchProducts(String term) {
-        // Implement your logic to search for products in the database
-        // You might use the productRepository to query the database
-        return productRepository.findByProductNameContainingIgnoreCase(term);
-    }
+
 
 
     public String updateProduct(int id, ProductInfo productInfo){

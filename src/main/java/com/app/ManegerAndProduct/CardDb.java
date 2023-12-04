@@ -20,6 +20,9 @@ public class CardDb {
     @JoinColumn(name = "USERID", nullable = false)
     private CustomerDb customerDb;
 
+    @Column(name = "TOTALPRICE")
+    private int totalPrice;
+
     public int getCardId() {
         return cardId;
     }
@@ -44,4 +47,12 @@ public class CardDb {
         this.customerDb = customerDb;
     }
 
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }

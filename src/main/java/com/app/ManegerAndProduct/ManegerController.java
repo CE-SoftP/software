@@ -48,7 +48,7 @@ ProductDb productDb=new ProductDb();
     public String getProductFromCatagroies(@PathVariable int categoryId, Model model) {
         List<ProductDb> productList =productRepository.findByCategoryId(categoryId);
         model.addAttribute("products", productList);
-        return "product"; // Return the name of the Thymeleaf template (product.html)
+        return "product";
     }
 
 
@@ -66,7 +66,7 @@ return "productList";
 
     @PostMapping("/add-product")
     public String addProduct(ProductInfo productInfo) {
-productDb=new ProductDb();
+    productDb=new ProductDb();
    String isAdd =productService.SaveProduct(productInfo,productDb);
  if (isAdd.equals("Product added successfully")){
 
@@ -86,17 +86,14 @@ productDb=new ProductDb();
     @GetMapping("/select")
     public String yourMapping(Model model) {
         List<String> sections = productService.getAllCategories();
+        List<ProductDb> products=productRepository.findAll();
         model.addAttribute("sections", sections);
+        model.addAttribute("products", products);
         return "Home";
     }
 
 
-    @GetMapping("/all")
-        public String getAllProducts(Model model) {
-            List<Catagroies> productList = catagroisRepositary.findAll();
-            model.addAttribute("categories", productList);
-             return "Home";
-    }
+
 
 
  @PostMapping("/add-catagroies")
@@ -135,11 +132,11 @@ public String viewProduct(@PathVariable Long productId, Model model) {
         List<ProductDb> productList = productRepository.findAll();
         model.addAttribute("products", productList);
        // int userId = (int) session.getAttribute("userId");
-        productService.addToCart(productId,987);
+        String result=productService.addToCart(productId,987);
+        model.addAttribute("errorMessage", result);
 
 
-
-        return "signup"; // Redirect back to the product details page
+        return "productList";
     }
 
     @GetMapping("/user/{userId}/card")
@@ -172,6 +169,22 @@ return "signup";
         productService.deleteCategories(id);
 
         return "signup";
+    }
+
+    @PostMapping("/search-product")
+    public String searchProduct(@ModelAttribute ProductInfo productInfo,Model model){
+        Optional<ProductDb> productOptional = productRepository.findByProductNameContainingIgnoreCase(productInfo.getProductName());
+
+        if (productOptional.isPresent()) {
+            ProductDb product = productOptional.get();
+            model.addAttribute("product", product);
+            return "productList";
+        }
+        else {
+            model.addAttribute("errorMessage", "The product not found");
+
+        }
+        return "error";
     }
 
 }

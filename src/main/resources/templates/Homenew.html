@@ -1,229 +1,88 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-<!--<link rel="stylesheet" type="text/css" href="/static/cssfiles/LogIn.css">-->
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MY MARKET</title>
+  <title>Shopping Cart</title>
   <style>
-    form {
-        width: 300px;
-        padding: 20px;
-        border: 2px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin: auto;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #f8f8f8;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
     }
 
-    label {
-        display: block;
-        margin-bottom: 8px;
-        color: #333;
-        font-weight: bold;
+    header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1em;
     }
 
-    input, select, textarea, file {
-        width: 100%;
-        margin-bottom: 16px;
-        padding: 10px;
-        box-sizing: border-box;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
-
-    button {
-        padding: 10px;
-        background-color: #5c8a8a;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-        font-size: 16px;
+    .cart {
+      display: flex;
+      flex-direction: column;
     }
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f8f8;
-            text-align: center;
-        }
 
-        header {
-            background-color: #5c8a8a;
-            padding: 15px;
-            color: #fff;
-        }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
 
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-        }
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      margin-top: 10px;
+    }
 
-        nav li {
-            margin-right: 20px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #fff;
-            font-size: 16px;
-            transition: color 0.3s ease-in-out;
-        }
-
-        nav a:hover {
-            color: #5c8a8a;
-        }
-
-        main {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .square {
-            background-color: #333;
-            color: #fff;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            flex-basis: calc(30% - 20px);
-            position: relative;
-            transition: background-color 0.3s ease-in-out;
-        }
-
-        .square a {
-            text-decoration: none;
-            color: #fff;
-        }
-
-        .square:hover {
-            background-color: #5c8a8a;
-        }
-
-        .square img {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .square p {
-            margin-top: 15px;
-            font-weight: bold;
-        }
-    </style>
+    .checkout-btn {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-
 <body>
-<header>
-  <nav>
-    <ul>
-      <li><a href="/profile">Profile</a></li>
-      <li><a href="#">category</a></li>
-      <li><a th:href="@{'/user/' + ${userId} + '/card'}">Bag</a></li>
-      <li><a href="#">Exit</a></li>
-      <li th:if="${userRole == 'Admin'}" onclick="showDeleteButton(); return false;" id="management"><a href="#">Management</a></li>
-      <li th:if="${userRole == 'Admin'}"><a href="#">View Customers</a></li>
-
-    </ul>
-  </nav>
-</header>
-
 
 <header>
-
-
+  <h1>Shopping Cart</h1>
 </header>
-<main id="productContainer">
 
-  <!-- Add more HTML elements to display other product details -->
+<main>
+  <div class="cart">
+    <div class="cart-item">
+      <span>Product 1</span>
+      <span>$20.00</span>
+    </div>
+    <div class="cart-item">
+      <span>Product 2</span>
+      <span>$15.00</span>
+    </div>
+    <!-- Add more items as needed -->
 
-  <div th:each="category : ${categories}">
-
-    <div class="square" th:onclick="'/category/' + ${category.getId()}">
-      <a th:href="@{'/category/' + ${category.getId()}}">
-        <img th:src="${category.getImageUrl()}" th:alt="${category.getName()}">
-        <p th:text="${category.getName()}"></p>
-
-      </a>
-      <button class="deleteButton" style="display: none;">Delete</button>
-
+    <div class="cart-total">
+      <span>Total:</span>
+      <span>$35.00</span>
     </div>
 
+    <button class="checkout-btn">Proceed to Checkout</button>
   </div>
-  <div class="square" id="addNewButton" style="display: none;" th:onclick="showAddForm()">
-    <a href="#">
-      <!--<img th:src="${product.getImageUrl()}" th:alt="${product.getName()}">-->
-      <p text="Add New"></p>
-
-    </a>
-  </div>
-
-
 </main>
 
-<div id="addForm" style="display: none;">
-  <form id="addProductForm"   action="/add-catagroies" method="post" th:object="${catagroiesForm}">
-
-    <label for="productId">Categories ID:</label>
-    <input type="text" id="productId" name="cataId" required>
-
-    <label for="categoryName">Categories Name:</label>
-    <input type="text" id="categoryName" name="cataName" required>
-
-
-    <label for="image">Image:</label>
-    <input type="file" id="image" name="image" accept="image/*" >
-    <button>Add</button>
-
-  </form>
-</div>
-<script th:inline="javascript">
-  function showDeleteButton() {
-   var deleteButtons = document.getElementsByClassName('deleteButton');
-        var updateButtons = document.getElementsByClassName('updateButton');
-
-        for (var i = 0; i < deleteButtons.length; i++) {
-            deleteButtons[i].style.display = 'block';
-        }
-
-        for (var j = 0; j < updateButtons.length; j++) {
-            updateButtons[j].style.display = 'block';
-        }
-
- var addNewButton = document.getElementById('addNewButton');
-        if (addNewButton) {
-            addNewButton.style.display = 'block';
-        }
-}
-function showAddForm() {
-    var addForm = document.getElementById('addForm');
-        if (addForm) {
-            addForm.style.display = 'block';
-        }
-
-    }
-   function closeForm() {
-        var addForm = document.getElementById('addForm');
-        if (addForm) {
-            addForm.style.display = 'none';
-        }
-    }
-</script>
-
 </body>
-
 </html>

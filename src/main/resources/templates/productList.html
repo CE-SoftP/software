@@ -3,11 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Details</title>
+  <title th:text="'Product '+${product.productName}+' Details'"></title>
   <!-- Add Bootstrap CDN -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style>
+
+
+    .error-box {
+      background-color: #5c8a8a;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .alert {
+      color: #fff;
+    }
+
         body {
             margin: 0;
             padding: 0;
@@ -90,12 +104,12 @@
 </header>
 
 
-<div class="container mt-5">
-  <div class="row">
+<div class="container mt-5" >
+  <div class="row" >
     <div class="col-md-6">
       <img th:src="${product.image}" class="img-fluid" alt="Product Image">
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6" th:id="${product.productName}">
       <h2 th:text="${product.productName}" class="mb-3"></h2>
       <p th:text="${product.information}" class="mb-3"></p>
       <p><strong>Price:</strong> $<span th:text="${product.price}"></span></p>
@@ -103,15 +117,24 @@
       <p><strong>Information:</strong> <span th:text="${product.information}"></span></p>
       <p><strong>Available:</strong> <span th:text="${product.available}"></span></p>
       <form th:action="@{'/add-to-cart/' + ${product.productId}}" method="post">
-      <button class="btn btn-primary">Add to Cart</button>
+      <button id="add_toCart" class="btn btn-primary">Add to Cart</button>
 
         </form>
       <button class="btn btn-primary">Edit</button>
     </div>
   </div>
+
+
 </div>
 
-
+<div class="error-box">
+  <form method="post">
+    <div  th:if="${errorMessage}" class="alert alert-danger" role="alert">
+      <p id="errorMessage" th:text="${errorMessage}"></p>
+      <button id="back" type="button" onclick="goBack()">Back</button>
+    </div>
+  </form>
+</div>
 <!-- Add Bootstrap JS and Popper.js CDN -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
@@ -129,6 +152,10 @@
                 element.contentEditable = !element.isContentEditable;
             });
         }
+
+          function goBack() {
+      window.history.back();
+    }
     </script>
 </body>
 </html>

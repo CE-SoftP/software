@@ -1,0 +1,107 @@
+package StepDefinitions;
+
+import io.cucumber.java.en.*;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+public class userMovment {
+
+    @Autowired
+    WebDriver webDriver;
+    @Given("the user is on the home page")
+    public void the_user_is_on_the_home_page() {
+        webDriver.get("http://localhost:"+CucumberIT.getPort()+"/");
+
+        webDriver.findElement(By.id("user_name")).sendKeys("tot2");
+        webDriver.findElement(By.id("pass")).sendKeys("555");
+        sleep(2000);
+
+        webDriver.findElement(By.id("LogInBtn")).click();
+
+        sleep(6000);
+    }
+    @Given("the user see all categories")
+    public void the_user_see_all_categories() {
+       boolean result =webDriver.findElement(By.id("Exterior Accessories")).isDisplayed();
+        Assert.assertTrue(result);
+    }
+
+    @When("the user click on {string} button")
+    public void the_user_click_on_button(String search) {
+      webDriver.findElement(By.id(search)).click();
+      sleep(2000);
+    }
+
+    @When("the user want to search for {string}")
+    public void the_user_want_to_search_for(String searchElement) {
+        webDriver.findElement(By.id("searchInput")).sendKeys(searchElement);
+    }
+
+    @Then("the user click on search button")
+    public void the_user_click_on_search_button() {
+      webDriver.findElement(By.id("searchProduct")).click();
+    }
+
+    @Then("the user should see the searched product {string}")
+    public void theUserShouldSeeTheSearchedProduct(String searchElement) {
+     String result=webDriver.getTitle();
+     Assert.assertEquals(result,"Product " + searchElement + " Details");
+    }
+
+
+    @When("the user clicks on the {string} div")
+    public void the_user_clicks_on_the_div(String interiorDiv) {
+      webDriver.findElement(By.id(interiorDiv)).click();
+      sleep(2000);
+    }
+
+    @Then("the user navigates to the {string} section")
+    public void the_user_navigates_to_the_section(String interiorDiv) {
+       String result=webDriver.getTitle();
+       Assert.assertEquals(result,"Product List");
+       sleep(2000);
+    }
+
+    @When("the user clicks on the {string} to see it's Information")
+    public void the_user_clicks_on_the_to_see_it_s_information(String productDiv) {
+       webDriver.findElement(By.id(productDiv)).click();
+       sleep(2000);
+    }
+
+    @Then("the user should see information about {string}")
+    public void theUserShouldSeeInformationAbout(String productDiv) {
+        String result=webDriver.getTitle();
+        Assert.assertEquals(result,"Product " + productDiv + " Details");
+        sleep(2000);
+    }
+
+    private void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (Exception e) {
+
+        }
+    }
+    @Then("the user should see a message indicate that the {string}")
+    public void theUserShouldSeeAMessageIndicateThatThe(String expectedErrorMessage) {
+        String actualErrorMessage = webDriver.findElement(By.id("errorMessage")).getText();
+        Assert.assertEquals(expectedErrorMessage, actualErrorMessage);
+       sleep(2000);
+    }
+
+
+    @When("the user click on {string} he should back to previous page")
+    public void theUserClickOnHeShouldBackToPreviousPage(String back) {
+        webDriver.findElement(By.id(back)).click();
+        sleep(2000);
+    }
+
+    @Then("the user should receive an message indicating that {string}")
+    public void theUserShouldReceiveAnMessageIndicatingThat(String expectedErrorMessage) {
+        String actualErrorMessage = webDriver.findElement(By.id("errorMessage")).getText();
+        Assert.assertEquals(expectedErrorMessage, actualErrorMessage);
+    }
+}

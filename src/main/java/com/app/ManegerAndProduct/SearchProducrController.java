@@ -1,3 +1,4 @@
+/*
 package com.app.ManegerAndProduct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,3 +22,4 @@ public class SearchProducrController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }
+*/
