@@ -136,40 +136,6 @@ ProductRepository productRepository;
     public ResponseEntity<String> updateProfileImage(@RequestParam("image") MultipartFile image) {
         return ResponseEntity.ok("Profile image updated successfully");
     }
-   /* @PostMapping("/update-profile")
-    public String updateProfile(@RequestParam("id") int userId,
-                                @RequestParam("profileImage") MultipartFile profileImage,
-                                Model model) {
-        // Retrieve the user from the database based on the provided userId
-        Optional<CustomerDb> userOptional = customerRepository.findById(userId);
-
-        if (userOptional.isPresent()) {
-            CustomerDb user = userOptional.get();
-
-            try {
-                // Convert the uploaded image to a byte array and save it to the user entity
-               // String imageBytes = profileImage.getBytes();
-               // user.setProfileImage(imageBytes);
-
-                // Save the updated user entity to the database
-                customerRepository.save(user);
-
-                // Redirect to the user profile page
-                return "redirect:/profile";
-            }
-
-            catch (IOException e) {
-                // Handle the exception (e.g., log it, show an error message)
-                model.addAttribute("error", "Error updating profile picture");
-                return "error";
-            }
-        } else {
-            // Handle the case where the user is not found
-            model.addAttribute("error", "User not found");
-            return "error";
-        }
-    }*/
-
 
 
     @PostMapping(value = "/saveData")
@@ -214,8 +180,6 @@ ProductRepository productRepository;
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {
-        // Fetch customer by ID and add it to the model
-        // This will be used to pre-populate the edit form
         Optional<CustomerDb> customer = customerService.findById(id);
         model.addAttribute("customer", customer);
         return "edit-customer"; // Create an edit-customer.html page
