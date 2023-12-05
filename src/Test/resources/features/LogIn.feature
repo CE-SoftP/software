@@ -24,11 +24,10 @@ Feature: User Login
     And I click the "LogInBtn" button
     Then I should see an error message "Invalid credentials"
 
-#  Scenario: Forgot Password
-#    When I click the "ForgotPassword" link
-#    And I enter my email "myemail@example.com"
-#    And I click the "submit" button
-#    Then I should receive a password reset email
+  Scenario: Forgot Password
+    When I enter my email "myemail@example.com"
+    And I click the "Forgot Password?" button
+    Then I should receive a password reset email
 #
 #  Scenario: Password Reset
 #    Given I have received a password reset email

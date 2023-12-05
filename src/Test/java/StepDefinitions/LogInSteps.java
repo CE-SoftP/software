@@ -11,10 +11,14 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import org.junit.jupiter.api.Assertions;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.WebDriver;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +28,15 @@ import org.springframework.http.ResponseEntity;
 
 import java.net.http.HttpClient;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 public class LogInSteps {
+    @InjectMocks
+    private LogInSteps forgotPasswordSteps;
+
+    @Mock
+    private MockEmailService mockEmailService;
     @Autowired
     CustomerController customerController;
     @Autowired
@@ -38,6 +50,16 @@ public class LogInSteps {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Mock
+    private CustomerRepository cutomerRepository;
+
+    private String userEmail;
+    private ForgotPasswordController forgotPasswordController;
+
+    public LogInSteps(){
+        MockitoAnnotations.initMocks(this);
+    }
 
 
     @Given("the app is running")
@@ -70,7 +92,20 @@ public class LogInSteps {
 
     @When("I click the {string} button")
     public void i_click_the_button(String string) {
-        driver.findElement(By.id(string)).click();
+        if(string.equals("LogInBtn"))
+            driver.findElement(By.id(string)).click();
+        else{
+//            String linkText = "ForgotPassword"; // Replace with the actual text of your link
+//            String xpathExpression = "//a[contains(text(), '" + linkText + "')]";
+//            WebElement forgotPasswordLink = driver.findElement(By.xpath(xpathExpression));
+//            forgotPasswordLink.click();
+            WebElement forgotPasswordLink = driver.findElement(By.id("ForgetPass"));
+
+            // Simulate clicking the link
+            forgotPasswordLink.click();
+           // when(forgotPasswordController.handlePasswordResetRequest(userEmail)).thenReturn(true);
+        }
+
         sleep(6000);
     }
 
@@ -149,6 +184,16 @@ public class LogInSteps {
         driver.quit();
     }
 
-
+    @When("I enter my email {string}")
+    public void iEnterMyEmail(String email) {
+        driver.findElement(By.id("username")).sendKeys(email);
+        userEmail = email;
+    }
+    @Then("I should receive a password reset email")
+    public void iShouldReceiveAPasswordResetEmail() {
+        // Verify that the mock email service was called with the correct email address
+        // You might also want to assert other conditions based on your implementation
+        verify(mockEmailService).sendResetEmail(userEmail);
+    }
 
 }
