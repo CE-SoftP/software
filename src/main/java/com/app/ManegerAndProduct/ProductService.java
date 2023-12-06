@@ -75,7 +75,7 @@ public class ProductService {
             return "Category added successfully";
         }
     else if(exist){
-            return "The Name already exist";
+            return "Category already exists";
 
     }
 

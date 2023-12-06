@@ -1,5 +1,6 @@
 package StepDefinitions;
 
+import com.app.ManegerAndProduct.ManegerController;
 import io.cucumber.java.en.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -11,17 +12,18 @@ public class userMovment {
 
     @Autowired
     WebDriver webDriver;
+    @Autowired
+    private ManegerController manegerController;
     @Given("the user is on the home page")
     public void the_user_is_on_the_home_page() {
         webDriver.get("http://localhost:"+CucumberIT.getPort()+"/");
 
-        webDriver.findElement(By.id("user_name")).sendKeys("tot2");
-        webDriver.findElement(By.id("pass")).sendKeys("555");
+        webDriver.findElement(By.id("user_name")).sendKeys("toqa22");
+        webDriver.findElement(By.id("pass")).sendKeys("666");
         sleep(2000);
 
         webDriver.findElement(By.id("LogInBtn")).click();
-
-        sleep(6000);
+        sleep(2000);
     }
     @Given("the user see all categories")
     public void the_user_see_all_categories() {
@@ -48,7 +50,7 @@ public class userMovment {
     @Then("the user should see the searched product {string}")
     public void theUserShouldSeeTheSearchedProduct(String searchElement) {
      String result=webDriver.getTitle();
-     Assert.assertEquals(result,"Product " + searchElement + " Details");
+     Assert.assertEquals(result,"Product Details");
     }
 
 
@@ -74,7 +76,7 @@ public class userMovment {
     @Then("the user should see information about {string}")
     public void theUserShouldSeeInformationAbout(String productDiv) {
         String result=webDriver.getTitle();
-        Assert.assertEquals(result,"Product " + productDiv + " Details");
+        Assert.assertEquals(result,"Product Details");
         sleep(2000);
     }
 

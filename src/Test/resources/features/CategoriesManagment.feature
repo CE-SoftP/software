@@ -20,7 +20,7 @@ Then the "Add Category" section should appear with delete button
 When the admin clicks on Add Category
 Then a form should appear
 And the admin fills in the category details: Category Name "Exterior Accessories"
-And the manager submits the form
+And  the manager submits the Add Categories form
 Then the system should display an error message: "Category already exists"
 
 

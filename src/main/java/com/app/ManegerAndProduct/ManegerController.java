@@ -49,6 +49,7 @@ ProductDb productDb=new ProductDb();
         List<ProductDb> productList =productRepository.findByCategoryId(categoryId);
         model.addAttribute("products", productList);
         return "product";
+
     }
 
 
@@ -129,8 +130,9 @@ public String viewProduct(@PathVariable Long productId, Model model) {
 
     @PostMapping("/add-to-cart/{productId}")
     public String addToCart(@PathVariable int productId, Model model) {
-        List<ProductDb> productList = productRepository.findAll();
-        model.addAttribute("products", productList);
+        Optional<ProductDb> product=productRepository.findById(productId);
+      ProductDb productList=product.get();
+        model.addAttribute("product", productList);
        // int userId = (int) session.getAttribute("userId");
         String result=productService.addToCart(productId,987);
         model.addAttribute("errorMessage", result);
