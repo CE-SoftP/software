@@ -7,6 +7,7 @@
   <name>Archetype - selcuc</name>
   <url>http://maven.apache.org</url>
   <properties>
+
     <maven.compiler.source>18</maven.compiler.source>
     <maven.compiler.target>18</maven.compiler.target>
     <sonar.organization>ce-softp</sonar.organization>
