@@ -27,7 +27,7 @@ public class ViewCustomerSteps {
     Logger logger = Logger.getLogger(getClass().getName());
 
    private Model model;
-    LogInSteps logInSteps=new LogInSteps();
+
     @Autowired
     private CustomerRepository customerRepository;
     private  int customerId ;

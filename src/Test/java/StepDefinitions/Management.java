@@ -3,8 +3,7 @@ package StepDefinitions;
 import com.app.ManegerAndProduct.*;
 
 import com.app.customer.CustomerDb;
-import com.app.customer.DataForm;
-import com.app.customer.DataService;
+
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -15,7 +14,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
@@ -23,23 +22,20 @@ import static junit.framework.TestCase.assertEquals;
 
 public class Management {
     ProductDb productDb=new ProductDb();
-    @Autowired
-    private TestRestTemplate restTemplate;
+
     @Autowired
     ProductService productService;
     String result;
-    @Autowired
-    private ManegerController manegerController;
+
     ProductInfo productInfo=new ProductInfo();
     @Autowired
     WebDriver webDriver;
-    @Autowired
-    DataService dataService;
+ 
 
     CatagroiesForm catagroiesForm=new CatagroiesForm();
 
-    private DataForm dataForm=new DataForm();
-    private LogInSteps logInSteps=new LogInSteps();
+
+
     private CustomerDb customerDb=new CustomerDb();
     @Given("the user is on the Admin page")
     public void the_user_is_on_the_admin_page() {
@@ -175,7 +171,7 @@ sleep(2000);
     }
     @Then("the added product details should be visible in the product list")
     public void the_added_product_details_should_be_visible_in_the_product_list() {
-        /*productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId")).getAttribute("value")));
+productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId")).getAttribute("value")));
         productInfo.setProductName(webDriver.findElement(By.id("productName")).getAttribute("value"));
         productInfo.setInformation(webDriver.findElement(By.id("information")).getAttribute("value"));
         productInfo.setPrice(Integer.parseInt(webDriver.findElement(By.id("price")).getAttribute("value")));
@@ -183,16 +179,18 @@ sleep(2000);
         productInfo.setSection(webDriver.findElement(By.id("numberOf")).getAttribute("value"));
         productInfo.setImage(webDriver.findElement(By.id("image")).getAttribute("value"));
 
-        String isAdd=productService.SaveProduct(productInfo);
-        assertEquals(isAdd,"Product added successfully");*/
+        String isAdd=productService.SaveProduct(productInfo,productDb);
+        assertEquals(isAdd,"Product added successfully");
+
 
 
     }
     private void sleep(int millis) {
         try {
             Thread.sleep(millis);
-        } catch (Exception e) {
-
+        } 
+        catch (Exception e) {
+           System.out.println("errror");
         }
     }
 
