@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Table</title>
+
+  <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f8f8;
+            text-align: center;
+        }
+
+        table {
+            border: 1px solid #333;
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #5c8a8a;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="installation : ${installations}">
+    <td th:text="${installation.id}"></td>
+    <td th:text="${installation.customerId}"></td>
+    <td th:text="${installation.carModel}"></td>
+    <td>
+      <a th:href="@{/installations/{id}(id=${installation.id})}" th:text="'View ' + ${installation.id} + ' Details'">View Details</a>
+    </td>
+  </tr>
+  </tbody>
+
+
+</table>
+
+</body>
+</html>

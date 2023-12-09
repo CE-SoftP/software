@@ -26,6 +26,8 @@ public class InstallationDB {
     @Column(name = "CHECKED")
     private String checked;
 
+    @Column(name = "CHECKED_USER")
+    private String CHECKED_USER ;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="INSTALLDATE")
