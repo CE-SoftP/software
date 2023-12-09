@@ -73,7 +73,6 @@ public class ViewCustomerSteps {
 
         webDriver.findElement(By.id("tot2")).click();
         sleep(3000);
-
     }
 
 

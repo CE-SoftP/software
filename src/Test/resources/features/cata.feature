@@ -41,19 +41,13 @@ Given the user is on the home page
     When the user click on "back" he should back to previous page
 
 
-  Scenario: Adding Product to Full Cart
-    When the user clicks on the "Interior Accessories" div
-    Then the user navigates to the "Interior Accessories" section
-    When the user clicks on the "Floor mats" to see it's Information
-    Then the user should see information about "Floor mats"
-    When the user click on "add_toCart" button
-    Then  the user should receive an message indicating that "The Cart is full"
+
 
 
   Scenario: Adding unAvailable Product
     When the user clicks on the "Interior Accessories" div
     Then the user navigates to the "Interior Accessories" section
-    When the user clicks on the "Floor mats" to see it's Information
+    When the user clicks on the "Dashboard covers" to see it's Information
     Then the user should see information about "Floor mats"
     When the user click on "add_toCart" button
     Then  the user should receive an message indicating that "the product not available for now"

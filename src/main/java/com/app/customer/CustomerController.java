@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
+@SessionAttributes({"popupType", "popupMessage"})
 public class CustomerController {
     Logger logger = Logger.getLogger(getClass().getName());
 
@@ -135,25 +136,39 @@ ProductRepository productRepository;
 
 
     @PostMapping(value = "/saveData")
-    public String signUp(DataForm data) {
+    public String signUp(@ModelAttribute DataForm data ,Model model) {
 
         CustomerDb dataEntity = new CustomerDb();
+        logger.info("Are you reach ???");
         String signUpResult = customerService.createAccount(data, dataEntity);
         if (signUpResult.equals("Account created successfully")) {
-            customerService.displayPopup("Account created successfully");
-
+            model.addAttribute("popupType", "success");
+            model.addAttribute("popupMessage", "Account created successfully");
             return "redirect:/home";
-        } else if (signUpResult.equals("User ID already exists")) {
-            customerService.displayPopup("User ID already exists");
-        } else {
-            //model.addAttribute("errorMessage", signUpResult);
-            customerService.displayPopup("Password and Confirm Password do not match.");
+
+        }
+
+        else if (signUpResult.equals("User ID already exists")) {
+
+
+
+            model.addAttribute("popupType", "error");
+            model.addAttribute("popupMessage", "User ID already exists");
+            return "redirect:/form";
+
+        }
+        else {
+
+            model.addAttribute("popupType", "error");
+            model.addAttribute("popupMessage", "Password and Confirm Password do not match");
+            return "redirect:/form";
+
         }
 
 
-
-        return "redirect:/signup";
     }
+
+
 
     @GetMapping ("/manager")
     public String showManager() {
@@ -211,6 +226,5 @@ ProductRepository productRepository;
         customerService.deleteCustomer(id);
         return "redirect:/ViewCustomers"; // Redirect to the customer list page
     }
-
 
 }

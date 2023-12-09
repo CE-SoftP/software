@@ -7,12 +7,24 @@
     <link rel="stylesheet" href="/static/css/signup.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
 
 
 </head>
 <body>
 <div class="card-back">
     <div class="center-wrap">
+
+
+        <input type="hidden" id="popupType" th:value="${popupType}" />
+        <input type="hidden" id="popupMessage" th:value="${popupMessage}" />
+
+
+
         <form method="post" th:action="@{/saveData}" th:object="${dataForm}" class="form">
             <h1 class="text-center">Registration Form</h1>
 
@@ -52,5 +64,21 @@
     </div>
 </div>
 
+<script>
+    var popupType = document.getElementById('popupType').value;
+    var popupMessage = document.getElementById('popupMessage').value ;
+
+    console.log("popupType:", popupType);
+    console.log("popupMessage:", popupMessage);
+
+    // Display the popup using alert
+    if (popupType === 'success') {
+        alert("Success: " + popupMessage);
+    } else if (popupType === 'error') {
+        alert("Error: " + popupMessage);
+    }
+</script>
+
 </body>
+
 </html>

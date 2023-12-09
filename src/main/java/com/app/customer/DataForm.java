@@ -17,7 +17,7 @@ public class DataForm {
     private Date birthDate;
     private String role ;
 
-    @DateTimeFormat(pattern = "mm-dd-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public Date getBirthDate() {
         return birthDate;
     }

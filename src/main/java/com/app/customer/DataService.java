@@ -6,6 +6,7 @@ package com.app.customer;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +16,7 @@ public class DataService {
 
     Logger logger = Logger.getLogger(getClass().getName());
 
-    public void displayPopup(String message) {
-        logger.info(String.format("Displaying popup: %s", message));
 
-    }
 
 
     private final CustomerRepository dataRepository;
@@ -58,6 +56,7 @@ logger.info(data.getUserName());
             dataEntity.setGender(data.getGender());
             data.setUserId(3211);
             dataEntity.setId(data.getUserId());
+            dataEntity.setRole("customer");
             logger.info("the "+dataEntity.getId());
             dataRepository.save(dataEntity);
           logger.info("Account created successfully");
