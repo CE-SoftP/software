@@ -10,10 +10,12 @@ import java.util.Date;
 @Table(name = "CUSTOMER")
 public class CustomerDb {
     @Id
-   // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
+    @SequenceGenerator(name = "customer_seq", sequenceName = "CAR_DB.CUSTOMER_SEQ ", allocationSize = 1)
     @Column(name="CUST_ID")
     private int id;
     private String name;
+
     private String email;
  private String pass;
     @Column(name="conf_pass")
@@ -62,6 +64,7 @@ public class CustomerDb {
     }
 
     public void setPass(String pass) {
+
         this.pass = pass;
     }
 

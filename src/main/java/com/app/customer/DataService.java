@@ -1,12 +1,10 @@
 package com.app.customer;
 
 
-
-
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,42 +28,62 @@ public class DataService {
 
 
     public String createAccount(DataForm data, CustomerDb dataEntity) {
-     boolean existingData=dataRepository.existsByName(data.getUserName());
-logger.info(data.getUserName());
+        boolean existingData = dataRepository.existsByName(data.getUserName());
+        boolean emailExist =dataRepository.existsByEmail(data.getEmail());
+        logger.info(data.getUserName());
+        logger.info(data.getPassword());
+        logger.info(data.getConfirmPassword());
+        logger.info(data.getEmail());
+       boolean n= (data.getPassword().equals(data.getConfirmPassword()));
+       logger.info(String.valueOf(n));
         if (existingData) {
-
-            logger.info("User ID already exists");
-            return "User ID already exists";
+            logger.info("User Name already exists");
+            return "User Name already exists";
         }
-
-
-        else {
-          if ( !(data.getPassword().equals(data.getConfirmPassword()))) {
-
-
-              return "Password and Confirm Password do not match.";
-
-          }
-
-            dataEntity.setName(data.getUserName());
-            dataEntity.setId(data.getUserId());
-            dataEntity.setEmail(data.getEmail());
-            dataEntity.setPass(data.getPassword());
-            dataEntity.setConfPass(data.getConfirmPassword());
-            dataEntity.setBirthDate(data.getBirthDate());
-            dataEntity.setGender(data.getGender());
-            data.setUserId(3211);
-            dataEntity.setId(data.getUserId());
-            dataEntity.setRole("customer");
-            logger.info("the "+dataEntity.getId());
-            dataRepository.save(dataEntity);
-          logger.info("Account created successfully");
-            return "Account created successfully";
-
+        else if(emailExist){
+            return "Email already exists Enter another one";
         }
+        else if (!n)  {
+
+                return "Password and Confirm Password do not match";
+
+            }
+
+        String email = data.getEmail();
 
 
-    }
+        String emailPattern = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}";
+
+        Pattern pattern = Pattern.compile(emailPattern);
+
+
+        Matcher matcher = pattern.matcher(email);
+        logger.info(String.valueOf(matcher.matches()));
+            if (!matcher.matches()) {
+                return "Please enter a valid email address";
+            }
+
+
+
+                dataEntity.setName(data.getUserName());
+                dataEntity.setId(data.getUserId());
+                dataEntity.setEmail(data.getEmail());
+                dataEntity.setPass(data.getPassword());
+                dataEntity.setConfPass(data.getConfirmPassword());
+                dataEntity.setBirthDate(data.getBirthDate());
+                dataEntity.setGender(data.getGender());
+
+                dataEntity.setId(data.getUserId());
+                dataEntity.setRole("customer");
+                logger.info("the " + dataEntity.getId());
+                dataRepository.save(dataEntity);
+                logger.info("Account created successfully");
+                return "Account created successfully";
+
+            }
+
+
+
 
 
 

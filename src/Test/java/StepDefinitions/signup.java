@@ -3,6 +3,7 @@ package StepDefinitions;
 import com.app.customer.*;
 import io.cucumber.java.en.*;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,6 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.logging.Logger;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class signup {
@@ -127,15 +130,24 @@ public class signup {
 
 
     @Then("Then they should see the alert with message {string}")
-    public void then_they_should_see_the_alert_with_message(String string) {
+    public void then_they_should_see_the_alert_with_message(String expectedMessage) {
 
 
+
+        Alert alert = webDriver.switchTo().alert();
+        String actualMessage = alert.getText();
+
+
+        alert.accept();
+
+        assertEquals(expectedMessage, actualMessage);
 
     }
 
     @Then("they should remain on the registration page")
     public void they_should_remain_on_the_registration_page() {
-
+    String title =webDriver.getTitle();
+    assertEquals("Sign UP",title);
     }
 
     @When("they fill in the registration form with a valid username {string} and a strong password {string} and they confirm the password with a different value {string}")
@@ -153,6 +165,118 @@ public class signup {
             assertTrue(true);
 
         }
+
+    }
+
+    @When("they fill in the registration form with an exists username {string} and a strong password {string} and a correct confirmpass {string} and a correct email {string} and Birthdate {string} and Gender {string}")
+    public void theyFillInTheRegistrationFormWithAnExistsUsernameAndAStrongPasswordAndACorrectConfirmpassAndACorrectEmailAndBirthdateAndGender(String username, String password, String confirmPassword , String email, String birthDate, String gender) {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        WebElement userNameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
+
+        WebElement usernameField = webDriver.findElement(By.id("user_name"));
+        usernameField.sendKeys(username);
+
+        WebElement passwordField = webDriver.findElement(By.id("pass"));
+        passwordField.sendKeys(password);
+
+        WebElement confirmPasswordField = webDriver.findElement(By.id("conf"));
+        confirmPasswordField.sendKeys(confirmPassword);
+
+        WebElement emailField = webDriver.findElement(By.id("email"));
+        emailField.sendKeys(email);
+
+        WebElement dateField = webDriver.findElement(By.id("birth"));
+        dateField.sendKeys(birthDate);
+
+
+        WebElement genderField = webDriver.findElement(By.id("gender"));
+        genderField.sendKeys(gender);
+
+        sleep(2000);
+
+    }
+
+    @When("they fill in the registration form with an exists username {string} and a strong password {string} confirm the password with a different value {string} and a correct email {string} and Birthdate {string} and Gender {string}")
+    public void theyFillInTheRegistrationFormWithAnExistsUsernameAndAStrongPasswordConfirmThePasswordWithADifferentValueAndACorrectEmailAndBirthdateAndGender(String username, String password, String confirmPassword, String email, String birthDate, String gender) {
+
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        WebElement userNameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
+
+        WebElement usernameField = webDriver.findElement(By.id("user_name"));
+        usernameField.sendKeys(username);
+
+        WebElement passwordField = webDriver.findElement(By.id("pass"));
+        passwordField.sendKeys(password);
+
+        WebElement confirmPasswordField = webDriver.findElement(By.id("conf"));
+        confirmPasswordField.sendKeys(confirmPassword);
+
+        WebElement emailField = webDriver.findElement(By.id("email"));
+        emailField.sendKeys(email);
+
+        WebElement dateField = webDriver.findElement(By.id("birth"));
+        dateField.sendKeys(birthDate);
+
+
+        WebElement genderField = webDriver.findElement(By.id("gender"));
+        genderField.sendKeys(gender);
+
+        sleep(2000);
+    }
+
+    @When("they fill in the registration form with an valid username {string} and a strong password {string} confirm the password with a correct confirm value {string} and a correct email {string} and Birthdate {string} and Gender {string}")
+    public void theyFillInTheRegistrationFormWithAnValidUsernameAndAStrongPasswordConfirmThePasswordWithACorrectConfirmValueAndACorrectEmailAndBirthdateAndGender(String username, String password, String confirmPassword, String email, String birthDate, String gender) {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        WebElement userNameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
+
+        WebElement usernameField = webDriver.findElement(By.id("user_name"));
+        usernameField.sendKeys(username);
+
+        WebElement passwordField = webDriver.findElement(By.id("pass"));
+        passwordField.sendKeys(password);
+
+        WebElement confirmPasswordField = webDriver.findElement(By.id("conf"));
+        confirmPasswordField.sendKeys(confirmPassword);
+
+        WebElement emailField = webDriver.findElement(By.id("email"));
+        emailField.sendKeys(email);
+
+        WebElement dateField = webDriver.findElement(By.id("birth"));
+        dateField.sendKeys(birthDate);
+
+
+        WebElement genderField = webDriver.findElement(By.id("gender"));
+        genderField.sendKeys(gender);
+
+        sleep(2000);
+
+    }
+
+    @When("they fill in the registration form with an valid username {string} and a strong password {string} confirm the password with a correct confirm value {string} and an invalid email {string} and Birthdate {string} and Gender {string}")
+    public void theyFillInTheRegistrationFormWithAnValidUsernameAndAStrongPasswordConfirmThePasswordWithACorrectConfirmValueAndAnInvalidEmailAndBirthdateAndGender(String username, String password, String confirmPassword, String email, String birthDate, String gender) {
+        WebDriverWait wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        WebElement userNameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user_name")));
+
+        WebElement usernameField = webDriver.findElement(By.id("user_name"));
+        usernameField.sendKeys(username);
+
+        WebElement passwordField = webDriver.findElement(By.id("pass"));
+        passwordField.sendKeys(password);
+
+        WebElement confirmPasswordField = webDriver.findElement(By.id("conf"));
+        confirmPasswordField.sendKeys(confirmPassword);
+
+        WebElement emailField = webDriver.findElement(By.id("email"));
+        emailField.sendKeys(email);
+
+        WebElement dateField = webDriver.findElement(By.id("birth"));
+        dateField.sendKeys(birthDate);
+
+
+        WebElement genderField = webDriver.findElement(By.id("gender"));
+        genderField.sendKeys(gender);
+
+        sleep(2000);
 
     }
 }

@@ -140,7 +140,9 @@ ProductRepository productRepository;
 
         CustomerDb dataEntity = new CustomerDb();
         logger.info("Are you reach ???");
+
         String signUpResult = customerService.createAccount(data, dataEntity);
+        logger.info(signUpResult);
         if (signUpResult.equals("Account created successfully")) {
             model.addAttribute("popupType", "success");
             model.addAttribute("popupMessage", "Account created successfully");
@@ -148,19 +150,31 @@ ProductRepository productRepository;
 
         }
 
-        else if (signUpResult.equals("User ID already exists")) {
-
-
-
+        else if (signUpResult.equals("User Name already exists")) {
             model.addAttribute("popupType", "error");
-            model.addAttribute("popupMessage", "User ID already exists");
+            model.addAttribute("popupMessage", "User Name already exists");
             return "redirect:/form";
 
         }
-        else {
+        else if(signUpResult.equals("Password and Confirm Password do not match")) {
 
             model.addAttribute("popupType", "error");
             model.addAttribute("popupMessage", "Password and Confirm Password do not match");
+            return "redirect:/form";
+
+        }
+
+
+         else if(signUpResult.equals("Email already exists Enter another one")) {
+
+            model.addAttribute("popupType", "error");
+            model.addAttribute("popupMessage", "Email already exists Enter another one");
+            return "redirect:/form";
+
+        }
+            else {
+            model.addAttribute("popupType", "error");
+            model.addAttribute("popupMessage", "Please enter a valid email address");
             return "redirect:/form";
 
         }
