@@ -3,6 +3,9 @@ import com.app.Appointment.AppointmenRepository;
 import com.app.Appointment.AppointmentDb;
 import com.app.Appointment.AppointmentForm;
 import com.app.Appointment.AppointmentService;
+import com.app.Installation.InstallationDB;
+import com.app.Installation.InstallationRepository;
+import com.app.Installation.InstallationService;
 import com.app.ManegerAndProduct.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,18 +40,22 @@ ProductRepository productRepository;
     private final CustomerRepository customerRepository;
     private final DataService customerService;
 
+    @Autowired
+    private InstallationService installationService;
 
     private AppointmentDb appoinmentDb; // Initialize this object
 
-
+    private final InstallationRepository installationRepository;
 
     @Autowired
-    public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust, DataService customerService) {
+    public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust, DataService customerService , InstallationRepository installationRepository) {
         this.appointmenRepository = appointmenRepository;
         this.customerRepository = cust;
         this.customerService = customerService;
        // this.appointmentService = appointmentService;
         this.appoinmentDb = new AppointmentDb();
+        this.installationRepository = installationRepository ;
+
     }
 
     @GetMapping(value = "/form")
@@ -110,13 +117,14 @@ ProductRepository productRepository;
 
     @PostMapping(value = "/search")
     public String LogInFunc(DataForm data, Model model, HttpSession session) {
-
         String logInResult = customerService.searchAccount(data);
         logger.info(logInResult);
         if(logInResult.equals("Not Found")) {
             return "Login";
         }
         else{
+//                return "redirect:/home";
+
             CustomerDb user = customerService.findByUsername(data.getUserName());
 
             model.addAttribute("userId", user.getId());
@@ -126,6 +134,25 @@ ProductRepository productRepository;
             session.setAttribute("loggedInUser", user);
             List<ProductDb> products=productRepository.findAll();
             model.addAttribute("products", products);
+            CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
+            String userRole = loggedInUser.getRole();
+            session.setAttribute("userRole", userRole);
+
+            if(userRole.equals("customer")) {
+                List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", user.getId());
+                //  InstallationDB installationDB = (InstallationDB) installationRepository.findByCHECKED_USERAndCustomerId("NO", user.getId());
+                if (!installations.isEmpty()) {
+                    model.addAttribute("popupType", "success");
+                    model.addAttribute("popupMessage", "You have " + installations.size() + " Requests to check");
+                }
+            } else if (userRole.equals("admin") || userRole.equals("installer")) {
+                List<InstallationDB> installations = installationService.getInstallationsByCheckedAdmin("NO");
+                //  InstallationDB installationDB = (InstallationDB) installationRepository.findByCHECKED_USERAndCustomerId("NO", user.getId());
+                if (!installations.isEmpty()) {
+                    model.addAttribute("popupType", "success");
+                    model.addAttribute("popupMessage", "You have " + installations.size() + " Requests to check");
+                }
+            }
             return "Home";
     }
     }

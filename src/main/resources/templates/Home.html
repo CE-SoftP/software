@@ -11,6 +11,8 @@
 
 <body>
 <header>
+    <input type="hidden" id="popupType" th:value="${popupType}" />
+    <input type="hidden" id="popupMessage" th:value="${popupMessage}" />
     <nav>
         <ul>
             <li><a href="/profile">Profile</a></li>
@@ -21,7 +23,7 @@
             <li th:id="management" th:if="${userRole == 'Admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
             <li id="view" th:if="${userRole == 'Admin'}"><a href="/ViewCustomers">View Customers</a></li>
             <li th:if="${userRole == 'Admin' or userRole == 'Installer'}"><a href="/installation-requests">View Installation</a></li>
-            <li th:if="${userRole == 'Customer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
+            <li th:if="${userRole == 'Customer' or userRole == 'Admin'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
             <li th:if="${userRole == 'Customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
         </ul>
     </nav>
@@ -190,7 +192,20 @@
     }
   }
 </script>
+<script>
+    var popupType = document.getElementById('popupType').value;
+    var popupMessage = document.getElementById('popupMessage').value ;
 
+    console.log("popupType:", popupType);
+    console.log("popupMessage:", popupMessage);
+
+    // Display the popup using alert
+    if (popupType === 'success') {
+        alert("Success: " + popupMessage);
+    } else if (popupType === 'error') {
+        alert("Error: " + popupMessage);
+    }
+</script>
 </body>
 
 </html>

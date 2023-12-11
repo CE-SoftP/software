@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Customer Table</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/Home.css">
 
   <style>
         body {
@@ -45,6 +46,20 @@
     </style>
 </head>
 <body>
+<nav>
+  <ul>
+    <li><a href="/profile">Profile</a></li>
+    <li><a href="#">category</a></li>
+    <li><a th:href="@{'/user/' + ${userId} + '/card'}">Bag</a></li>
+    <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
+    <li><a href="#">Exit</a></li>
+    <li th:id="management" th:if="${userRole == 'admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
+    <li id="view" th:if="${userRole == 'admin'}"><a href="/ViewCustomers">View Customers</a></li>
+    <li th:if="${userRole == 'admin' or userRole == 'installer'}"><a href="/installation-requests">View Installation</a></li>
+    <li th:if="${userRole == 'customer' or userRole == 'admin' or userRole == 'installer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
+    <li th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
+  </ul>
+</nav>
 
 <table>
   <thead>

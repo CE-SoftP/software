@@ -19,6 +19,10 @@ public class InstallationService {
         return installationRepository.findByCHECKED_USERAndCustomerId(checkedUser, customerId);
     }
 
+    public List<InstallationDB> getInstallationsByCheckedAdmin(String checked) {
+        return installationRepository.findByCheckedAdmin(checked);
+    }
+
     public List<InstallationDB> getInstallationsByCustomerId(int customerId) {
         return installationRepository.findByCustomerId(customerId);
     }

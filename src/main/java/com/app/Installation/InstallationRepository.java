@@ -10,6 +10,9 @@ public interface InstallationRepository extends JpaRepository<InstallationDB, In
     @Query("SELECT i FROM InstallationDB i WHERE i.CHECKED_USER = :checkedUser AND i.customerId = :customerId")
     List<InstallationDB> findByCHECKED_USERAndCustomerId(@Param("checkedUser") String checkedUser, @Param("customerId") int customerId);
 
+
     @Query("SELECT i FROM InstallationDB i WHERE i.customerId = :customerId")
     List<InstallationDB> findByCustomerId(@Param("customerId")int customerId);
+    @Query("SELECT i FROM InstallationDB i WHERE i.checked = :checked")
+    List<InstallationDB> findByCheckedAdmin(@Param("checked")String checked);
 }
