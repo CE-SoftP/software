@@ -127,7 +127,9 @@ ProductRepository productRepository;
             List<ProductDb> products=productRepository.findAll();
             model.addAttribute("products", products);
             return "Home";
-    }}
+    }
+    }
+
     //FOR IMAAAAAAAAAAAAAAAAAAAAAGE profile
     @PostMapping(value = "/update-profile-image")
     public ResponseEntity<String> updateProfileImage(@RequestParam("image") MultipartFile image) {
