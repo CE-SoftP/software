@@ -120,9 +120,11 @@ ProductRepository productRepository;
         String logInResult = customerService.searchAccount(data);
         logger.info(logInResult);
         if(logInResult.equals("Not Found")) {
+            model.addAttribute("popupType", "error");
+            model.addAttribute("popupMessage", "You have entered wrong value");
+            System.out.println("NOT FOUND");
             return "Login";
-        }
-        else{
+        }else{
 //                return "redirect:/home";
 
             CustomerDb user = customerService.findByUsername(data.getUserName());

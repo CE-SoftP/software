@@ -15,6 +15,20 @@
             window.location.href = '/forgot-password?email=' + email;
         }
     </script>
+    <script>
+    var popupType = document.getElementById('popupType').value;
+    var popupMessage = document.getElementById('popupMessage').value ;
+
+    console.log("popupType:", popupType);
+    console.log("popupMessage:", popupMessage);
+
+    // Display the popup using alert
+    if (popupType === 'success') {
+        alert("Success: " + popupMessage);
+    } else if (popupType === 'error') {
+        alert("Error: " + popupMessage);
+    }
+</script>
 </head>
 <body>
 <h2>Login</h2>
