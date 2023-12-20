@@ -137,13 +137,17 @@
 <header>
   <nav>
     <ul>
-      <li><a href="#">Profile</a></li>
+      <li><a href="/profile">Profile</a></li>
       <li><a href="#">category</a></li>
-      <li><a href="#">Bag</a></li>
-      <li><a href="#">Exit</a></li>
-      <li  onclick="showDeleteButton(); return false;" id="management"><a href="#">Management</a></li>
-      <li ><a href="#">View Customers</a></li>
+      <li><a th:href="@{'/user/' + ${userId} + '/card'}">Shopping Cart</a></li>
+      <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
 
+      <li th:id="management" th:if="${userRole == 'admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
+      <li id="view" th:if="${userRole == 'admin'}"><a href="/ViewCustomers">View Customers</a></li>
+      <li th:if="${userRole == 'Admin' or userRole == 'Installer'}"><a href="/installation-requests">View Installation</a></li>
+      <li th:if="${userRole == 'customer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
+      <li th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
+      <li><a href="#">Exit</a></li>
     </ul>
   </nav>
 </header>
@@ -176,9 +180,9 @@
 
       </a>
 
-      <button class="deleteButton" id="deleteButton" onclick="showUpdateConfirmation()" style="display: none;">Delete</button>
+      <button class="deleteButton" th:id="'deleteButton_' + ${product.getProductId()}" onclick="showDeleteConfirmation()" style="display: none;">Delete</button>
 
-      <button id="updateButtons" class="updateButton" onclick="showUpdateForm()">Update Product</button>
+      <button th:id="'updateButtons_' + ${product.getProductId()}" class="updateButton" onclick="showUpdateForm()">Update Product</button>
     </div>
 
 
@@ -274,7 +278,9 @@
         if (addNewButton) {
             addNewButton.style.display = 'block';
         }
+
 }
+
 function showAddForm() {
     var addForm = document.getElementById('addForm');
         if (addForm) {
@@ -290,7 +296,7 @@ function showAddForm() {
     }
 
 
-      function showUpdateConfirmation() {
+      function showDeleteConfirmation() {
     var updateConfirmation = document.getElementById('updateConfirmation');
     if (updateConfirmation) {
       updateConfirmation.style.display = 'block';
@@ -304,6 +310,8 @@ function showAddForm() {
       updateConfirmation.style.display = 'none';
     }
   }
+
+
   function showUpdateForm() {
     var updateForm = document.getElementById('updateForm');
     if (updateForm) {

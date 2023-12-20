@@ -51,3 +51,5 @@ Given the user is on the home page
     Then the user should see information about "Floor mats"
     When the user click on "add_toCart" button
     Then  the user should receive an message indicating that "the product not available for now"
+
+

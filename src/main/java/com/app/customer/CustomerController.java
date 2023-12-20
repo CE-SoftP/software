@@ -38,7 +38,7 @@ ProductRepository productRepository;
     private final DataService customerService;
 
 
-    private AppointmentDb appoinmentDb; // Initialize this object
+    private AppointmentDb appoinmentDb;
 
 
 

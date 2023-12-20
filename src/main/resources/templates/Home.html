@@ -15,14 +15,15 @@
         <ul>
             <li><a href="/profile">Profile</a></li>
             <li><a href="#">category</a></li>
-            <li><a th:href="@{'/user/' + ${userId} + '/card'}">Bag</a></li>
+            <li><a th:href="@{'/user/' + ${userId} + '/card'}">Shopping Cart</a></li>
             <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
-            <li><a href="#">Exit</a></li>
+
             <li th:id="management" th:if="${userRole == 'Admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
             <li id="view" th:if="${userRole == 'Admin'}"><a href="/ViewCustomers">View Customers</a></li>
             <li th:if="${userRole == 'Admin' or userRole == 'Installer'}"><a href="/installation-requests">View Installation</a></li>
             <li th:if="${userRole == 'Customer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
             <li th:if="${userRole == 'Customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
+            <li><a href="#">Exit</a></li>
         </ul>
     </nav>
 </header>

@@ -2,6 +2,7 @@ package com.app.ManegerAndProduct;
 import com.app.customer.CustomerDb;
 import com.app.customer.CustomerRepository;
 import com.app.customer.DataForm;
+import com.app.customer.DataService;
 import io.cucumber.core.logging.Logger;
 import io.cucumber.messages.types.Product;
 import jakarta.servlet.http.HttpSession;
@@ -15,12 +16,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class ManegerController {
+
+
 
     private CatagroiesForm catagroiesInfo;
     private final ProductService  productService;
@@ -45,8 +48,12 @@ ProductDb productDb=new ProductDb();
 }
 
     @GetMapping("/category/{categoryId}")
-    public String getProductFromCatagroies(@PathVariable int categoryId, Model model) {
+    public String getProductFromCatagroies(@PathVariable int categoryId, Model model, HttpSession session) {
         List<ProductDb> productList =productRepository.findByCategoryId(categoryId);
+
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
+        System.out.println(loggedInUser.getRole());
+        model.addAttribute("userRole",  loggedInUser.getRole() );
         model.addAttribute("products", productList);
         return "product";
 
