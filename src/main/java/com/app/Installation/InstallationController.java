@@ -50,7 +50,7 @@ public class InstallationController {
         Object userRole = session.getAttribute("userRole");
 
         if (userRole != null) {
-            if ("admin".equals(userRole.toString())) {
+            if ("admin".equals(userRole.toString()) | "installer".equals(userRole.toString())) {
                 CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
                 int userId = loggedInUser.getId();
 

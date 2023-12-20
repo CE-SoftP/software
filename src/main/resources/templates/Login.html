@@ -31,9 +31,7 @@
 </script>
 </head>
 <body>
-<h2>Login</h2>
 <div class="login-box">
-    <h2>Login</h2>
     <form method="post" th:action="@{/search}" th:object="${dataForm}">
         <div class="user-box">
             <input type="text" id="user_name" name="userName" required>
@@ -51,7 +49,7 @@
             Log in
         </button>
     </form>
-    <a href="/forgot-password" th:href="@{/forgot-password}" id="ForgetPass">Forgot Password?</a>
+<!--    <a href="/forgot-password" th:href="@{/forgot-password}" id="ForgetPass">Forgot Password?</a>-->
 </div>
 
 

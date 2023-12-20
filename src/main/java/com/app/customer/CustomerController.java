@@ -106,6 +106,13 @@ ProductRepository productRepository;
         if (loggedInUser != null) {
 
             model.addAttribute("user", loggedInUser);
+            model.addAttribute("customer", loggedInUser);
+
+            CustomerDb loggedIn = (CustomerDb) session.getAttribute("loggedInUser");
+            String userRole = loggedIn.getRole();
+            session.setAttribute("userRole", userRole);
+            System.out.println(userRole);
+            model.addAttribute("userRole", userRole );
 
             return "profile";
         } else {
@@ -270,6 +277,16 @@ ProductRepository productRepository;
         // Delete customer from the database
         customerService.deleteCustomer(id);
         return "redirect:/ViewCustomers"; // Redirect to the customer list page
+    }
+
+    @PostMapping("/editProfile/{id}")
+    public String processEditProfileForm(@PathVariable int id, @ModelAttribute CustomerDb editedCustomer , Model model) {
+        logger.info("Received request to update customer with id: {}"+ id);
+        logger.info("Edited customer data: {}"+ editedCustomer);
+        CustomerDb updatedCustomer =  customerService.updateCustomer(id, editedCustomer);
+        model.addAttribute("customer", updatedCustomer);
+        logger.info("Customer updated successfully");
+        return "profile";
     }
 
 }

@@ -42,19 +42,4 @@ public class ForgotPasswordController {
 //    @Autowired
 //    private MockEmailService mockEmailService;
 
-    @PostMapping("/handlePasswordResetRequest")
-    public ResponseEntity<String> handlePasswordResetRequest(@RequestParam String email) {
-        // Check if the user exists in the database
-        Optional<CustomerDb> optionalUser = customerRepository.findByEmail(email);
-        if (optionalUser.isPresent()) {
-            // User exists, initiate the password reset process
-            // You might have additional logic here (e.g., generating a reset token)
-            mockEmailService.sendResetEmail(email);
-            return ResponseEntity.ok("Password reset initiated");
-        } else {
-            // User does not exist, handle this case accordingly
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-
-    }
 }

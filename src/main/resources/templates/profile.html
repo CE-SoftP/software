@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile</title>
-  <!-- Include your profile-specific styles here -->
+  <link rel="stylesheet" type="text/css" href="/static/css/Home.css">
   <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,7 +14,7 @@
         }
 
         .profile-header {
-            background-color: #1877f2;
+            background-color: #5c8a8a;
             color: #fff;
             text-align: center;
             padding: 20px;
@@ -72,7 +72,7 @@
 
         .update-profile button {
             padding: 10px;
-            background-color: #1877f2;
+            background-color: #5c8a8a;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -84,102 +84,101 @@
 </head>
 <body>
 <div class="profile-header">
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="#">category</a></li>
+        <li><a th:href="@{'/user/' + ${userId} + '/card'}">Bag</a></li>
+        <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
+        <li><a href="#">Exit</a></li>
+        <li th:id="management" th:if="${userRole == 'admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
+        <li id="view" th:if="${userRole == 'admin'}"><a href="/ViewCustomers">View Customers</a></li>
+        <li th:if="${userRole == 'admin' or userRole == 'installer'}"><a href="/installation-requests">View Installation</a></li>
+        <li th:if="${userRole == 'customer' or userRole == 'admin' or userRole == 'installer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
+        <li th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
+      </ul>
+    </nav>
+  </header>
   <h1>User Profile</h1>
 </div>
 
 <div class="profile-container">
   <div class="profile-info">
-    <!-- Display user information -->
-    <h2 th:text="${user.name}"></h2>
-    <p th:text="${user.email}"></p>
+    <h2 id="userName" th:text="${customer.name}" contenteditable="false"></h2>
+    Email : <p id="userEmail" th:text="${customer.email}" contenteditable="false"></p>
+    Birthdate : <p id="userBirthdate" th:text="${#dates.format(customer.birthDate, 'yyyy-MM-dd')}" contenteditable="false"></p>
+    Gender : <p id="userGender" th:text="${customer.gender}" contenteditable="false"></p>
+    <form id="editForm" th:action="@{'/editProfile/' + ${customer.id}}" method="post" th:object="${customer}" style="display :none;">
 
-    <!-- Display profile image -->
-    <div class="profile-image">
-      <img th:src="@{'/profile-image?id=' + ${user.id}}" alt="Profile Image" />
-    </div>
-  </div>
-
-  <!-- Add a form for updating profile information -->
-  <div class="update-profile">
-    <h2>Update Profile</h2>
-    <form th:action="@{'/update-profile?id=' + ${user.id}}" method="post" enctype="multipart/form-data">
-      <label for="profileImage">Profile Image:</label>
-      <input type="file" id="profileImage" name="profileImage" accept="image/*" />
-      <button type="submit">Update Profile</button>
+<!--      <div class="save-clear-buttons">-->
+      <input type="text" id="name" name="name" th:field="*{name}"/>
+        <button id="saveButton" type="submit" onclick="saveChanges()">Save</button>
+        <button id="cancelButton" type="button" onclick="cancelChanges()">Cancel</button>
+<!--      </div>-->
     </form>
+    <button id="editButton" onclick="toggleEdit()">Edit</button>
   </div>
 </div>
+
+<script th:inline="javascript">
+    function toggleEdit() {
+        var userNameElement = document.getElementById('userName');
+        var userEmailElement = document.getElementById('userEmail');
+        var saveButtonElement = document.getElementById('saveButton');
+        var cancelButtonElement = document.getElementById('cancelButton');
+        var editButtonElement = document.getElementById('editButton');
+        var formElement = document.getElementById('editForm');
+        var nameInput = document.getElementById('name');
+
+        if (formElement.style.display === "none") {
+            saveButtonElement.style.display = 'block';
+            cancelButtonElement.style.display = 'block';
+            formElement.style.display = 'block';
+            editButtonElement.style.display = 'none';
+            userNameElement.focus();
+        } else {
+            saveButtonElement.style.display = 'none';
+            cancelButtonElement.style.display = 'none';
+            formElement.style.display = 'none';
+            editButtonElement.style.display = 'block';
+        }
+
+<!--        userNameElement.contentEditable = String(userNameElement.isContentEditable !== true);-->
+<!--        userEmailElement.contentEditable = String(userEmailElement.isContentEditable !== true);-->
+    }
+
+    function saveChanges() {
+        var form = document.getElementById('editForm');
+
+        form.submit();
+
+        toggleEdit();
+    }
+    /*<![CDATA[*/
+        // Store the original values when the page is loaded
+        var originalValues = {
+            userName: /*[[${customer.name}]]*/,
+            userEmail: /*[[${customer.email}]]*/
+        };
+
+        // Function to set the form fields to their original values
+        function resetToOriginalValues() {
+        var userNameElement = document.getElementById('userName');
+        var userEmailElement = document.getElementById('userEmail');
+        userNameElement.innerText = originalValues.userName;
+        userEmailElement.innerText = originalValues.userEmail;
+        document.getElementById('name').value = originalValues.userName;
+        }
+
+        // Function to cancel changes and reset form fields
+        function cancelChanges() {
+
+            resetToOriginalValues();
+            toggleEdit();
+        }
+        /*]]>*/
+
+</script>
 </body>
 </html>
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
-<!--<head>-->
-<!--  &lt;!&ndash; Add your head content here &ndash;&gt;-->
-<!--  <meta charset="UTF-8">-->
-<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--  <title>User Profile</title>-->
-<!--  <link rel="stylesheet" type="text/css" href="/static/cssfiles/home.css">-->
-<!--  <link rel="stylesheet" type="text/css" href="/static/cssfiles/profile.css"> &lt;!&ndash; Add the new CSS file &ndash;&gt;-->
-<!--</head>-->
-<!--<body>-->
-<!--<header>-->
-<!--  <nav>-->
-<!--    <ul>-->
-<!--      <li><a href="/profile">Profile</a></li>-->
-<!--      &lt;!&ndash; Add other navigation links as needed &ndash;&gt;-->
-<!--    </ul>-->
-<!--  </nav>-->
-<!--</header>-->
-
-<!--<main id="profileContainer">-->
-<!--  <div class="profile-header">-->
-<!--    <h1 th:text="${user.name}"></h1>-->
-<!--&lt;!&ndash;    <p th:text="${user.bio}"></p>&ndash;&gt;-->
-<!--    &lt;!&ndash; Add other profile information as needed &ndash;&gt;-->
-<!--  </div>-->
-
-<!--  <div class="profile-content">-->
-<!--    &lt;!&ndash; Display user's posts, photos, etc. &ndash;&gt;-->
-<!--    <div class="square">-->
-<!--      <img id="profileImage" th:src="${user.profileImage}" alt="User Photo">-->
-<!--      <button onclick="changeProfileImage()">Change Photo</button>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Add more content as needed &ndash;&gt;-->
-<!--  </div>-->
-<!--</main>-->
-
-<!--<script th:inline="javascript">-->
-<!--        function changeProfileImage() {-->
-<!--            var input = document.createElement('input');-->
-<!--            input.type = 'file';-->
-
-<!--            input.onchange = function (e) {-->
-<!--                var file = e.target.files[0];-->
-<!--                var formData = new FormData();-->
-<!--                formData.append('image', file);-->
-
-<!--                // Send an AJAX request to update the profile image-->
-<!--                var xhr = new XMLHttpRequest();-->
-<!--                xhr.open('POST', '/update-profile-image', true);-->
-<!--                xhr.onload = function () {-->
-<!--                    if (xhr.status === 200) {-->
-<!--                        alert(xhr.responseText); // Handle the success response-->
-<!--                        // Optionally, update the 'src' attribute of the 'profileImage' element-->
-<!--                        // document.getElementById('profileImage').src = 'new_image_url';-->
-<!--                    } else {-->
-<!--                        console.error(xhr.statusText);-->
-<!--                    }-->
-<!--                };-->
-<!--                xhr.send(formData);-->
-<!--            };-->
-
-<!--            input.click();-->
-<!--        }-->
-<!--    </script>-->
-
-<!--&lt;!&ndash; Add your footer content here &ndash;&gt;-->
-
-<!--</body>-->
-<!--</html>-->
