@@ -15,7 +15,7 @@
     <input type="hidden" id="popupMessage" th:value="${popupMessage}" />
     <nav>
         <ul>
-            <li><a href="/profile">Profile</a></li>
+            <li><a id="profile" href="/profile">Profile</a></li>
             <li><a href="#">category</a></li>
             <li><a th:href="@{'/user/' + ${userId} + '/card'}">Bag</a></li>
             <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
@@ -26,7 +26,7 @@
             <li id="viewInstallReq" th:if="${userRole == 'Customer' or userRole == 'Admin' or userRole == 'Installer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
             <li id="viewInstallHistory"th:if="${userRole == 'Customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
             <li id="viewOrderHistory" th:if="${userRole == 'Customer'}"><a href="/CustomerOrderHistory">View Order History</a></li>
-            <li id="viewOrderconfirmation" th:if="${userRole == 'Admin' or userRole == 'Installer'}"><a href="/AdminOrderHistory">Orders confirmation</a></li>
+            <li id="viewOrderconfirmation" th:if="${userRole == 'Admin' or userRole == 'Installer'}"><a href="/CustomerOrderHistory">Orders confirmation</a></li>
         </ul>
     </nav>
 </header>

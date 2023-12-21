@@ -8,6 +8,7 @@ import com.app.Installation.InstallationRepository;
 import com.app.Installation.InstallationService;
 import com.app.ManegerAndProduct.*;
 import com.app.order.orderDB;
+import com.app.order.orderRepository;
 import com.app.order.orderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,15 +51,17 @@ ProductRepository productRepository;
     private AppointmentDb appoinmentDb; // Initialize this object
 
     private final InstallationRepository installationRepository;
+    private final orderRepository OrderRepository;
 
     @Autowired
-    public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust, DataService customerService , InstallationRepository installationRepository) {
+    public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust, DataService customerService , InstallationRepository installationRepository,orderRepository OrderRepository) {
         this.appointmenRepository = appointmenRepository;
         this.customerRepository = cust;
         this.customerService = customerService;
        // this.appointmentService = appointmentService;
         this.appoinmentDb = new AppointmentDb();
         this.installationRepository = installationRepository ;
+        this.OrderRepository=OrderRepository;
 
     }
 
@@ -158,11 +161,12 @@ ProductRepository productRepository;
                     model.addAttribute("popupType", "success");
                     model.addAttribute("popupMessage", "You have " + installations.size() + " Requests to check");
                 }
-                List<orderDB> orders = OrderService.getOrderByPopUpUser("NO");
+                List<orderDB> orders = OrderService.getOrderByPopUpUser("NO" , user.getId());
                 for(orderDB order : orders){
                     model.addAttribute("popupType", "success");
                     model.addAttribute("popupMessage", "Yor order with id : " + order.getId() + "have been confirmed");
                     order.setPopUpUser("YES");
+                    OrderRepository.save(order);
                 }
 
             } else if (userRole.equals("admin") || userRole.equals("installer")) {

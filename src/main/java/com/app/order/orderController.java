@@ -72,7 +72,11 @@ public class orderController {
      @PostMapping("/approveOrder/{id}")
      public String approveOrder(@PathVariable int id,Model model, HttpSession session) {
          orderDB order = OrderRepository.findById(id).orElse(null);
-         order.setPopUpUser("NO");
+         if (order != null) {
+             order.setPopUpUser("NO");
+             order.setConfAdmin("YES");
+             OrderRepository.save(order);
+         }
          CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
          String userRole = loggedInUser.getRole();
          session.setAttribute("userRole", userRole);

@@ -15,6 +15,6 @@ public interface orderRepository extends JpaRepository<orderDB, Integer> {
     @Query("SELECT i FROM orderDB i WHERE i.confAdmin = :confAdmin")
     List<orderDB> findByConfAdmin(@Param("confAdmin")String confAdmin);
 
-    @Query("SELECT i FROM orderDB i WHERE i.popUpUser = :popUpUser")
-    List<orderDB> findByPopUpUser(@Param("popUpUser")String popUpUser);
+    @Query("SELECT i FROM orderDB i WHERE i.popUpUser = :popUpUser AND i.customerId = :customerId")
+    List<orderDB> findByPopUpUser(@Param("popUpUser")String popUpUser ,@Param("customerId")int customerId );
 }

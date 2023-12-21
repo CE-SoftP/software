@@ -24,7 +24,7 @@ public class orderService {
         return orderRepository.findByConfAdmin(confAdmin);
     }
 
-    public List<orderDB> getOrderByPopUpUser(String popUpUser) {
-        return orderRepository.findByPopUpUser(popUpUser);
+    public List<orderDB> getOrderByPopUpUser(String popUpUser , int customerId) {
+        return orderRepository.findByPopUpUser(popUpUser , customerId);
     }
 }
