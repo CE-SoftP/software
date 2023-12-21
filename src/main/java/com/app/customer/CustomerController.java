@@ -7,6 +7,8 @@ import com.app.Installation.InstallationDB;
 import com.app.Installation.InstallationRepository;
 import com.app.Installation.InstallationService;
 import com.app.ManegerAndProduct.*;
+import com.app.order.orderDB;
+import com.app.order.orderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +44,8 @@ ProductRepository productRepository;
 
     @Autowired
     private InstallationService installationService;
+    @Autowired
+    private orderService OrderService;
 
     private AppointmentDb appoinmentDb; // Initialize this object
 
@@ -154,6 +158,13 @@ ProductRepository productRepository;
                     model.addAttribute("popupType", "success");
                     model.addAttribute("popupMessage", "You have " + installations.size() + " Requests to check");
                 }
+                List<orderDB> orders = OrderService.getOrderByPopUpUser("NO");
+                for(orderDB order : orders){
+                    model.addAttribute("popupType", "success");
+                    model.addAttribute("popupMessage", "Yor order with id : " + order.getId() + "have been confirmed");
+                    order.setPopUpUser("YES");
+                }
+
             } else if (userRole.equals("admin") || userRole.equals("installer")) {
                 List<InstallationDB> installations = installationService.getInstallationsByCheckedAdmin("NO");
                 //  InstallationDB installationDB = (InstallationDB) installationRepository.findByCHECKED_USERAndCustomerId("NO", user.getId());

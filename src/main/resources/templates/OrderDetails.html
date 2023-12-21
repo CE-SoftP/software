@@ -66,30 +66,31 @@
   </nav>
 </header>
 
+<h2>Order Details</h2>
+<p>ID: <span th:text="${order.id}"></span></p>
+<p>Customer Id: <span th:text="${order.customerId}"></span></p>
+<p>Price: <span th:text="${order.TOTALPRICE}"></span></p>
+
 <table>
   <thead>
   <tr>
-    <th>ID</th>
-    <th>Your ID</th>
-    <th>Date</th>
-      <th>Price</th>
-    <th>Actions</th>
+    <th>Product ID</th>
+    <th>Product Name</th>
+    <th>Quantity</th>
+    <th>Price</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="order : ${orders}">
-    <td th:text="${order.id}"></td>
-    <td th:text="${order.customerId}"></td>
-    <td th:text="${order.orderDate}"></td>
-      <td th:text="${order.TOTALPRICE}"></td>
-    <td>
-      <a th:href="@{/orders/{id}(id=${order.id})}" th:text="'View ' + ${order.id} + ' Details'">View Details</a>
-    </td>
+  <tr th:each="orderProduct : ${orderProducts}">
+    <td th:text="${orderProduct.productId}"></td>
+    <td th:text="${orderProduct.productName}"></td>
+    <td th:text="${orderProduct.quantity}"></td>
+    <td th:text="${orderProduct.productPrice}"></td>
   </tr>
   </tbody>
-
-
 </table>
-
+<form th:action="@{'/approveOrder/' + ${order.id}}" method="post" th:if="${userRole == 'admin' or userRole == 'installer'}">
+  <button type="submit" name="Confirm" id="Confirm">Confirm</button>
+</form>
 </body>
 </html>
