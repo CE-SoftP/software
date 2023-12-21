@@ -3,6 +3,9 @@ import com.app.Appointment.AppointmenRepository;
 import com.app.Appointment.AppointmentDb;
 import com.app.Appointment.AppointmentForm;
 import com.app.Appointment.AppointmentService;
+import com.app.Installation.InstallationDB;
+import com.app.Installation.InstallationRepository;
+import com.app.Installation.InstallationService;
 import com.app.ManegerAndProduct.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,30 +40,35 @@ ProductRepository productRepository;
     private final CustomerRepository customerRepository;
     private final DataService customerService;
 
+    @Autowired
+    private InstallationService installationService;
 
     private AppointmentDb appoinmentDb;
 
-
+    private final InstallationRepository installationRepository;
 
     @Autowired
-    public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust, DataService customerService) {
+    public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust, DataService customerService , InstallationRepository installationRepository) {
         this.appointmenRepository = appointmenRepository;
         this.customerRepository = cust;
         this.customerService = customerService;
        // this.appointmentService = appointmentService;
         this.appoinmentDb = new AppointmentDb();
+        this.installationRepository = installationRepository ;
+
     }
 
     @GetMapping(value = "/form")
     public String showForm() {
 
-        return "signup"; // This assumes the HTML file is named "signup.html" in the "resources/templates" directory
+        return "signup";
     }
     @GetMapping(value = "/home")
-    public String showForm2(Model model,DataForm dataForm) {
+    public String showForm2(Model model,DataForm dataForm,HttpSession session) {
         List<Catagroies> productList = catagroisRepositary.findAll();
-        String searchAdmin=customerService.searchAccount(dataForm);
-        model.addAttribute("userRole",  searchAdmin );
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
+        String userRole = loggedInUser.getRole();
+        model.addAttribute("userRole", userRole);
         model.addAttribute("categories", productList);
         return "Home";
     }
@@ -71,11 +79,7 @@ ProductRepository productRepository;
         return "Login";
     }
 
-    @GetMapping(value = "/Admin")
-    public String showForm4() {
 
-        return "Admin";
-    }
 
     @GetMapping(value = "/ViewCustomers")
     public String showCustomers(Model model) {
@@ -99,6 +103,13 @@ ProductRepository productRepository;
         if (loggedInUser != null) {
 
             model.addAttribute("user", loggedInUser);
+            model.addAttribute("customer", loggedInUser);
+
+            CustomerDb loggedIn = (CustomerDb) session.getAttribute("loggedInUser");
+            String userRole = loggedIn.getRole();
+            session.setAttribute("userRole", userRole);
+            System.out.println(userRole);
+            model.addAttribute("userRole", userRole );
 
             return "profile";
         } else {
@@ -110,13 +121,17 @@ ProductRepository productRepository;
 
     @PostMapping(value = "/search")
     public String LogInFunc(DataForm data, Model model, HttpSession session) {
-
         String logInResult = customerService.searchAccount(data);
         logger.info(logInResult);
         if(logInResult.equals("Not Found")) {
+            model.addAttribute("popupType", "error");
+            model.addAttribute("popupMessage", "You have entered wrong value");
+            System.out.println("NOT FOUND");
             return "Login";
         }
         else{
+//                return "redirect:/home";
+
             CustomerDb user = customerService.findByUsername(data.getUserName());
 
             model.addAttribute("userId", user.getId());
@@ -126,6 +141,25 @@ ProductRepository productRepository;
             session.setAttribute("loggedInUser", user);
             List<ProductDb> products=productRepository.findAll();
             model.addAttribute("products", products);
+            CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
+            String userRole = loggedInUser.getRole();
+            session.setAttribute("userRole", userRole);
+
+            if(userRole.equals("customer")) {
+                List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", user.getId());
+                //  InstallationDB installationDB = (InstallationDB) installationRepository.findByCHECKED_USERAndCustomerId("NO", user.getId());
+                if (!installations.isEmpty()) {
+                    model.addAttribute("popupType", "success");
+                    model.addAttribute("popupMessage", "You have " + installations.size() + " Requests to check");
+                }
+            } else if (userRole.equals("admin") || userRole.equals("installer")) {
+                List<InstallationDB> installations = installationService.getInstallationsByCheckedAdmin("NO");
+                //  InstallationDB installationDB = (InstallationDB) installationRepository.findByCHECKED_USERAndCustomerId("NO", user.getId());
+                if (!installations.isEmpty()) {
+                    model.addAttribute("popupType", "success");
+                    model.addAttribute("popupMessage", "You have " + installations.size() + " Requests to check");
+                }
+            }
             return "Home";
     }
     }
@@ -175,7 +209,7 @@ ProductRepository productRepository;
 
         }
             else {
-            model.addAttribute("popupType", "error");
+            model.addAttribute("popupType", "success");
             model.addAttribute("popupMessage", "Please enter a valid email address");
             return "redirect:/form";
 
@@ -238,9 +272,19 @@ ProductRepository productRepository;
 
     @PostMapping("/delete/{id}")
     public String processDelete(@PathVariable int id) {
-        // Delete customer from the database
+
         customerService.deleteCustomer(id);
         return "redirect:/ViewCustomers"; // Redirect to the customer list page
+    }
+
+    @PostMapping("/editProfile/{id}")
+    public String processEditProfileForm(@PathVariable int id, @ModelAttribute CustomerDb editedCustomer , Model model) {
+        logger.info("Received request to update customer with id: {}"+ id);
+        logger.info("Edited customer data: {}"+ editedCustomer);
+        CustomerDb updatedCustomer =  customerService.updateCustomer(id, editedCustomer);
+        model.addAttribute("customer", updatedCustomer);
+        logger.info("Customer updated successfully");
+        return "profile";
     }
 
 }

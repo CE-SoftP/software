@@ -115,11 +115,11 @@ public class DataService {
                 String role = user.getRole();
 
                 if ("admin".equals(role)) {
-                    return "Admin";
+                    return "admin";
                 } else if ("customer".equals(role)) {
-                    return "Customer";
+                    return "customer";
                 } else if ("installer".equals(role)) {
-                    return "Installer";
+                    return "installer";
                 }
             }
 
@@ -144,7 +144,7 @@ public class DataService {
         return dataRepository.save(customer);
     }
 
-    public void updateCustomer(int id, CustomerDb editedCustomer) {
+    public CustomerDb updateCustomer(int id, CustomerDb editedCustomer) {
         Optional<CustomerDb> existingCustomerOptional = dataRepository.findById(id);
 
         if (existingCustomerOptional.isPresent()) {
@@ -153,6 +153,7 @@ public class DataService {
             existingCustomer.setEmail(editedCustomer.getEmail());
             // Update other fields as needed
             dataRepository.save(existingCustomer);
+            return  existingCustomer;
         } else {
             // Handle the case where the customer with the given ID is not found
             throw new RuntimeException("Customer not found with id: " + id);

@@ -61,10 +61,21 @@ public class ProductService {
 
 
     public String SaveCatagroies( CatagroiesForm catagroiesForm) {
+
+
         boolean exist = catagroiesRepository.existsById( catagroiesForm.getCataId());
         System.out.println(exist);
         boolean nameExist=catagroiesRepository.existsByName(catagroiesForm.getCataName());
-        if (!exist) {
+
+        if(exist){
+            return "Category already exists";
+        }
+
+        else if(nameExist){
+            return "Category Name already exists";
+        }
+
+       else if (!exist) {
             System.out.println("llll");
             catagroies=new Catagroies();
             catagroies.setId(catagroiesForm.getCataId());
@@ -74,11 +85,6 @@ public class ProductService {
             catagroiesRepository.save(catagroies);
             return "Category added successfully";
         }
-    else if(exist){
-            return "Category already exists";
-
-    }
-
 
 
         return "The Id already exist";
@@ -143,8 +149,14 @@ public String addToCart(int productId,int userId) {
 
     public String deleteproduct(int productId){
 
-   productRepository.deleteAllById(Collections.singleton(productId));
+        Optional<ProductDb> productDb1= productRepository.findById(productId);
+        ProductDb productDb2=productDb1.get();
+   productRepository.deleteAllById(Collections.singleton(productDb2.getProductId()));
+
     return "delete successfully";
+
+
+
 }
 
 
@@ -166,7 +178,10 @@ public String addToCart(int productId,int userId) {
         return "hi ";
     }
 
-    public void deleteCategories(int id) {
-        catagroisRepositary.deleteAllById(Collections.singleton(id));
+    public void deleteCategories(String id) {
+       Catagroies deleteCatagory= catagroisRepositary.findByName(id);
+        catagroisRepositary.deleteAllById(Collections.singleton(deleteCatagory.getId()));
+
+
     }
 }

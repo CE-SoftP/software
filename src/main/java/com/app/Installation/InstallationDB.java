@@ -37,6 +37,26 @@ public class InstallationDB {
     @Column(name="OTHERDATE")
     private Date otherDate;
 
+    @DateTimeFormat(pattern = "HH:mm:ss")
+    @Column(name = "INSTALLTIME")
+    private String installTime;
+
+
+    public String getCHECKED_USER() {
+        return CHECKED_USER;
+    }
+
+    public void setCHECKED_USER(String CHECKED_USER) {
+        this.CHECKED_USER = CHECKED_USER;
+    }
+
+    public String  getInstallTime() {
+        return installTime;
+    }
+
+    public void setInstallTime(String installTime) {
+        this.installTime = installTime;
+    }
 
     public int getId() {
         return id;

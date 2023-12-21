@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 
@@ -21,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@SessionAttributes({"popupType", "popupMessage"})
 public class ManegerController {
 
 
@@ -73,17 +71,25 @@ return "productList";
     }
 
     @PostMapping("/add-product")
-    public String addProduct(ProductInfo productInfo) {
+    public String addProduct(ProductInfo productInfo,Model model) {
+
     productDb=new ProductDb();
    String isAdd =productService.SaveProduct(productInfo,productDb);
  if (isAdd.equals("Product added successfully")){
-
+     model.addAttribute("popupType", "success");
+     model.addAttribute("popupMessage", "Product added successfully");
      productRepository.save(productDb);
+     Optional<ProductDb> productList1= productRepository.findById(productInfo.getProductId());
+     ProductDb product=productList1.get();
+     return "redirect:/category/"+product.getCategory().getId();
  }
 
+else {
+     model.addAttribute("popupType", "error");
+     model.addAttribute("popupMessage", "Product Name already exist!");
 
-
-        return "product";
+ }
+        return "redirect:/home";
 
 
     }
@@ -111,13 +117,21 @@ System.out.println(catagroiesForm.getCataName());
      String isAdd =productService.SaveCatagroies(catagroiesForm);
      System.out.println(isAdd);
      if (isAdd.equals("The Id already exist")){
-
+         model.addAttribute("popupType", "error");
+         model.addAttribute("popupMessage", "The Id already exist");
 
      }
-     else if (isAdd.equals("The Name already exist")){
 
 
+   else if (isAdd.equals("Category already exists")){
+         model.addAttribute("popupType", "error");
+         model.addAttribute("popupMessage", "Category already exists");
+     }
+     else if (isAdd.equals("Category Name already exists")){
+         model.addAttribute("popupType", "error");
+         model.addAttribute("popupMessage", "Category Name already exists");
 }
+
      return "redirect:/home";
 
  }
@@ -160,24 +174,40 @@ public String viewProduct(@PathVariable Long productId, Model model) {
 
 
     @PostMapping("/delete-product/{productId}")
-    public String deleteProduct(@PathVariable int productId){
-    productService.deleteproduct(productId);
-return "signup";
+    public String deleteProduct(@PathVariable int productId,Model model){
+        Optional<ProductDb> productList1= productRepository.findById(productId);
+        ProductDb product=productList1.get();
+        productService.deleteproduct(productId);
+        model.addAttribute("popupType", "success");
+        model.addAttribute("popupMessage", "Product Deleted Successfully");
+        return "redirect:/category/"+product.getCategory().getId();
+
     }
     @PostMapping("/update-product/{productId}")
-    public String updateProduct(@PathVariable int productId,@ModelAttribute ProductInfo productInfo){
+    public String updateProduct(@PathVariable int productId,@ModelAttribute ProductInfo productInfo,Model model){
 
         productService.updateProduct(productId,productInfo);
-        return "signup";
+        model.addAttribute("popupType", "success");
+        model.addAttribute("popupMessage", "Category Updated Successfully");
+      Optional<ProductDb> productList1= productRepository.findById(productId);
+      ProductDb product=productList1.get();
+
+
+
+    return "redirect:/category/"+product.getCategory().getId();
+
+
     }
 
 
 
-    @PostMapping(" /delete-categories/{id}")
-    public String deleteCategories(@PathVariable int id){
-        productService.deleteCategories(id);
+    @PostMapping("/delete-categories/{id}")
+    public String deleteCategories(@PathVariable String id,Model model){
 
-        return "signup";
+      productService.deleteCategories(id);
+        model.addAttribute("popupType", "success");
+        model.addAttribute("popupMessage", "Category Deleted Successfully");
+        return "redirect:/home";
     }
 
     @PostMapping("/search-product")

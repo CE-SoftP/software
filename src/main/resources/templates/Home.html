@@ -4,194 +4,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Home page</title>
-
 </head>
-
 <body>
 <header>
+    <input type="hidden" id="popupType" th:value="${popupType}" />
+    <input type="hidden" id="popupMessage" th:value="${popupMessage}" />
     <nav>
         <ul>
             <li><a href="/profile">Profile</a></li>
             <li><a href="#">category</a></li>
-            <li><a th:href="@{'/user/' + ${userId} + '/card'}">Shopping Cart</a></li>
+            <li><a th:href="@{'/user/' + ${userId} + '/card'}">Bag</a></li>
             <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
-
-            <li th:id="management" th:if="${userRole == 'Admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
-            <li id="view" th:if="${userRole == 'Admin'}"><a href="/ViewCustomers">View Customers</a></li>
-            <li th:if="${userRole == 'Admin' or userRole == 'Installer'}"><a href="/installation-requests">View Installation</a></li>
-            <li th:if="${userRole == 'Customer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
-            <li th:if="${userRole == 'Customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
             <li><a href="#">Exit</a></li>
+            <li th:id="management" th:if="${userRole == 'admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
+            <li id="view" th:if="${userRole == 'admin'}"><a href="/ViewCustomers">View Customers</a></li>
+            <li id="viewInstall" th:if="${userRole == 'admin' or userRole == 'Installer'}"><a href="/installation-requests">View Installation</a></li>
+            <li id="viewInstallReq" th:if="${userRole == 'customer' or userRole == 'admin' or userRole == 'installer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
+            <li id="viewInstallHistory"th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
+            <li id="viewOrderHistory" th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Order History</a></li>
         </ul>
     </nav>
 </header>
 
 <form id="searchElement" method="post"  action="/search-product" th:object="${productInfo}" style="display: none;">
-<div class="search-container">
-<label for="searchInput">Search:</label>
-<input type="text" id="searchInput" name="productName">
-<button type="submit" id="searchProduct">Search</button>
-</div>
+    <div class="search-container">
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" name="productName">
+        <button type="submit" id="searchProduct">Search</button>
+    </div>
 </form>
 
 <main id="productContainer">
     <!-- Add more HTML elements to display other product details -->
 
     <div th:each="category : ${categories}">
-
-        <div id="updateConfirmation" style="display: none;">
-            <form method="post" th:action="@{'/delete-categories/' + ${category.getId()}}" >
-                <!-- <form id="updateConfirmationForm" action="/update-category" method="post">-->
-                <label>Are you sure you want to update this category?</label>
-                <button type="submit" id="updateConfirmationYes">Yes</button>
-                <button type="button" onclick="cancelUpdateConfirmation()">No</button>
-            </form>
-        </div>
-
-        <div th:id="${category.getName()}" class="square" th:onclick="'/category/' + ${category.getId()}">
-
+        <div class="square" th:id="${category.getName()}" th:onclick="'/category/' + ${category.getId()}">
             <a th:href="@{'/category/' + ${category.getId()}}">
                 <img th:src="@{/images/{imageName}(imageName=${category.getImageUrl()})}" th:alt="${category.getName()}">
-
                 <p th:text="${category.getName()}"></p>
             </a>
+            <button th:id="'deleteButton ' + ${category.getName()}" class="deleteButton" style="display: none;" onclick="showUpdateConfirmation(this)">Delete</button>
 
-            <button id="deleteButton" class="deleteButton" style="display: none;" onclick="showUpdateConfirmation()">Delete</button>
+            <div th:id ="'deleteConfirmation ' + ${category.getName()}" class="deleteConfirmation" style="display: none;">
+                <form method="post" th:action="@{'/delete-categories/' + ${category.getId()}}">
+                    <label>Are you sure you want to update this category?</label>
+                    <button type="submit" th:id="'deleteConfirmationYes ' + ${category.getName()}">Yes</button>
+                    <button type="button" th:id="'deleteConfirmationNo ' + ${category.getName()}" onclick="cancelUpdateConfirmation()">No</button>
+                </form>
+            </div>
         </div>
-
     </div>
 
     <div class="square" id="addNewButton" style="display: none;" th:onclick="showAddForm()">
         <a href="#">
             <!--<img th:src="${product.getImageUrl()}" th:alt="${product.getName()}">-->
             <p text="Add New"></p>
-
         </a>
     </div>
-
-
 </main>
 
 <div id="addForm" style="display: none;">
     <form id="addProductForm"   action="/add-catagroies" method="post" th:object="${catagroiesForm}">
-
         <label for="categorytId">Categories ID:</label>
         <input type="text" id="categorytId" name="cataId" required>
 
         <label for="categoryName">Categories Name:</label>
         <input type="text" id="categoryName" name="cataName" required>
 
-
         <label for="image">Image:</label>
         <input type="file" id="image" name="image" accept="image/*" >
         <button id="add categories">Add</button>
-
+        <button id="Cancel" onclick="closeForm()">Cancel</button>
     </form>
 </div>
+
 <script th:inline="javascript">
-  function showDeleteButton() {
-   var deleteButtons = document.getElementsByClassName('deleteButton');
-        var updateButtons = document.getElementsByClassName('updateButton');
+        function showDeleteButton() {
+            var deleteButtons = document.getElementsByClassName('deleteButton');
+            var updateButtons = document.getElementsByClassName('updateButton');
 
-        for (var i = 0; i < deleteButtons.length; i++) {
-            deleteButtons[i].style.display = 'block';
-        }
-
-        for (var j = 0; j < updateButtons.length; j++) {
-            updateButtons[j].style.display = 'block';
-        }
-
- var addNewButton = document.getElementById('addNewButton');
-        if (addNewButton) {
-            addNewButton.style.display = 'block';
-        }
-}
-
-    function showAddForm() {
-        var addForm = document.getElementById('addForm');
-        if (addForm) {
-            addForm.style.display = 'block';
-        }
-    }
-
-    function closeForm() {
-        var addForm = document.getElementById('addForm');
-        if (addForm) {
-            addForm.style.display = 'none';
-        }
-    }
-
-    function searchProducts() {
-        var searchTerm = document.getElementById('searchInput').value.toLowerCase();
-
-        // Make an AJAX request to your Spring Boot backend
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/search?term=' + searchTerm, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                // Handle the response from the server
-                var products = JSON.parse(xhr.responseText);
-                updateProductDisplay(products);
+            for (var i = 0; i < deleteButtons.length; i++) {
+                deleteButtons[i].style.display = 'block';
             }
-        };
-        xhr.send();
-    }
 
-    function updateProductDisplay(products) {
-        var productContainer = document.getElementById('productContainer');
-        productContainer.innerHTML = ''; // Clear existing content
+            for (var j = 0; j < updateButtons.length; j++) {
+                updateButtons[j].style.display = 'block';
+            }
 
-        for (var i = 0; i < products.length; i++) {
-            var product = products[i];
-
-            // Create HTML elements to display the product
-            var productDiv = document.createElement('div');
-            productDiv.className = 'square';
-
-            var productLink = document.createElement('a');
-            productLink.href = '/product/' + product.id; // Adjust the product details link
-
-            var productImage = document.createElement('img');
-            productImage.src = product.imageUrl; // Adjust the product image URL
-            productImage.alt = product.name; // Adjust the product name
-
-            var productName = document.createElement('p');
-            productName.textContent = product.name; // Adjust the property for product name
-
-            // Append the elements to the productContainer
-            productLink.appendChild(productImage);
-            productLink.appendChild(productName);
-            productDiv.appendChild(productLink);
-
-            productContainer.appendChild(productDiv);
+            var addNewButton = document.getElementById('addNewButton');
+            if (addNewButton) {
+                addNewButton.style.display = 'block';
+            }
         }
-    }
 
- function showUpdateConfirmation() {
-    var updateConfirmation = document.getElementById('updateConfirmation');
-    if (updateConfirmation) {
-      updateConfirmation.style.display = 'block';
-    }
-  }
+        function showAddForm() {
+            var addForm = document.getElementById('addForm');
+            if (addForm) {
+                addForm.style.display = 'block';
+            }
+        }
 
 
-  function cancelUpdateConfirmation() {
-    var updateConfirmation = document.getElementById('updateConfirmation');
-    if (updateConfirmation) {
-      updateConfirmation.style.display = 'none';
-    }
-  }
 
-  function searchElement(){
-   var updateConfirmation = document.getElementById('searchElement');
-    if (searchElement) {
-      updateConfirmation.style.display = 'block';
-    }
-  }
-</script>
+        function closeForm() {
+            var addForm = document.getElementById('addForm');
+            if (addForm) {
+                addForm.style.display = 'none';
+            }
+        }
 
+        function searchProducts() {
+            var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            // Make an AJAX request to your Spring Boot backend
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/search?term=' + searchTerm, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Handle the response from the server
+                    var products = JSON.parse(xhr.responseText);
+                    updateProductDisplay(products);
+                }
+            };
+            xhr.send();
+        }
+
+        function updateProductDisplay(products) {
+            var productContainer = document.getElementById('productContainer');
+            productContainer.innerHTML = ''; // Clear existing content
+
+            for (var i = 0; i < products.length; i++) {
+                var product = products[i];
+
+                // Create HTML elements to display the product
+                var productDiv = document.createElement('div');
+                productDiv.className = 'square';
+
+                var productLink = document.createElement('a');
+                productLink.href = '/product/' + product.id; // Adjust the product details link
+
+                var productImage = document.createElement('img');
+                productImage.src = product.imageUrl; // Adjust the product image URL
+                productImage.alt = product.name; // Adjust the product name
+
+                var productName = document.createElement('p');
+                productName.textContent = product.name; // Adjust the property for product name
+
+                // Append the elements to the productContainer
+                productLink.appendChild(productImage);
+                productLink.appendChild(productName);
+                productDiv.appendChild(productLink);
+
+                productContainer.appendChild(productDiv);
+            }
+        }
+
+        function showUpdateConfirmation(clickedButton) {
+
+            var deleteConfirmation = clickedButton.parentElement.querySelector('.deleteConfirmation');
+            if (deleteConfirmation) {
+                deleteConfirmation.style.display = 'block';
+
+
+                var categoryId = clickedButton.parentElement.id;
+                console.log('Category ID to delete: ', categoryId);
+
+                // Add logic to set the form action with the correct category ID
+                var form = deleteConfirmation.querySelector('form');
+                form.action = '/delete-categories/' + categoryId;
+            }
+        }
+
+        function cancelUpdateConfirmation() {
+            var deleteConfirmation = document.querySelector('.deleteConfirmation');
+            if (deleteConfirmation) {
+                deleteConfirmation.style.display = 'none';
+            }
+        }
+    </script>
+
+<script>
+        var popupType = document.getElementById('popupType').value;
+        var popupMessage = document.getElementById('popupMessage').value;
+
+        console.log("popupType:", popupType);
+        console.log("popupMessage:", popupMessage);
+
+        // Display the popup using alert
+        if (popupType === 'success') {
+            alert("Success: " + popupMessage);
+        } else if (popupType === 'error') {
+            alert("Error: " + popupMessage);
+        }
+    </script>
 </body>
-
 </html>

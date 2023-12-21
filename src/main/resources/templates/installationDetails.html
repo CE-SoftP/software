@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Installation Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/Home.css">
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -14,18 +15,24 @@
 
     <!-- Font Awesome for the calendar icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <!-- Bootstrap Timepicker -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.3/js/bootstrap-timepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.3/css/bootstrap-timepicker.min.css" />
+
 
     <script th:inline="javascript">
         /*<![CDATA[*/
         // Store the original values when the page is loaded
         var originalValues = {
             installDate: /*[[${installation.installDate}]]*/,
+            installTime: /*[[${installation.installTime}]]*/,
             availability: /*[[${installation.availability}]]*/
         };
 
         // Function to set the form fields to their original values
         function resetToOriginalValues() {
             document.getElementById('date').value = originalValues.installDate;
+            document.getElementById('time').value = originalValues.installTime;
             document.getElementById('ava').value = originalValues.availability;
         }
 
@@ -118,7 +125,22 @@
     </style>
 </head>
 <body>
-
+<header>
+    <nav>
+        <ul>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="#">category</a></li>
+            <li><a th:href="@{'/user/' + ${userId} + '/card'}">Bag</a></li>
+            <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
+            <li><a href="#">Exit</a></li>
+            <li th:id="management" th:if="${userRole == 'admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
+            <li id="view" th:if="${userRole == 'admin'}"><a href="/ViewCustomers">View Customers</a></li>
+            <li th:if="${userRole == 'admin' or userRole == 'installer'}"><a href="/installation-requests">View Installation</a></li>
+            <li th:if="${userRole == 'customer' or userRole == 'admin' or userRole == 'installer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
+            <li th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
+        </ul>
+    </nav>
+</header>
 <h2>Installation Details</h2>
 <p>ID: <span th:text="${installation.id}"></span></p>
 <p>Customer Id: <span th:text="${installation.customerId}"></span></p>
@@ -133,11 +155,25 @@
         </div>
     </div>
 
+    <label for="time">Time:</label>
+    <div class="input-group clockpicker">
+        <input type="text" id="time" name="time" th:field="*{installTime}" class="form-control timepicker" />
+        <div class="input-group-append">
+            <span class="input-group-text"><i class="far fa-clock"></i></span>
+        </div>
+    </div>
+
     <label for="ava">Available:</label>
     <input type="text" id="ava" name="ava" th:field="*{availability}" />
 
-    <button type="submit" name="Save Changes" id="SaveChanges">Save Changes</button>
+    <button type="submit" name="Save Changes" id="SaveChanges">Save </button>
     <button type="button" onclick="cancelChanges()" id="Cancel" name="Cancel">Cancel</button>
+</form>
+<form th:action="@{'/approveInstall/' + ${installation.id}}" method="post">
+    <!-- Your other form fields -->
+
+    <!-- Add Approve Button -->
+    <button type="submit" name="Approve" id="Approve">Approve</button>
 </form>
 
 <!-- Add Delete Button -->
@@ -191,14 +227,22 @@
         }
     </script>
 
-<!-- Initialize Bootstrap Datepicker -->
+<!-- Initialize Bootstrap Datepicker and Timepicker -->
 <script>
-        $(document).ready(function () {
-            $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-            });
+    $(document).ready(function () {
+        // Initialize datepicker
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
         });
-    </script>
+
+        // Initialize timepicker
+        $('.timepicker').timepicker({
+            showInputs: false,
+            showMeridian: false,
+        });
+    });
+</script>
+
 </body>
 </html>

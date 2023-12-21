@@ -2,6 +2,7 @@ package StepDefinitions;
 
 
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.app.customer.*;
@@ -14,13 +15,12 @@ import org.junit.jupiter.api.Assertions;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 
-import org.openqa.selenium.WebDriver;
-
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +28,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.net.http.HttpClient;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+import java.time.Duration;
 public class LogInSteps {
     @InjectMocks
     private LogInSteps forgotPasswordSteps;
@@ -57,9 +58,9 @@ public class LogInSteps {
     private String userEmail;
     private ForgotPasswordController forgotPasswordController;
 
-    public LogInSteps(){
-        MockitoAnnotations.initMocks(this);
-    }
+//    public LogInSteps(){
+//        MockitoAnnotations.initMocks(this);
+//    }
 
 
     @Given("the app is running")
@@ -92,76 +93,163 @@ public class LogInSteps {
 
     @When("I click the {string} button")
     public void i_click_the_button(String string) {
-        if(string.equals("LogInBtn"))
             driver.findElement(By.id(string)).click();
-        else{
-//            String linkText = "ForgotPassword"; // Replace with the actual text of your link
-//            String xpathExpression = "//a[contains(text(), '" + linkText + "')]";
-//            WebElement forgotPasswordLink = driver.findElement(By.xpath(xpathExpression));
-//            forgotPasswordLink.click();
-            WebElement forgotPasswordLink = driver.findElement(By.id("ForgetPass"));
-
-            // Simulate clicking the link
-            forgotPasswordLink.click();
-           // when(forgotPasswordController.handlePasswordResetRequest(userEmail)).thenReturn(true);
-        }
-
         sleep(6000);
     }
 
     @Then("I should be redirected to the admin dashboard")
     public void i_should_be_redirected_to_the_admin_dashboard() {
+        Duration timeout = Duration.ofSeconds(10);
+        WebDriverWait wait = new WebDriverWait(driver, timeout);
 
+        // Use a more descriptive ID for your element, if possible
+        By viewElementLocator = By.id("view");
+        WebElement someElementOnPage = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+
+        By viewElementLocator2 = By.id("management");
+        WebElement someElementOnPage2 = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+
+        By viewElementLocator3 = By.id("viewInstall");
+        WebElement someElementOnPage3 = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+
+
+        // Add assertions or further actions based on what you expect to see on the page
+        // For example:
+        Assertions.assertTrue(someElementOnPage.isDisplayed() & someElementOnPage2.isDisplayed() &someElementOnPage3.isDisplayed(), "The 'view' element is not displayed on the admin dashboard");
+
+        // Add further assertions or actions if needed
+        driver.close();
+        driver.quit();
     }
+//    private void handleAlert(WebDriverWait wait) {
+//        Alert alert = driver.switchTo().alert();
+//        String actualMessage = alert.getText();
+//
+//
+//        alert.accept();
+//
+//            // Check if the alert has a button
+//            boolean hasButton = alertHasButton();
+//
+//            if (hasButton) {
+//                // Click the button to make the alert disappear using JavaScript
+//                ((JavascriptExecutor) driver).executeScript("arguments[0].accept();", alert);
+//            } else {
+//                // Dismiss the alert using JavaScript
+//                ((JavascriptExecutor) driver).executeScript("arguments[0].dismiss();", alert);
+//            }
+//
+//    }
+//
+//    private boolean alertHasButton() {
+//        try {
+//            // Execute a script to check if the alert has a button
+//            Object result = ((JavascriptExecutor) driver).executeScript(
+//                    "return typeof(arguments[0].accept) !== 'undefined' || typeof(arguments[0].dismiss) !== 'undefined';",
+//                    driver.switchTo().alert());
+//
+//            return Boolean.TRUE.equals(result);
+//        } catch (WebDriverException e) {
+//            // Alert has no button
+//            return false;
+//        }
+//   }
 
     @When("I enter my customer username {string} and password {string}")
     public void i_enter_my_customer_username_and_password(String name, String pass) {
-        driver.findElement(By.id("username")).sendKeys(name);
-        driver.findElement(By.id("password")).sendKeys(pass);
+        driver.findElement(By.id("user_name")).sendKeys(name);
+        driver.findElement(By.id("pass")).sendKeys(pass);
         sleep(2000);
     }
 
 
     @Then("I should be redirected to the customer dashboard")
     public void i_should_be_redirected_to_the_customer_dashboard() {
-        dataForm.setUserName( driver.findElement(By.id("user_name")).getAttribute("value"));
-        dataForm.setPassword( driver.findElement(By.id("pass")).getAttribute("value"));
+        Duration timeout = Duration.ofSeconds(10);
+        WebDriverWait wait = new WebDriverWait(driver, timeout);
+        List<WebElement> elementsWithId = driver.findElements(By.cssSelector("[id]"));
+        boolean found=false;
+// Print the IDs of the elements
+        for (WebElement element : elementsWithId) {
+            if(element.getAttribute("id").equals("view") | element.getAttribute("id").equals("management") | element.getAttribute("id").equals("viewInstall")){
+                found=true;
+            }
+        }
 
-        String result=dataService.searchAccount(dataForm);
-        if(result.equals("Admin")){
-            assert(true);
-            ResponseEntity<String> response = restTemplate.getForEntity("/home", String.class);
-            Assertions.assertEquals(200, response.getStatusCodeValue());
-            String htmlContent = response.getBody();
-            //  driver = new ChromeDriver();
-            driver.get("data:text/html;charset=utf-8," + htmlContent);
-            driver.get("");
-            sleep(2000);}
-        driver.close();
-        driver.quit();
+        By viewElementLocator = By.id("viewInstallReq");
+        WebElement someElementOnPage = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+
+        By viewElementLocator2 = By.id("viewInstallHistory");
+        WebElement someElementOnPage2 = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+
+        By viewElementLocator3 = By.id("viewOrderHistory");
+        WebElement someElementOnPage3 = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+
+        Assertions.assertTrue(!found & someElementOnPage.isDisplayed() & someElementOnPage2.isDisplayed() &someElementOnPage3.isDisplayed(), "The 'view' element is not displayed on the admin dashboard");
+
+
+//        boolean FinfView =true;
+//        Duration timeout = Duration.ofSeconds(10);
+//        WebDriverWait wait = new WebDriverWait(driver, timeout);
+//        try {
+//            By viewElementLocator = By.id("view");
+//            WebElement someElementOnPage = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+//        }catch (Exception e){
+//            System.out.println("Element not found: " + e.getMessage());
+//            FinfView =false ;
+//        }
+//
+//
+//        // Add assertions or further actions based on what you expect to see on the page
+//        // For example:
+//        Assertions.assertTrue(!FinfView, "The 'view' element is not displayed on the admin dashboard");
+
     }
+
+
+
+//        By viewElementLocator = By.id("view");
+//        WebElement someElementOnPage = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+
+//        By viewElementLocator2 = By.id("viewInstallHistory");
+//        WebElement someElementOnPage2 = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator2));
+//        // Add assertions or further actions based on what you expect to see on the page
+//        // For example:
+//        Assertions.assertTrue(!someElementOnPage.isDisplayed() & someElementOnPage2.isDisplayed(), "The 'view' element is not displayed on the admin dashboard");
+//
+//        // Add further assertions or actions if needed
+
 
     @When("I enter my installer username {string} and password {string}")
     public void i_enter_my_installer_username_and_password(String name, String pass) {
-        driver.findElement(By.id("username")).sendKeys(name);
-        driver.findElement(By.id("password")).sendKeys(pass);
+        driver.findElement(By.id("user_name")).sendKeys(name);
+        driver.findElement(By.id("pass")).sendKeys(pass);
         sleep(200);
     }
 
     @Then("I should be redirected to the installer dashboard")
     public void i_should_be_redirected_to_the_installer_dashboard() {
-        dataForm.setUserName( driver.findElement(By.id("user_name")).getAttribute("value"));
-        dataForm.setPassword( driver.findElement(By.id("pass")).getAttribute("value"));
+        Duration timeout = Duration.ofSeconds(10);
+        WebDriverWait wait = new WebDriverWait(driver, timeout);
+        List<WebElement> elementsWithId = driver.findElements(By.cssSelector("[id]"));
+        boolean found=false;
+// Print the IDs of the elements
+        for (WebElement element : elementsWithId) {
+            if(element.getAttribute("id").equals("view") | element.getAttribute("id").equals("management") | element.getAttribute("id").equals("viewInstallHistory") | element.getAttribute("id").equals("viewOrderHistory") ){
+                found=true;
+            }
+        }
 
-        String result=dataService.searchAccount(dataForm);
-        if(result.equals("Admin")){
-            assert(true);
-            ResponseEntity<String> response = restTemplate.getForEntity("/home", String.class);
-            Assertions.assertEquals(200, response.getStatusCodeValue());
-            String htmlContent = response.getBody();
-            //  driver = new ChromeDriver();
-            driver.get("data:text/html;charset=utf-8," + htmlContent);
-            sleep(2000);}
+        By viewElementLocator = By.id("viewInstall");
+        WebElement someElementOnPage = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+
+        By viewElementLocator2 = By.id("viewInstallReq");
+        WebElement someElementOnPage2 = wait.until(ExpectedConditions.presenceOfElementLocated(viewElementLocator));
+
+
+        Assertions.assertTrue(!found & someElementOnPage.isDisplayed() & someElementOnPage2.isDisplayed() , "The 'view' element is not displayed on the admin dashboard");
+
+
         driver.close();
         driver.quit();
     }
@@ -170,30 +258,24 @@ public class LogInSteps {
 
     @When("I enter an invalid username {string} and password {string}")
     public void i_enter_an_invalid_username_and_password(String name, String pass) {
-        driver.findElement(By.id("username")).sendKeys(name);
-        driver.findElement(By.id("password")).sendKeys(pass);
+        driver.findElement(By.id("user_name")).sendKeys(name);
+        driver.findElement(By.id("pass")).sendKeys(pass);
         sleep(200);
     }
 
     @Then("I should see an error message {string}")
-    public void i_should_see_an_error_message(String string) {
+    public void i_should_see_an_error_message(String expectedMessage) {
+        Alert alert = driver.switchTo().alert();
+        String actualMessage = alert.getText();
 
-       logger.info(" ");
+
+        alert.accept();
+
+        assertEquals(expectedMessage, actualMessage);
 
         driver.close();
         driver.quit();
     }
 
-    @When("I enter my email {string}")
-    public void iEnterMyEmail(String email) {
-        driver.findElement(By.id("username")).sendKeys(email);
-        userEmail = email;
-    }
-    @Then("I should receive a password reset email")
-    public void iShouldReceiveAPasswordResetEmail() {
-        // Verify that the mock email service was called with the correct email address
-        // You might also want to assert other conditions based on your implementation
-        verify(mockEmailService).sendResetEmail(userEmail);
-    }
 
 }

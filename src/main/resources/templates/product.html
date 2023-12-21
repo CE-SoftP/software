@@ -135,6 +135,8 @@
 
 <body>
 <header>
+  <input type="hidden" id="popupType" th:value="${popupType}" />
+  <input type="hidden" id="popupMessage" th:value="${popupMessage}" />
   <nav>
     <ul>
       <li><a href="/profile">Profile</a></li>
@@ -153,10 +155,7 @@
 </header>
 
 
-<header>
 
-
-</header>
 <main id="productContainer">
 
   <!-- Add more HTML elements to display other product details -->
@@ -164,14 +163,14 @@
   <div th:each="product : ${products}">
 
 
-    <div id="deleteConfirmation" style="display: none;">
-      <form method="post" th:action="@{'/delete-product/' + ${product.getProductId()}}" >
-        <!-- <form id="updateConfirmationForm" action="/update-category" method="post">-->
-        <label>Are you sure you want to update this category?</label>
-        <button type="submit" id="deleteConfirmationYes">Yes</button>
-        <button id="cancelDelete" type="button" onclick="cancelUpdateConfirmation()">No</button>
+    <div   th:id ="'deleteConfirmation ' + ${product.getProductName()}"  class="deleteConfirmation" style="display: none;">
+      <form method="post" th:action="@{'/delete-product/' + ${product.getProductId()}}">
+        <label>Are you sure you want to delete this product?</label>
+        <button th:type="submit"  th:id="'deleteConfirmationYes ' + ${product.getProductName()}">Yes</button>
+        <button th:type="button" th:id="'deleteConfirmationNo ' + ${product.getProductName()}" onclick="cancelUpdateConfirmation()" >No</button>
       </form>
     </div>
+
 
     <div th:id="${product.getProductName()}" class="square" th:onclick="'/product/' + ${product.getProductId()}">
       <a th:href="@{'/product/' + ${product.getProductId()}}">
@@ -180,9 +179,11 @@
 
       </a>
 
-      <button class="deleteButton" th:id="'deleteButton_' + ${product.getProductId()}" onclick="showDeleteConfirmation()" style="display: none;">Delete</button>
+      <button th:id="'deleteButton ' + ${product.getProductName()}" class="deleteButton" style="display: none;"  th:attr="data-product-id=${product.getProductId()}" onclick="showUpdateConfirmation(this)">Delete</button>
 
-      <button th:id="'updateButtons_' + ${product.getProductId()}" class="updateButton" onclick="showUpdateForm()">Update Product</button>
+
+      <button th:id="'updateButtons ' + ${product.getProductName()}" class="updateButton"  th:attr="data-product-id=${product.getProductId()}, data-product-name=${product.getProductName()}, data-product-information=${product.getInformation()}, data-product-price=${product.getPrice()}, data-product-section=${product.getSection()}, data-product-number-of=${product.getNumberOf()}"
+              onclick="showUpdateForm(this)">Update Product</button>
     </div>
 
 
@@ -195,7 +196,7 @@
     </a>
   </div>
 
-    <div id="updateForm" style="display: none;">
+    <div class ="updateForm" id="updateForm" style="display: none;">
       <form method="post" th:action="@{'/update-product/' + ${product.getProductId()}}" th:object="${productInfo}">
         <label for="updateProductName">Product Name:</label>
         <input type="text" id="updateProductName" name="productName" th:value="${product.getProductName()}" required>
@@ -209,7 +210,7 @@
         <label for="updateSection">Section:</label>
         <select id="updateSection" name="section" required>
           <option value="Electronics" th:selected="${product.getSection() == 'Electronics'}">Electronics</option>
-          <option value="Clothing" th:selected="${product.getSection() == 'Clothing'}">Clothing</option>
+          <option value="Exterior Accessories" th:selected="${product.getSection() == 'Clothing'}">Exterior Accessories</option>
 
 
         </select>
@@ -219,8 +220,8 @@
 
         <!-- Add other fields as needed -->
 
-        <button id="updateButton" type="submit">Update Product</button>
-        <button type="button" onclick="cancelUpdateForm()">Cancel</button>
+        <button th:id="'updateButton ' + ${product.getProductName()}" type="submit">Update Product</button>
+        <button id="CancelUpdate" type="button" onclick="cancelUpdateForm()">Cancel</button>
       </form>
     </div>
   </div>
@@ -261,6 +262,10 @@
     <button id="closeFormButton" onclick="closeForm()"  >close</button>
   </form>
 </div>
+
+
+
+
 <script th:inline="javascript">
   function showDeleteButton() {
    var deleteButtons = document.getElementsByClassName('deleteButton');
@@ -295,29 +300,66 @@ function showAddForm() {
         }
     }
 
+function showUpdateConfirmation(clickedButton) {
+var productId = clickedButton.dataset.productId;
+    console.log('Delete button clicked!');
+    var deleteConfirmation = clickedButton.parentElement.querySelector('.deleteConfirmation');
+    console.log('Delete Confirmation Element:', deleteConfirmation);
 
-      function showDeleteConfirmation() {
-    var updateConfirmation = document.getElementById('updateConfirmation');
-    if (updateConfirmation) {
-      updateConfirmation.style.display = 'block';
+    if (!deleteConfirmation) {
+        deleteConfirmation = document.querySelector('.deleteConfirmation');
     }
-  }
+    if (deleteConfirmation) {
+        deleteConfirmation.style.display = 'block';
 
+        console.log('Category ID to delete: ', categoryId);
 
-  function cancelUpdateConfirmation() {
-    var updateConfirmation = document.getElementById('updateConfirmation');
-    if (updateConfirmation) {
-      updateConfirmation.style.display = 'none';
+        // Add logic to set the form action with the correct category ID
+        var form = deleteConfirmation.querySelector('form');
+        form.action = '/delete-product/' + productId;
     }
-  }
+}
 
 
-  function showUpdateForm() {
-    var updateForm = document.getElementById('updateForm');
-    if (updateForm) {
-      updateForm.style.display = 'block';
+
+
+
+function cancelDeleteConfirmation() {
+    var deleteConfirmation = document.querySelector('.deleteConfirmation');
+    if (deleteConfirmation) {
+        deleteConfirmation.style.display = 'none';
     }
+}
+
+
+function showUpdateForm(clickedButton) {
+  var productId = clickedButton.dataset.productId;
+    var productName = clickedButton.dataset.productName;
+    var information = clickedButton.dataset.productInformation;
+    var price = clickedButton.dataset.productPrice;
+    var section = clickedButton.dataset.productSection;
+    var numberOf = clickedButton.dataset.productNumberOf;
+
+  var updateForm = clickedButton.parentElement.querySelector('.updateForm');
+  if (!updateForm) {
+    updateForm = document.querySelector('.updateForm');
   }
+  if (updateForm) {
+    updateForm.style.display = 'block';
+    var productId2 = clickedButton.parentElement.id;
+    console.log('Product ID to update: ', productId2);
+
+    // Here you might want to set the form action based on the product ID
+    var form = updateForm.querySelector('form');
+    form.action = '/update-product/' + productId;
+  }
+  document.getElementById('updateProductName').value = productName || '';
+  document.getElementById('updateInformation').value = information || '';
+  document.getElementById('updatePrice').value = price || 0;
+  document.getElementById('updateSection').value = section || '';
+  document.getElementById('updateNumberOf').value = numberOf || 0;
+}
+
 
   function cancelUpdateForm() {
     var updateForm = document.getElementById('updateForm');
@@ -325,8 +367,29 @@ function showAddForm() {
       updateForm.style.display = 'none';
     }
   }
+
+   function cancelUpdateConfirmation() {
+            var deleteConfirmation = document.querySelector('.deleteConfirmation');
+            if (deleteConfirmation) {
+                deleteConfirmation.style.display = 'none';
+            }
+        }
 </script>
 
+<script>
+        var popupType = document.getElementById('popupType').value;
+        var popupMessage = document.getElementById('popupMessage').value;
+
+        console.log("popupType:", popupType);
+        console.log("popupMessage:", popupMessage);
+
+        // Display the popup using alert
+        if (popupType === 'success') {
+            alert("Success: " + popupMessage);
+        } else if (popupType === 'error') {
+            alert("Error: " + popupMessage);
+        }
+    </script>
 </body>
 
 </html>
