@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Home page</title>
+
 </head>
+
 <body>
 <header>
     <input type="hidden" id="popupType" th:value="${popupType}" />
@@ -22,7 +25,8 @@
             <li id="viewInstall" th:if="${userRole == 'admin' or userRole == 'Installer'}"><a href="/installation-requests">View Installation</a></li>
             <li id="viewInstallReq" th:if="${userRole == 'customer' or userRole == 'admin' or userRole == 'installer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
             <li id="viewInstallHistory"th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
-            <li id="viewOrderHistory" th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Order History</a></li>
+            <li id="viewOrderHistory" th:if="${userRole == 'customer'}"><a href="/CustomerOrderHistory">View Order History</a></li>
+            <li id="viewOrderconfirmation" th:if="${userRole == 'Admin' or userRole == 'Installer'}"><a href="/CustomerOrderHistory">Orders confirmation</a></li>
         </ul>
     </nav>
 </header>
@@ -42,6 +46,7 @@
         <div class="square" th:id="${category.getName()}" th:onclick="'/category/' + ${category.getId()}">
             <a th:href="@{'/category/' + ${category.getId()}}">
                 <img th:src="@{/images/{imageName}(imageName=${category.getImageUrl()})}" th:alt="${category.getName()}">
+
                 <p th:text="${category.getName()}"></p>
             </a>
             <button th:id="'deleteButton ' + ${category.getName()}" class="deleteButton" style="display: none;" onclick="showUpdateConfirmation(this)">Delete</button>
@@ -54,31 +59,36 @@
                 </form>
             </div>
         </div>
+
     </div>
 
     <div class="square" id="addNewButton" style="display: none;" th:onclick="showAddForm()">
         <a href="#">
             <!--<img th:src="${product.getImageUrl()}" th:alt="${product.getName()}">-->
             <p text="Add New"></p>
+
         </a>
     </div>
+
+
 </main>
 
 <div id="addForm" style="display: none;">
     <form id="addProductForm"   action="/add-catagroies" method="post" th:object="${catagroiesForm}">
+
         <label for="categorytId">Categories ID:</label>
         <input type="text" id="categorytId" name="cataId" required>
 
         <label for="categoryName">Categories Name:</label>
         <input type="text" id="categoryName" name="cataName" required>
 
+
         <label for="image">Image:</label>
         <input type="file" id="image" name="image" accept="image/*" >
         <button id="add categories">Add</button>
-        <button id="Cancel" onclick="closeForm()">Cancel</button>
+
     </form>
 </div>
-
 <script th:inline="javascript">
         function showDeleteButton() {
             var deleteButtons = document.getElementsByClassName('deleteButton');
@@ -199,4 +209,5 @@
         }
     </script>
 </body>
+
 </html>
