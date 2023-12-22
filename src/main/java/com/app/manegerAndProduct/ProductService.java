@@ -1,9 +1,7 @@
-package com.app.ManegerAndProduct;
+package com.app.manegerAndProduct;
 
 import com.app.customer.CustomerDb;
 import com.app.customer.CustomerRepository;
-import com.app.customer.DataForm;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /*import org.springframework.security.core.Authentication;

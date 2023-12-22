@@ -1,9 +1,4 @@
-package com.app.ManegerAndProduct;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+package com.app.manegerAndProduct;
 
 public class ProductInfo {
         private int productId;

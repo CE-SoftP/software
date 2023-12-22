@@ -1,4 +1,4 @@
-package com.app.Installation;
+package com.app.installation;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

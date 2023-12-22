@@ -1,4 +1,4 @@
-package com.app.Installation;
+package com.app.installation;
 // Installation.java
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;

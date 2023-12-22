@@ -1,7 +1,7 @@
 package StepDefinitions;
 
-import com.app.Installation.InstallationDB;
-import com.app.Installation.InstallationService;
+import com.app.installation.InstallationDB;
+import com.app.installation.InstallationService;
 import com.app.customer.CustomerDb;
 import com.app.customer.DataService;
 import com.app.order.orderDB;

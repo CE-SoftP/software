@@ -1,4 +1,4 @@
-package com.app.Installation;
+package com.app.installation;
 import com.app.customer.CustomerDb;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,105 +7,109 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.logging.Logger;
 
 @Controller
 @SessionAttributes({"popupType", "popupMessage"})
 public class InstallationController {
 
-    @Autowired
-    private InstallationService installationService;
+    private final InstallationService installationService;
 
     private final InstallationRepository installationRepository;
-
+    private final String install = "installations";
+    private final String buttons = "Buttons";
+    private final String loggedIn ="loggedInUser";
+    private final String userRoleConst = "userRole";
+    private final String Admin = "admin";
+    private final String Customer = "customer";
+    private final String Installer = "installer";
+    Logger logger = Logger.getLogger(getClass().getName());
     @Autowired
-    public InstallationController(InstallationRepository installationRepository) {
+    public InstallationController(InstallationRepository installationRepository , InstallationService installationService ) {
         this.installationRepository = installationRepository;
+        this.installationService=installationService;
     }
 
     @GetMapping("/installation-requests")
     public String viewInstallationRequests(Model model , HttpSession session) {
         List<InstallationDB> installations = installationRepository.findAll();
-        model.addAttribute("installations", installations);
-        session.setAttribute("Buttons" , "NO");
-        CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
+        model.addAttribute(install, installations);
+        session.setAttribute(buttons , "NO");
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(loggedIn);
         String userRole = loggedInUser.getRole();
-        session.setAttribute("userRole", userRole);
-        model.addAttribute("userRole", userRole );
-        return "ViewInstallReqManeger"; // Thymeleaf template name
+        session.setAttribute(userRoleConst, userRole);
+        model.addAttribute(userRoleConst, userRole );
+        return "ViewInstallReqManeger";
     }
 
     @GetMapping("/installations/{installationId}")
     public String showInstallationDetails(@PathVariable Long installationId, Model model, HttpSession session) {
-        System.out.println("Inside showInstallationDetails method");
+        logger.info("Inside showInstallationDetails method");
         InstallationDB installation = installationRepository.findById(Math.toIntExact(installationId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid installation id: " + installationId));
         model.addAttribute("installation", installation);
-        System.out.println("Installation Details: " + installation);
-        CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
+        logger.info("Installation Details: " + installation);
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(loggedIn);
         String userRole = loggedInUser.getRole();
-        session.setAttribute("userRole", userRole);
+        session.setAttribute(userRoleConst, userRole);
 
-        String buttonsValue = (String) session.getAttribute("Buttons");
-        model.addAttribute("Buttons", buttonsValue);
+        String buttonsValue = (String) session.getAttribute(buttons);
+        model.addAttribute(buttons, buttonsValue);
 
-        System.out.println(userRole);
-        model.addAttribute("userRole", userRole );
+        logger.info(userRole);
+        model.addAttribute(userRoleConst, userRole );
         return "installationDetails";
     }
 
     @GetMapping(value = "/CustomerInstallReq")
     public String showCustomerInstallReq(Model model , HttpSession session) {
-        Object userRole = session.getAttribute("userRole");
-        CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
+        Object userRole = session.getAttribute(userRoleConst);
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(loggedIn);
         if (userRole != null) {
-            if ("admin".equals(userRole.toString()) | "installer".equals(userRole.toString())) {
-                int userId = loggedInUser.getId();
+            if (Admin.equals(userRole.toString()) || Installer.equals(userRole.toString())) {
 
                 List<InstallationDB> installations = installationService.getInstallationsByCheckedAdmin("NO");
-                model.addAttribute("installations", installations);
-                session.setAttribute("Buttons","YES");
+                model.addAttribute(install, installations);
+                session.setAttribute(buttons,"YES");
 
-            } else if ("customer".equals(userRole.toString())) {
-                int userId = loggedInUser.getId();
+            } else if (Customer.equals(userRole.toString())) {
 
-                List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", userId);
-                model.addAttribute("installations", installations);
-                session.setAttribute("Buttons","YES");
+                List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", loggedInUser.getId());
+                model.addAttribute(install, installations);
+                session.setAttribute(buttons,"YES");
             }
         }
-        String userRole1 = loggedInUser.getRole();
-        session.setAttribute("userRole", userRole);
-        model.addAttribute("userRole", userRole );
+        session.setAttribute(userRoleConst, userRole);
+        model.addAttribute(userRoleConst, userRole );
         return "CustomerInstallReq";
     }
 
     @GetMapping(value = "/CustomerAllInstallReq")
     public String showCustomerAllInstallReq(Model model , HttpSession session) {
 
-        CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(loggedIn);
         int userId = loggedInUser.getId();
         String userRole = loggedInUser.getRole();
-        session.setAttribute("userRole", userRole);
-        model.addAttribute("userRole", userRole );
+        session.setAttribute(userRoleConst, userRole);
+        model.addAttribute(userRoleConst, userRole );
 
         List<InstallationDB> installations = installationService.getInstallationsByCustomerId(userId);
-        model.addAttribute("installations", installations);
-        session.setAttribute("Buttons" , "NO");
+        model.addAttribute(install, installations);
+        session.setAttribute(buttons , "NO");
         return "CustomerInstallReq";
     }
 
     @PostMapping("/editInstall/{id}")
     public String saveChanges(@PathVariable int id, @ModelAttribute InstallationDB installation , HttpSession session) {
         InstallationDB existingInstallation = installationRepository.findById(id).orElse(null);
-        Object userRole = session.getAttribute("userRole");
+        Object userRole = session.getAttribute(userRoleConst);
         if (existingInstallation != null) {
             existingInstallation.setInstallDate(installation.getInstallDate());
             existingInstallation.setInstallTime(installation.getInstallTime());
-            if(userRole.equals("admin") | userRole.equals("installer")) {
+            if(userRole.equals(Admin) || userRole.equals(Installer)) {
                 existingInstallation.setChecked("YES");
                 existingInstallation.setCHECKED_USER("NO");
-            } else if (userRole.equals("customer")) {
+            } else if (userRole.equals(Customer)) {
                 existingInstallation.setChecked("NO");
                 existingInstallation.setCHECKED_USER("YES");
             }
@@ -117,20 +121,20 @@ public class InstallationController {
 
     @PostMapping("/approveInstall/{id}")
     public String approveInstall(@PathVariable int id, HttpSession session) {
-        System.out.println("In approve method");
-        Object userRole = session.getAttribute("userRole");
+        logger.info("In approve method");
+        Object userRole = session.getAttribute(userRoleConst);
 
         if (userRole != null) {
-            System.out.println(userRole.toString());
-            if ("admin".equals(userRole.toString()) || "installer".equals(userRole.toString())) {
-                System.out.println("ADMIN APPROVED");
+            logger.info(userRole.toString());
+            if (Admin.equals(userRole.toString()) || Installer.equals(userRole.toString())) {
+                logger.info("ADMIN APPROVED");
                 InstallationDB installation = installationRepository.findById(id).orElse(null);
                 if (installation != null) {
                     installation.setChecked("YES");
                     installationRepository.save(installation);
                 }
-            } else if ("customer".equals(userRole.toString())) {
-                System.out.println("CUSTOMER APPROVED");
+            } else if (Customer.equals(userRole.toString())) {
+                logger.info("CUSTOMER APPROVED");
                 InstallationDB installation = installationRepository.findById(id).orElse(null);
                 if (installation != null) {
                     installation.setCHECKED_USER("YES");
@@ -138,7 +142,7 @@ public class InstallationController {
                 }
             }
         } else {
-            System.out.println("ERROR: User role not found");
+            logger.info("ERROR: User role not found");
         }
 
         return "redirect:/CustomerInstallReq";
