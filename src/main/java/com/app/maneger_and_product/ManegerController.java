@@ -1,4 +1,4 @@
-package com.app.manegerAndProduct;
+package com.app.maneger_and_product;
 import com.app.customer.CustomerDb;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.support.SessionStatus;
 
 
 import java.util.List;
@@ -17,15 +18,15 @@ import java.util.logging.Logger;
 public class ManegerController {
     Logger logger = Logger.getLogger(getClass().getName());
     private final ProductService  productService;
-    private final String popUpTypeConst = "popupType";
-    private final String popUpMessageConst = "popupMessage";
-    private final String errorConst = "error";
-    private final String successConst = "success";
-    private final String productsConst = "products";
-    private final String productConst = "product";
-    private final String productListConst = "productList" ;
-    private final String redirectCategoryConst = "redirect:/category/";
-    private final String redirectHomeConst = "redirect:/home";
+    private final static String popUpTypeConst = "popupType";
+    private final static String popUpMessageConst = "popupMessage";
+    private final static String errorConst = "error";
+    private final static String successConst = "success";
+    private final static String productsConst = "products";
+    private final static String productConst = "product";
+    private final static String productListConst = "productList" ;
+    private final static String redirectCategoryConst = "redirect:/category/";
+    private final static String redirectHomeConst = "redirect:/home";
 
 
     @GetMapping("/model")
@@ -46,13 +47,14 @@ ProductDb productDb=new ProductDb();
 }
 
     @GetMapping("/category/{categoryId}")
-    public String getProductFromCatagroies(@PathVariable int categoryId, Model model, HttpSession session) {
+    public String getProductFromCatagroies(@PathVariable int categoryId, Model model, HttpSession session , SessionStatus sessionStatus) {
         List<ProductDb> productList =productRepository.findByCategoryId(categoryId);
 
         CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
         logger.info(loggedInUser.getRole());
         model.addAttribute("userRole",  loggedInUser.getRole() );
         model.addAttribute(productsConst, productList);
+        sessionStatus.setComplete();
         return productConst;
 
     }
@@ -74,7 +76,7 @@ return productListConst;
     public String addProduct(ProductInfo productInfo,Model model) {
 
     productDb=new ProductDb();
-   String isAdd =productService.SaveProduct(productInfo,productDb);
+   String isAdd =productService.saveProduct(productInfo,productDb);
  if (isAdd.equals("Product added successfully")){
      model.addAttribute(popUpTypeConst, successConst);
      model.addAttribute(popUpMessageConst, "Product added successfully");
@@ -114,9 +116,8 @@ else {
 
  @PostMapping("/add-catagroies")
     public String addCatagroies(@ModelAttribute CatagroiesForm catagroiesForm,Model model){
-logger.info(catagroiesForm.getCataName());
 
-     String isAdd =productService.SaveCatagroies(catagroiesForm);
+     String isAdd =productService.saveCatagroies(catagroiesForm);
      logger.info(isAdd);
      if (isAdd.equals("The Id already exist")){
          model.addAttribute(popUpTypeConst, errorConst);
@@ -154,8 +155,8 @@ public String viewProduct(@PathVariable Long productId, Model model) {
     @PostMapping("/add-to-cart/{productId}")
     public String addToCart(@PathVariable int productId, Model model) {
         Optional<ProductDb> product=productRepository.findById(productId);
-        ProductDb productList=product.get();
         if(product.isPresent()) {
+            ProductDb productList=product.get();
             model.addAttribute(productConst, productList);
             String result = productService.addToCart(productId, 987);
             model.addAttribute("errorMessage", result);

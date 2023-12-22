@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.logging.Logger;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -25,6 +26,7 @@ public class SignupTest {
     private String appUrl;
 
     private WebDriver webDriver;
+    Logger logger = Logger.getLogger(getClass().getName());
 
     public void runTest() {
         HttpServer server = null;
@@ -46,7 +48,7 @@ public class SignupTest {
             // Optionally, you can perform assertions or other actions on the loaded page
 
         } catch (IOException e) {
-            e.printStackTrace(); // Handle the exceptions appropriately
+            logger.severe("An error occurred: " + e.getMessage());
         } finally {
             // Close the local server and the WebDriver when done
             if (server != null) {

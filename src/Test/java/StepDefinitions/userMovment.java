@@ -1,6 +1,6 @@
 package StepDefinitions;
 
-import com.app.manegerAndProduct.ManegerController;
+import com.app.maneger_and_product.ManegerController;
 import io.cucumber.java.en.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;

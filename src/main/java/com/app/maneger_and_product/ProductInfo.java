@@ -1,4 +1,4 @@
-package com.app.manegerAndProduct;
+package com.app.maneger_and_product;
 
 public class ProductInfo {
         private int productId;

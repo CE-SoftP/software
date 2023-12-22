@@ -10,19 +10,18 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
-@SessionAttributes({"popupType", "popupMessage"})
 public class InstallationController {
 
     private final InstallationService installationService;
 
     private final InstallationRepository installationRepository;
-    private final String install = "installations";
-    private final String buttons = "Buttons";
-    private final String loggedIn ="loggedInUser";
-    private final String userRoleConst = "userRole";
-    private final String Admin = "admin";
-    private final String Customer = "customer";
-    private final String Installer = "installer";
+    private final static String install = "installations";
+    private final static String buttons = "Buttons";
+    private final static String loggedIn ="loggedInUser";
+    private final static String userRoleConst = "userRole";
+    private final static String admin = "admin";
+    private final static String customer = "customer";
+    private final static String installer = "installer";
     Logger logger = Logger.getLogger(getClass().getName());
     @Autowired
     public InstallationController(InstallationRepository installationRepository , InstallationService installationService ) {
@@ -48,7 +47,6 @@ public class InstallationController {
         InstallationDB installation = installationRepository.findById(Math.toIntExact(installationId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid installation id: " + installationId));
         model.addAttribute("installation", installation);
-        logger.info("Installation Details: " + installation);
         CustomerDb loggedInUser = (CustomerDb) session.getAttribute(loggedIn);
         String userRole = loggedInUser.getRole();
         session.setAttribute(userRoleConst, userRole);
@@ -66,13 +64,13 @@ public class InstallationController {
         Object userRole = session.getAttribute(userRoleConst);
         CustomerDb loggedInUser = (CustomerDb) session.getAttribute(loggedIn);
         if (userRole != null) {
-            if (Admin.equals(userRole.toString()) || Installer.equals(userRole.toString())) {
+            if (admin.equals(userRole.toString()) || installer.equals(userRole.toString())) {
 
                 List<InstallationDB> installations = installationService.getInstallationsByCheckedAdmin("NO");
                 model.addAttribute(install, installations);
                 session.setAttribute(buttons,"YES");
 
-            } else if (Customer.equals(userRole.toString())) {
+            } else if (customer.equals(userRole.toString())) {
 
                 List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", loggedInUser.getId());
                 model.addAttribute(install, installations);
@@ -106,12 +104,12 @@ public class InstallationController {
         if (existingInstallation != null) {
             existingInstallation.setInstallDate(installation.getInstallDate());
             existingInstallation.setInstallTime(installation.getInstallTime());
-            if(userRole.equals(Admin) || userRole.equals(Installer)) {
+            if(userRole.equals(admin) || userRole.equals(installer)) {
                 existingInstallation.setChecked("YES");
-                existingInstallation.setCHECKED_USER("NO");
-            } else if (userRole.equals(Customer)) {
+                existingInstallation.setCheckedUser("NO");
+            } else if (userRole.equals(customer)) {
                 existingInstallation.setChecked("NO");
-                existingInstallation.setCHECKED_USER("YES");
+                existingInstallation.setCheckedUser("YES");
             }
             installationRepository.save(existingInstallation);
         }
@@ -126,18 +124,18 @@ public class InstallationController {
 
         if (userRole != null) {
             logger.info(userRole.toString());
-            if (Admin.equals(userRole.toString()) || Installer.equals(userRole.toString())) {
+            if (admin.equals(userRole.toString()) || installer.equals(userRole.toString())) {
                 logger.info("ADMIN APPROVED");
                 InstallationDB installation = installationRepository.findById(id).orElse(null);
                 if (installation != null) {
                     installation.setChecked("YES");
                     installationRepository.save(installation);
                 }
-            } else if (Customer.equals(userRole.toString())) {
+            } else if (customer.equals(userRole.toString())) {
                 logger.info("CUSTOMER APPROVED");
                 InstallationDB installation = installationRepository.findById(id).orElse(null);
                 if (installation != null) {
-                    installation.setCHECKED_USER("YES");
+                    installation.setCheckedUser("YES");
                     installationRepository.save(installation);
                 }
             }

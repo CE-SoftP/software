@@ -1,6 +1,6 @@
 package StepDefinitions;
 
-import com.app.manegerAndProduct.*;
+import com.app.maneger_and_product.*;
 
 import com.app.customer.CustomerDb;
 
@@ -189,7 +189,7 @@ productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId
         productInfo.setSection(webDriver.findElement(By.id("numberOf")).getAttribute("value"));
         productInfo.setImage(webDriver.findElement(By.id("image")).getAttribute("value"));
 
-        String isAdd=productService.SaveProduct(productInfo,productDb);
+        String isAdd=productService.saveProduct(productInfo,productDb);
         assertEquals(isAdd,"Product added successfully");
 
 

@@ -1,39 +1,40 @@
-package com.app.manegerAndProduct;
+package com.app.maneger_and_product;
 
 import com.app.customer.CustomerDb;
 import com.app.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-/*import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;*/
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 
 public class ProductService {
-
+    Logger logger = Logger.getLogger(getClass().getName());
     CardDb cardDb=new CardDb();
-    @Autowired
-    CatagroisRepositary catagroisRepositary;
-    @Autowired
-    CatagroisRepositary catagroiesRepository;
-    @Autowired
-    CustomerRepository customerRepository;
-    @Autowired
-    CardRepository cardRepository;
+    private final CatagroisRepositary catagroisRepositary;
+    private final CustomerRepository customerRepository;
+    private final CardRepository cardRepository;
+    private final ProductRepository productRepository;
     ProductDb productDb;
 
     Catagroies catagroies;
     @Autowired
-    ProductRepository productRepository;
-    public String SaveProduct(ProductInfo productInfo,ProductDb productDb) {
+    public ProductService(CatagroisRepositary catagroisRepositary , CustomerRepository customerRepository , CardRepository cardRepository
+    , ProductRepository productRepository){
+        this.catagroisRepositary=catagroisRepositary;
+        this.customerRepository=customerRepository;
+        this.cardRepository=cardRepository;
+        this.productRepository=productRepository;
+    }
+    public String saveProduct(ProductInfo productInfo, ProductDb productDb) {
 
 
-        Catagroies catagroies1=catagroiesRepository.findByName(productInfo.getSection());
+        Catagroies catagroies1= this.catagroisRepositary.findByName(productInfo.getSection());
         boolean exist = productRepository.existsById(productInfo.getProductId());
         if (!exist) {
 
@@ -54,16 +55,16 @@ public class ProductService {
 
 
     public List<String> getAllCategories() {
-        return catagroiesRepository.findDistinctCategories();
+        return catagroisRepositary.findDistinctCategories();
     }
 
 
-    public String SaveCatagroies( CatagroiesForm catagroiesForm) {
+    public String saveCatagroies(CatagroiesForm catagroiesForm) {
 
 
-        boolean exist = catagroiesRepository.existsById( catagroiesForm.getCataId());
-        System.out.println(exist);
-        boolean nameExist=catagroiesRepository.existsByName(catagroiesForm.getCataName());
+        boolean exist = catagroisRepositary.existsById( catagroiesForm.getCataId());
+        logger.info("Existence: " + exist);
+        boolean nameExist= catagroisRepositary.existsByName(catagroiesForm.getCataName());
 
         if(exist){
             return "Category already exists";
@@ -74,13 +75,13 @@ public class ProductService {
         }
 
        else if (!exist) {
-            System.out.println("llll");
+            logger.info("llll");
             catagroies=new Catagroies();
             catagroies.setId(catagroiesForm.getCataId());
             catagroies.setName(catagroiesForm.getCataName());
             catagroies.setImageUrl(catagroiesForm.getImage());
             catagroies.setCategory(catagroiesForm.getCataName());
-            catagroiesRepository.save(catagroies);
+            catagroisRepositary.save(catagroies);
             return "Category added successfully";
         }
 
@@ -116,16 +117,18 @@ public String addToCart(int productId,int userId) {
 
             productRepository.save(product);
             Optional<CustomerDb> customerDbOptional = customerRepository.findById(userId);
-            CustomerDb customer = customerDbOptional.get();
-            CardDb cartItem = new CardDb();
-            cartItem.setProductDb(product);
-            cartItem.setCustomerDb(customer);
-            cartItem.setTotalPrice(product.getPrice());
-            cartItem.setCardId(2);
+            if(customerDbOptional.isPresent()) {
+                CustomerDb customer = customerDbOptional.get();
+                CardDb cartItem = new CardDb();
+                cartItem.setProductDb(product);
+                cartItem.setCustomerDb(customer);
+                cartItem.setTotalPrice(product.getPrice());
+                cartItem.setCardId(2);
 
-            cardRepository.save(cartItem);
+                cardRepository.save(cartItem);
+                return "product is added successfully";
+            }
 
-            return "product is added successfully";
         }
 
         return "The Cart is full";
@@ -148,9 +151,10 @@ public String addToCart(int productId,int userId) {
     public String deleteproduct(int productId){
 
         Optional<ProductDb> productDb1= productRepository.findById(productId);
-        ProductDb productDb2=productDb1.get();
-   productRepository.deleteAllById(Collections.singleton(productDb2.getProductId()));
-
+        if(productDb1.isPresent()) {
+            ProductDb productDb2 = productDb1.get();
+            productRepository.deleteAllById(Collections.singleton(productDb2.getProductId()));
+        }
     return "delete successfully";
 
 
@@ -160,19 +164,21 @@ public String addToCart(int productId,int userId) {
 
 
     public String updateProduct(int id, ProductInfo productInfo){
-        Catagroies catagroies1=catagroiesRepository.findByName(productInfo.getSection());
+        Catagroies catagroies1= catagroisRepositary.findByName(productInfo.getSection());
 
         Optional<ProductDb> optionalProduct = productRepository.findById(id);
-        ProductDb Product=optionalProduct.get();
-        Product.setProductId(productInfo.getProductId());
-        Product.setProductName(productInfo.getProductName());
-        Product.setPrice(productInfo.getPrice());
-        Product.setSection(productInfo.getSection());
-        Product.setNumberOf(productInfo.getNumberOf());
-        Product.setImage(productInfo.getImage());
-        Product.setInformation(productInfo.getInformation());
-        Product.setCategory(catagroies1);
-      productRepository.save(Product);
+        if(optionalProduct.isPresent()) {
+            ProductDb product = optionalProduct.get();
+            product.setProductId(productInfo.getProductId());
+            product.setProductName(productInfo.getProductName());
+            product.setPrice(productInfo.getPrice());
+            product.setSection(productInfo.getSection());
+            product.setNumberOf(productInfo.getNumberOf());
+            product.setImage(productInfo.getImage());
+            product.setInformation(productInfo.getInformation());
+            product.setCategory(catagroies1);
+            productRepository.save(product);
+        }
         return "hi ";
     }
 

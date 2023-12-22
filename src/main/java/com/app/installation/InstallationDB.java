@@ -27,7 +27,7 @@ public class InstallationDB {
     private String checked;
 
     @Column(name = "CHECKED_USER")
-    private String CHECKED_USER ;
+    private String checkedUser;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="INSTALLDATE")
@@ -42,12 +42,12 @@ public class InstallationDB {
     private String installTime;
 
 
-    public String getCHECKED_USER() {
-        return CHECKED_USER;
+    public String getCheckedUser() {
+        return checkedUser;
     }
 
-    public void setCHECKED_USER(String CHECKED_USER) {
-        this.CHECKED_USER = CHECKED_USER;
+    public void setCheckedUser(String checkedUser) {
+        this.checkedUser = checkedUser;
     }
 
     public String  getInstallTime() {
@@ -64,14 +64,6 @@ public class InstallationDB {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getCustomerName() {
-        return customerId;
-    }
-
-    public void setCustomerName(int customerId) {
-        this.customerId = customerId;
     }
 
     public String getCarModel() {

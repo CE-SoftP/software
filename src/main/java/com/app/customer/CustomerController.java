@@ -5,7 +5,7 @@ import com.app.appointment.AppointmentForm;
 import com.app.appointment.AppointmentService;
 import com.app.installation.InstallationDB;
 import com.app.installation.InstallationService;
-import com.app.manegerAndProduct.*;
+import com.app.maneger_and_product.*;
 import com.app.order.orderDB;
 import com.app.order.orderRepository;
 import com.app.order.orderService;
@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @SessionAttributes({"popupType", "popupMessage"})
@@ -38,29 +39,29 @@ public class CustomerController {
     private final orderService orderService;
     private AppointmentDb appoinmentDb;
     private final orderRepository orderRepository;
-    private final String loggedInConst ="loggedInUser";
-    private final String userRoleConst = "userRole";
-    private final String customerConst = "customer";
-    private final String popUpTypeConst = "popupType";
-    private final String popUpMessageConst = "popupMessage";
-    private final String errorConst = "error";
-    private final String successConst = "success";
-    private final String redirectForm = "redirect:/form";
+    private final static String loggedInConst ="loggedInUser";
+    private final static String userRoleConst = "userRole";
+    private final static String customerConst = "customer";
+    private final static String popUpTypeConst = "popupType";
+    private final static String popUpMessageConst = "popupMessage";
+    private final static String errorConst = "error";
+    private final static String successConst = "success";
+    private final static String redirectForm = "redirect:/form";
 
     @Autowired
-    public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust, DataService customerService , orderRepository OrderRepository
+    public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust, DataService customerService , orderRepository orderRepository
     , CatagroisRepositary catagroisRepositary ,ProductRepository productRepository , AppointmentService appointmentService
-    , InstallationService installationService ,orderService OrderService ) {
+    , InstallationService installationService ,orderService orderService ) {
         this.catagroisRepositary=catagroisRepositary;
         this.productRepository=productRepository;
         this.appointmentService=appointmentService;
         this.installationService=installationService;
-        this.orderService =OrderService;
+        this.orderService =orderService;
         this.appointmenRepository = appointmenRepository;
         this.customerRepository = cust;
         this.customerService = customerService;
         this.appoinmentDb = new AppointmentDb();
-        this.orderRepository =OrderRepository;
+        this.orderRepository =orderRepository;
 
     }
 
@@ -224,7 +225,7 @@ public class CustomerController {
     }
 
     @PostMapping("/edit/{id}")
-    public String processEditForm(@PathVariable int id, @ModelAttribute CustomerDb editedCustomer) {
+    public String processEditForm(@PathVariable int id, @ModelAttribute CustomerDb editedCustomer ) {
         customerService.updateCustomer(id, editedCustomer);
         return "redirect:/customers/" + id;
     }
@@ -244,10 +245,11 @@ public class CustomerController {
     }
 
     @PostMapping("/editProfile/{id}")
-    public String processEditProfileForm(@PathVariable int id, @ModelAttribute CustomerDb editedCustomer , Model model) {
+    public String processEditProfileForm(@PathVariable int id, @ModelAttribute CustomerDb editedCustomer , Model model , SessionStatus sessionStatus) {
         CustomerDb updatedCustomer =  customerService.updateCustomer(id, editedCustomer);
         model.addAttribute(customerConst, updatedCustomer);
         logger.info("Customer updated successfully");
+        sessionStatus.setComplete();
         return "profile";
     }
 
@@ -295,7 +297,7 @@ public class CustomerController {
             order.setPopUpUser("YES");
             orderRepository.save(order);
         }
-        System.out.println(message);
+        logger.info(message);
 
         if (!installations.isEmpty() || !orders.isEmpty()) {
             model.addAttribute(popUpTypeConst, successConst);
