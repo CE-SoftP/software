@@ -151,20 +151,28 @@ ProductRepository productRepository;
             CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
             String userRole = loggedInUser.getRole();
             session.setAttribute("userRole", userRole);
+            String message = "";
 
             if(userRole.equals("customer")) {
                 List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", user.getId());
-                //  InstallationDB installationDB = (InstallationDB) installationRepository.findByCHECKED_USERAndCustomerId("NO", user.getId());
+                List<orderDB> orders = OrderService.getOrderByPopUpUser("NO" , user.getId());
                 if (!installations.isEmpty()) {
+                    message="You have " + installations.size() + " Requests to check \n";
                     model.addAttribute("popupType", "success");
                     model.addAttribute("popupMessage", "You have " + installations.size() + " Requests to check");
                 }
-                List<orderDB> orders = OrderService.getOrderByPopUpUser("NO" , user.getId());
+
                 for(orderDB order : orders){
+                    message+="Yor order with id : " + order.getId() + " have been confirmed \n";
                     model.addAttribute("popupType", "success");
                     model.addAttribute("popupMessage", "Yor order with id : " + order.getId() + "have been confirmed");
                     order.setPopUpUser("YES");
                     OrderRepository.save(order);
+                }
+                if(!installations.isEmpty() | !orders.isEmpty()){
+                    model.addAttribute("popupType", "success");
+                    model.addAttribute("popupMessage", message);
+
                 }
 
             } else if (userRole.equals("admin") || userRole.equals("installer")) {

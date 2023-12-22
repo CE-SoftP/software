@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Installation <span th:text="${installation.id}"></span> Details</title>
+    <title th:utext="'Installation Details: ' + ${installation.id}"></title>
     <meta charset="UTF-8">
-    <title>Installation Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/static/css/Home.css">
 
@@ -32,7 +31,7 @@
 
         // Function to set the form fields to their original values
         function resetToOriginalValues() {
-            document.getElementById('date').value = originalValues.installDate;
+            document.getElementById('date').value = originalValues.installDate.substring(0, 10);
             document.getElementById('time').value = originalValues.installTime;
             document.getElementById('ava').value = originalValues.availability;
         }
@@ -41,6 +40,7 @@
         function cancelChanges() {
             resetToOriginalValues();
         }
+
         /*]]>*/
     </script>
 
@@ -164,21 +164,16 @@
         </div>
     </div>
 
-    <label for="ava">Available:</label>
-    <input type="text" id="ava" name="ava" th:field="*{availability}" />
 
-    <button type="submit" name="Save Changes" id="SaveChanges">Save </button>
-    <button type="button" onclick="cancelChanges()" id="Cancel" name="Cancel">Cancel</button>
+    <button type="submit" name="Save Changes" id="SaveChanges" th:if="${Buttons == 'YES'}">Save</button>
+    <button type="button" onclick="cancelChanges()" id="Cancel" name="Cancel" th:if="${Buttons == 'YES'}">Cancel</button>
 </form>
-<form th:action="@{'/approveInstall/' + ${installation.id}}" method="post">
-    <!-- Your other form fields -->
-
-    <!-- Add Approve Button -->
+<form id="Form" th:action="@{'/approveInstall/' + ${installation.id}}" method="post" th:if="${Buttons == 'YES'}">
     <button type="submit" name="Approve" id="Approve">Approve</button>
 </form>
 
 <!-- Add Delete Button -->
-<button type="button" data-toggle="modal" data-target="#confirmDeleteModal">Delete</button>
+<button type="button" data-toggle="modal" data-target="#confirmDeleteModal" id="Delete">Delete</button>
 
 <!-- Bootstrap modal -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">

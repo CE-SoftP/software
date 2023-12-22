@@ -32,6 +32,7 @@ public class notificationSreps {
     String userName;
     List<InstallationDB> installations ;
     List<InstallationDB> AdminInstallations;
+    String expectedMessage = "";
     public notificationSreps() {
         this.logInSteps = new LogInSteps();
     }
@@ -67,17 +68,28 @@ public class notificationSreps {
                 Alert alert = driver.switchTo().alert();
                 String actualMessage = alert.getText();
                 alert.accept();
-                String expectedMessage = "Yor order with id : " + order.getId() + "have been confirmed";
+                expectedMessage += "Yor order with id : " + order.getId() + "have been confirmed \n";
                 assertEquals(expectedMessage, actualMessage);
             }
         } else if (type.equals("installation")) {
             Alert alert = driver.switchTo().alert();
             String actualMessage = alert.getText();
             alert.accept();
-            String expectedMessage = "You have " + installations.size() + " Requests to check";
+            expectedMessage = "You have " + installations.size() + " Requests to check \n";
             assertEquals(expectedMessage, actualMessage);
 
 
+        } else if (type.equals("installation and order")) {
+            Alert alert = driver.switchTo().alert();
+            String actualMessage = alert.getText();
+            alert.accept();
+            expectedMessage = "You have " + installations.size() + " Requests to check \n";
+            assertEquals(expectedMessage, actualMessage);
+            for(orderDB order : orders){
+                System.out.println("id" + order.getId());
+                expectedMessage += "Yor order with id : " + order.getId() + "have been confirmed \n";
+                assertEquals(expectedMessage, actualMessage);
+            }
         }
     }
 

@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 
 import java.util.logging.Logger;
 
+import static org.junit.Assert.assertEquals;
+
 public class ViewCustomerSteps {
     @Autowired
     DataService dataService;
@@ -33,25 +35,79 @@ public class ViewCustomerSteps {
     private  int customerId ;
     private String NewName;
     private String OldName;
+    private LogInSteps logInSteps;
+    private String oldTime;
+    private String newTime;
+    int numberOfRows;
 
+    public ViewCustomerSteps(){
+        this.logInSteps=new LogInSteps();
+    }
     @Given("the Admin is logged in")
     public void the_admin_is_logged_in() {
-        webDriver.get("http://localhost:"+CucumberIT.getPort()+"/");
-
-        webDriver.findElement(By.id("user_name")).sendKeys("eman");
-        webDriver.findElement(By.id("pass")).sendKeys("555");
-        sleep(2000);
-
-        webDriver.findElement(By.id("LogInBtn")).click();
+        logInSteps.i_am_on_the_login_page();
+        logInSteps.i_enter_my_admin_username_and_password("eman","555");
+        logInSteps.i_click_the_button("LogInBtn");
 
         sleep(6000);
 
     }
 
     @When("the Admin navigates to the {string} section")
-    public void the_admin_navigates_to_the_section(String string) {
-        webDriver.findElement(By.id("view")).click();
+    public void the_admin_navigates_to_the_section(String link) {
+        webDriver.findElement(By.id(link)).click();
         sleep(3000);
+    }
+
+    @Then("the Admin should be redirected to the {string} page")
+    public void the_admin_should_be_redirected_to_the_page(String title) {
+        String actualTitle =webDriver.getTitle();
+        assertEquals(actualTitle,title);
+        if(title.equals("Installation table")){
+            WebElement table = webDriver.findElement(By.id("table"));
+            java.util.List<WebElement> rows = table.findElements(By.tagName("tr"));
+            numberOfRows = rows.size();
+        }
+    }
+
+    @When("the admin change the time to {string}")
+    public void the_admin_change_the_time_to(String time) {
+        WebElement timeElement = webDriver.findElement(By.id("time"));
+        String timeText = timeElement.getText();
+        oldTime= timeText;
+        sleep(1000);
+        webDriver.findElement(By.id("time")).sendKeys(time);
+        newTime=time;
+    }
+
+    @When("the admin click on {string}")
+    public void the_admin_click_on(String button) {
+        webDriver.findElement(By.id(button)).click();
+        sleep(3000);
+    }
+
+    @Then("the changes should be edited successfully")
+    public void the_changes_should_be_edited_successfully() {
+        WebElement timeElement = webDriver.findElement(By.id("time"));
+        String timeText = timeElement.getText();
+        assertEquals(newTime,timeText);
+    }
+
+    @Then("the changes should not be edited")
+    public void the_changes_should_not_be_edited() {
+        WebElement timeElement = webDriver.findElement(By.id("time"));
+        String timeText = timeElement.getText();
+        assertEquals(oldTime,timeText);
+    }
+
+    @Then("the installation should be {string}")
+    public void the_installation_should_be(String result) {
+        if(result.equals("approaved")){
+            WebElement table = webDriver.findElement(By.id("table"));
+            java.util.List<WebElement> rows = table.findElements(By.tagName("tr"));
+            int newNumberOfRows = rows.size();
+            assertEquals(numberOfRows-1,newNumberOfRows);
+        }
     }
 
     @Then("the Admin should see a list of customer accounts")
