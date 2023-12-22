@@ -74,7 +74,7 @@ public class ProductService {
             return "Category Name already exists";
         }
 
-       else if (!exist) {
+       else {
             logger.info("llll");
             catagroies=new Catagroies();
             catagroies.setId(catagroiesForm.getCataId());
@@ -84,9 +84,6 @@ public class ProductService {
             catagroisRepositary.save(catagroies);
             return "Category added successfully";
         }
-
-
-        return "The Id already exist";
 
 }
 

@@ -56,7 +56,6 @@ public class LogInSteps {
     private CustomerRepository cutomerRepository;
 
     private String userEmail;
-    private ForgotPasswordController forgotPasswordController;
 
 //    public LogInSteps(){
 //        MockitoAnnotations.initMocks(this);
