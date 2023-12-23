@@ -34,7 +34,7 @@
 <form id="searchElement" method="post"  action="/search-product" th:object="${productInfo}" style="display: none;">
     <div class="search-container">
         <label for="searchInput">Search:</label>
-        <input type="text" id="searchInput" name="productName">
+        <input type="text" id="searchInput" name="proName">
         <button type="submit" id="searchProduct">Search</button>
     </div>
 </form>
@@ -55,7 +55,7 @@
                 <form method="post" th:action="@{'/delete-categories/' + ${category.getId()}}">
                     <label>Are you sure you want to update this category?</label>
                     <button type="submit" th:id="'deleteConfirmationYes ' + ${category.getName()}">Yes</button>
-                    <button type="button" th:id="'deleteConfirmationNo ' + ${category.getName()}" onclick="cancelUpdateConfirmation()">No</button>
+                    <button  type="button" th:id="'deleteConfirmationNo ' + ${category.getName()}" onclick="cancelUpdateConfirmation()">No</button>
                 </form>
             </div>
         </div>
@@ -86,7 +86,7 @@
         <label for="image">Image:</label>
         <input type="file" id="image" name="image" accept="image/*" >
         <button id="add categories">Add</button>
-
+           <button id="Cancel" onclick="closeForm()">Cancel</button>
     </form>
 </div>
 <script th:inline="javascript">

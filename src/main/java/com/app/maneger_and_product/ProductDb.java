@@ -73,9 +73,7 @@ public class ProductDb {
         return discount;
     }
 
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
+
 
     public String getImage() {
         return image;
@@ -93,9 +91,7 @@ public class ProductDb {
         this.section = section;
     }
 
-    public String getAvailable() {
-        return available;
-    }
+
 
     public void setAvailable(String available) {
         this.available = available;

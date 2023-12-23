@@ -66,7 +66,7 @@ public class ManagementTest {
     public void aFormShouldAppear() {
       Boolean Form=  webDriver.findElement(By.id("addProductForm")).isDisplayed();
       Assertions.assertTrue(Form);
-
+sleep(2000);
     }
 
     @Then("the {string} section should appear with delete button")

@@ -6,7 +6,7 @@ public class CatagroiesForm {
 
         private int cataId;
         private String category;
-    private String cataName;
+      private String cataName;
         private String image;
 
         public int getCataId() {

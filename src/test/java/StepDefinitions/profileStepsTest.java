@@ -29,7 +29,7 @@ public class profileStepsTest {
     public void i_am_a_logged_in_customer() {
         driver.get("http://localhost:"+CucumberIT.getPort()+"/");
 
-        driver.findElement(By.id("user_name")).sendKeys("new");
+        driver.findElement(By.id("user_name")).sendKeys("noor");
         driver.findElement(By.id("pass")).sendKeys("789");
         sleep(2000);
 

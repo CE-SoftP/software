@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 @Controller
@@ -77,6 +78,7 @@ public class LogInController {
 
     private void handleLoggedInUser(DataForm data, Model model, HttpSession session, String logInResult) {
         CustomerDb user = customerService.findByUsername(data.getUserName());
+
         model.addAttribute("userId", user.getId());
         model.addAttribute(USER_ROLE, logInResult);
         model.addAttribute("categories", catagroisRepositary.findAll());

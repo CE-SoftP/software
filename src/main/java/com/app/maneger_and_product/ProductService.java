@@ -34,7 +34,7 @@ public class ProductService {
     public String saveProduct(ProductInfo productInfo, ProductDb productDb) {
 
 
-        Catagroies catagroies1= this.catagroisRepositary.findByName(productInfo.getProSection());
+        Catagroies catagroies1= this.catagroisRepositary.findByName("Electronics");
         boolean exist = productRepository.existsById(productInfo.getProId());
         if (!exist) {
 
@@ -54,9 +54,7 @@ public class ProductService {
     }
 
 
-    public List<String> getAllCategories() {
-        return catagroisRepositary.findDistinctCategories();
-    }
+
 
 
     public String saveCatagroies(CatagroiesForm catagroiesForm) {
@@ -66,11 +64,8 @@ public class ProductService {
         logger.info("Existence: " + exist);
         boolean nameExist= catagroisRepositary.existsByName(catagroiesForm.getCataName());
 
-        if(exist){
-            return "Category already exists";
-        }
 
-        else if(nameExist){
+        if(nameExist){
             return "Category Name already exists";
         }
 
@@ -134,26 +129,18 @@ public String addToCart(int productId,int userId) {
     return "the product not available for now ";}
 
 
-    public List<ProductDb> getProductsByUserId(int userId) {
-        List<CardDb> cards = cardRepository.findByCustomerDbId(userId);
-        List<ProductDb> products = new ArrayList<>();
 
-        for (CardDb card : cards) {
-            products.add(card.getProductDb());
-        }
-
-        return products;
-    }
 
     public String deleteproduct(int productId){
 
         Optional<ProductDb> productDb1= productRepository.findById(productId);
         if(productDb1.isPresent()) {
             ProductDb productDb2 = productDb1.get();
-            productRepository.deleteAllById(Collections.singleton(productDb2.getProductId()));
+            productRepository.delete(productDb2);
+            return "Product Deleted Successfully";
         }
-    return "delete successfully";
 
+return "NO delete";
 
 
 }

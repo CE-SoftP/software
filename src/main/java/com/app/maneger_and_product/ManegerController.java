@@ -29,12 +29,6 @@ public class ManegerController {
     private static final String REDIRECT_HOME = "redirect:/home";
 
 
-    @GetMapping("/model")
-    public String showModel(Model model){
-
-
-        return ERROR;
-    }
 
 
 private final ProductRepository productRepository;
@@ -48,7 +42,7 @@ ProductDb productDb=new ProductDb();
 
     @GetMapping("/category/{categoryId}")
     public String getProductFromCatagroies(@PathVariable int categoryId, Model model, HttpSession session , SessionStatus sessionStatus) {
-        List<ProductDb> productList =productRepository.findByCategoryId(1);
+        List<ProductDb> productList =productRepository.findByCategoryId(categoryId);
 
         CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
         logger.info(loggedInUser.getRole());
@@ -74,7 +68,7 @@ return PRODUCT_LIST;
 
     @PostMapping("/add-product")
     public String addProduct(ProductInfo productInfo,Model model) {
-
+logger.info("the Section is "+productInfo.getProSection());
     productDb=new ProductDb();
    String isAdd =productService.saveProduct(productInfo,productDb);
  if (isAdd.equals("Product added successfully")){
@@ -101,17 +95,6 @@ else {
     }
 
 
-    @GetMapping("/select")
-    public String yourMapping(Model model) {
-        List<String> sections = productService.getAllCategories();
-        List<ProductDb> products=productRepository.findAll();
-        model.addAttribute("sections", sections);
-        model.addAttribute(PRODUCTS, products);
-        return "Home";
-    }
-
-
-
 
 
  @PostMapping("/add-catagroies")
@@ -119,18 +102,8 @@ else {
 
      String isAdd =productService.saveCatagroies(catagroiesForm);
      logger.info(isAdd);
-     if (isAdd.equals("The Id already exist")){
-         model.addAttribute(POPUP_TYPE, ERROR);
-         model.addAttribute(POPUP_MESSAGE, "The Id already exist");
 
-     }
-
-
-   else if (isAdd.equals("Category already exists")){
-         model.addAttribute(POPUP_TYPE, ERROR);
-         model.addAttribute(POPUP_MESSAGE, "Category already exists");
-     }
-     else if (isAdd.equals("Category Name already exists")){
+      if (isAdd.equals("Category Name already exists")){
          model.addAttribute(POPUP_TYPE, ERROR);
          model.addAttribute(POPUP_MESSAGE, "Category Name already exists");
 }
@@ -140,17 +113,6 @@ else {
  }
 
 
-
-
- @GetMapping("/search/{productId}")
-public String viewProduct(@PathVariable Long productId, Model model) {
-     List<ProductDb> productList = productRepository.findAll();
-
-     model.addAttribute(PRODUCTS, productList);
-
-     return PRODUCT_LIST;
-
-}
 
     @PostMapping("/add-to-cart/{productId}")
     public String addToCart(@PathVariable int productId, Model model) {
@@ -165,25 +127,15 @@ public String viewProduct(@PathVariable Long productId, Model model) {
         return PRODUCT_LIST;
     }
 
-    @GetMapping("/user/{userId}/card")
-    public String showUserCardDetails(@PathVariable int userId, Model model, HttpSession session) {
-
-        model.addAttribute("userId",userId);
-        List<ProductDb> products = productService.getProductsByUserId(userId);
-        model.addAttribute(PRODUCTS, products);
-        model.addAttribute("userId", userId);
-        return "ShoppingList";
-    }
-
 
     @PostMapping("/delete-product/{productId}")
     public String deleteProduct(@PathVariable int productId,Model model){
         Optional<ProductDb> productList1= productRepository.findById(productId);
         if(productList1.isPresent()) {
             ProductDb product = productList1.get();
-            productService.deleteproduct(productId);
+           String message= productService.deleteproduct(productId);
             model.addAttribute(POPUP_TYPE, SUCCESS);
-            model.addAttribute(POPUP_MESSAGE, "Product Deleted Successfully");
+            model.addAttribute(POPUP_MESSAGE, message);
             return REDIRECT_CATEGORY + product.getCategory().getId();
         }
         return REDIRECT_HOME;
@@ -197,9 +149,9 @@ public String viewProduct(@PathVariable Long productId, Model model) {
       Optional<ProductDb> productList1= productRepository.findById(productId);
       if(productList1.isPresent()){
           ProductDb product=productList1.get();
-          return REDIRECT_CATEGORY +product.getCategory().getId();
+           return REDIRECT_CATEGORY +product.getCategory().getId();
       }
-      return REDIRECT_HOME;
+       return REDIRECT_HOME;
 
     }
 
@@ -207,7 +159,6 @@ public String viewProduct(@PathVariable Long productId, Model model) {
 
     @PostMapping("/delete-categories/{id}")
     public String deleteCategories(@PathVariable String id,Model model){
-
       productService.deleteCategories(id);
         model.addAttribute(POPUP_TYPE, SUCCESS);
         model.addAttribute(POPUP_MESSAGE, "Category Deleted Successfully");
@@ -217,17 +168,16 @@ public String viewProduct(@PathVariable Long productId, Model model) {
     @PostMapping("/search-product")
     public String searchProduct(@ModelAttribute ProductInfo productInfo,Model model){
         Optional<ProductDb> productOptional = productRepository.findByProductNameContainingIgnoreCase(productInfo.getProName());
-
         if (productOptional.isPresent()) {
             ProductDb product = productOptional.get();
             model.addAttribute(PRODUCT, product);
             return PRODUCT_LIST;
-        }
-        else {
+         }
+         else {
             model.addAttribute("errorMessage", "The product not found");
 
         }
         return ERROR;
-    }
+     }
 
 }

@@ -4,7 +4,7 @@ Feature: User Profile
     Given I am a logged-in customer
     When I navigate to the "profile" section
     And I click on the "editButton" button
-    And I edit my name to "noor"
+    And I edit my name to "new"
     And I click on the "cancelButton" button
     Then my name should not be changed
 
