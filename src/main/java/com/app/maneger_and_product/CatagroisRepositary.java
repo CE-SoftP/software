@@ -1,4 +1,4 @@
-package com.app.ManegerAndProduct;
+package com.app.maneger_and_product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

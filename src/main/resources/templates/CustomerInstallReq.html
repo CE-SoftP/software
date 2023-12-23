@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Customer Table</title>
+    <title>Installation table</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/Home.css">
 
     <style>
         body {
@@ -45,13 +46,33 @@
     </style>
 </head>
 <body>
+<header>
+    <input type="hidden" id="popupType" th:value="${popupType}" />
+    <input type="hidden" id="popupMessage" th:value="${popupMessage}" />
+    <nav>
+        <ul>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="#">category</a></li>
+            <li><a th:href="@{'/user/' + ${userId} + '/card'}">Bag</a></li>
+            <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
+            <li><a href="#">Exit</a></li>
+            <li th:id="management" th:if="${userRole == 'admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
+            <li id="view" th:if="${userRole == 'admin'}"><a href="/ViewCustomers">View Customers</a></li>
+            <li id="viewInstall" th:if="${userRole == 'admin' or userRole == 'Installer'}"><a href="/installation-requests">View Installation</a></li>
+            <li id="viewInstallReq" th:if="${userRole == 'customer' or userRole == 'admin' or userRole == 'installer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
+            <li id="viewInstallHistory"th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
+            <li id="viewOrderHistory" th:if="${userRole == 'customer'}"><a href="/CustomerOrderHistory">View Order History</a></li>
+            <li id="viewOrderconfirmation" th:if="${userRole == 'Admin' or userRole == 'Installer'}"><a href="/CustomerOrderHistory">Orders confirmation</a></li>
+        </ul>
+    </nav>
+</header>
 
-<table>
+<table id="table">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
+        <th>Customer  ID</th>
+        <th>Car model</th>
         <th>Actions</th>
     </tr>
     </thead>

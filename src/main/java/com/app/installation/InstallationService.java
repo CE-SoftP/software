@@ -1,4 +1,4 @@
-package com.app.Installation;
+package com.app.installation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

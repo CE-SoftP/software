@@ -1,6 +1,6 @@
 package StepDefinitions;
 
-import com.app.ManegerAndProduct.*;
+import com.app.maneger_and_product.*;
 
 import com.app.customer.CustomerDb;
 
@@ -14,9 +14,7 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -193,7 +191,7 @@ productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId
         productInfo.setSection(webDriver.findElement(By.id("numberOf")).getAttribute("value"));
         productInfo.setImage(webDriver.findElement(By.id("image")).getAttribute("value"));
 
-        String isAdd=productService.SaveProduct(productInfo,productDb);
+        String isAdd=productService.saveProduct(productInfo,productDb);
         assertEquals(isAdd,"Product added successfully");
 
 

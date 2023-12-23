@@ -1,4 +1,4 @@
-package com.app.ManegerAndProduct;
+package com.app.maneger_and_product;
 
 import jakarta.persistence.*;
 

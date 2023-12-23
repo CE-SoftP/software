@@ -1,6 +1,5 @@
 package com.app.order;
 
-import com.app.Installation.InstallationDB;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -30,10 +30,6 @@ public class DataService {
     public String createAccount(DataForm data, CustomerDb dataEntity) {
         boolean existingData = dataRepository.existsByName(data.getUserName());
         boolean emailExist =dataRepository.existsByEmail(data.getEmail());
-        logger.info(data.getUserName());
-        logger.info(data.getPassword());
-        logger.info(data.getConfirmPassword());
-        logger.info(data.getEmail());
        boolean n= (data.getPassword().equals(data.getConfirmPassword()));
        logger.info(String.valueOf(n));
         if (existingData) {
@@ -52,8 +48,7 @@ public class DataService {
         String email = data.getEmail();
 
 
-        String emailPattern = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}";
-
+        String emailPattern = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
         Pattern pattern = Pattern.compile(emailPattern);
 
 
@@ -99,9 +94,6 @@ public class DataService {
 
     public String searchAccount(DataForm data) {
         try {
-           logger.info(data.getUserName());
-            logger.info("Searching for user: " + data.getUserName());
-            logger.info("Searching for pass: " + data.getPassword());
 
             Optional<CustomerDb> userOptional = dataRepository.findByNameAndPass(
                     data.getUserName().trim(), data.getPassword().trim()
