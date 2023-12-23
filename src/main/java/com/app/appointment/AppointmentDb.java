@@ -10,50 +10,54 @@ import jakarta.persistence.*;
 public class AppointmentDb {
     @Id
     @Column(name = "app_id")
-    private int appId;
+    private int appointmentId;
 
-    private String service;
-    private String isreceive;
-    private String day;
-    private String hour;
+    @Column(name = "service")
+    private String apponitmentService;
+    @Column(name = "isreceive")
+    private String apponitmentIsReceive;
+    @Column(name = "day")
+    private String apponitmentDay;
+    @Column(name = "hour")
+    private String apponitmentHour;
 
-    public int getAppId() {
-        return appId;
+    public int getAppointmentId() {
+        return appointmentId;
     }
 
-    public void setAppId(int appId) {
-        this.appId = appId;
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
     }
 
-    public String getService() {
-        return service;
+    public String getApponitmentService() {
+        return apponitmentService;
     }
 
-    public void setService(String service) {
-        this.service = service;
+    public void setApponitmentService(String apponitmentService) {
+        this.apponitmentService = apponitmentService;
     }
 
-    public String getIsreceive() {
-        return isreceive;
+    public String getApponitmentIsReceive() {
+        return apponitmentIsReceive;
     }
 
-    public void setIsreceive(String isreceive) {
-        this.isreceive = isreceive;
+    public void setApponitmentIsReceive(String apponitmentIsReceive) {
+        this.apponitmentIsReceive = apponitmentIsReceive;
     }
 
-    public String getHour() {
-        return hour;
+    public String getApponitmentHour() {
+        return apponitmentHour;
     }
 
-    public void setHour(String hour) {
-        this.hour = hour;
+    public void setApponitmentHour(String apponitmentHour) {
+        this.apponitmentHour = apponitmentHour;
     }
 
-    public String getDay() {
-        return day;
+    public String getApponitmentDay() {
+        return apponitmentDay;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setApponitmentDay(String apponitmentDay) {
+        this.apponitmentDay = apponitmentDay;
     }
 }

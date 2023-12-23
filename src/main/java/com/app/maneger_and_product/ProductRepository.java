@@ -9,9 +9,9 @@ import java.util.Optional;
 
 
 public interface ProductRepository extends JpaRepository <ProductDb, Integer>{
-    @Query("SELECT p FROM ProductDb p WHERE p.category.id = :categoryId")
+    @Query("SELECT p FROM ProductDb p WHERE p.categories.id = :categoryId")
     List<ProductDb> findByCategoryId(@Param("categoryId") int categoryId);
-    Optional<ProductDb> findByProductNameContainingIgnoreCase(String term);
+    Optional<ProductDb> findByProNameContainingIgnoreCase(String term);
 
 
 }

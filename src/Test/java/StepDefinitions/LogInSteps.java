@@ -37,8 +37,7 @@ public class LogInSteps {
     private LogInSteps forgotPasswordSteps;
 
 
-    @Autowired
-    CustomerController customerController;
+
     @Autowired
     DataService dataService;
 

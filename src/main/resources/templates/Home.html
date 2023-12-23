@@ -26,7 +26,7 @@
             <li id="viewInstallReq" th:if="${userRole == 'customer' or userRole == 'admin' or userRole == 'installer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
             <li id="viewInstallHistory"th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>
             <li id="viewOrderHistory" th:if="${userRole == 'customer'}"><a href="/CustomerOrderHistory">View Order History</a></li>
-            <li id="viewOrderconfirmation" th:if="${userRole == 'Admin' or userRole == 'Installer'}"><a href="/CustomerOrderHistory">Orders confirmation</a></li>
+            <li id="viewOrderconfirmation" th:if="${userRole == 'admin' or userRole == 'installer'}"><a href="/CustomerOrderHistory">Orders confirmation</a></li>
         </ul>
     </nav>
 </header>
