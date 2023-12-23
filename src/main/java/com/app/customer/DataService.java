@@ -13,8 +13,7 @@ import java.util.logging.Logger;
 public class DataService {
 
     Logger logger = Logger.getLogger(getClass().getName());
-
-
+    private static final String CUSTOMER = "customer";
 
 
     private final CustomerRepository dataRepository;
@@ -31,7 +30,6 @@ public class DataService {
         boolean existingData = dataRepository.existsByName(data.getUserName());
         boolean emailExist =dataRepository.existsByEmail(data.getEmail());
        boolean n= (data.getPassword().equals(data.getConfirmPassword()));
-       logger.info(String.valueOf(n));
         if (existingData) {
             logger.info("User Name already exists");
             return "User Name already exists";
@@ -53,7 +51,6 @@ public class DataService {
 
 
         Matcher matcher = pattern.matcher(email);
-        logger.info(String.valueOf(matcher.matches()));
             if (!matcher.matches()) {
                 return "Please enter a valid email address";
             }
@@ -69,7 +66,7 @@ public class DataService {
                 dataEntity.setGender(data.getGender());
 
                 dataEntity.setId(data.getUserId());
-                dataEntity.setRole("customer");
+                dataEntity.setRole(CUSTOMER);
                 logger.info("the " + dataEntity.getId());
                 dataRepository.save(dataEntity);
                 logger.info("Account created successfully");
@@ -107,8 +104,8 @@ public class DataService {
 
                 if ("admin".equals(role)) {
                     return "admin";
-                } else if ("customer".equals(role)) {
-                    return "customer";
+                } else if (CUSTOMER.equals(role)) {
+                    return CUSTOMER;
                 } else if ("installer".equals(role)) {
                     return "installer";
                 }
@@ -142,65 +139,15 @@ public class DataService {
             CustomerDb existingCustomer = existingCustomerOptional.get();
             existingCustomer.setName(editedCustomer.getName());
             existingCustomer.setEmail(editedCustomer.getEmail());
-            // Update other fields as needed
             dataRepository.save(existingCustomer);
             return  existingCustomer;
         } else {
-            // Handle the case where the customer with the given ID is not found
-            throw new RuntimeException("Customer not found with id: " + id);
+            logger.info("Customer not found ");
         }
+        return editedCustomer;
     }
 
     public void deleteCustomer(int id) {
         dataRepository.deleteById(id);
     }
-//public UserResult searchAccountForProfile(DataForm data) {
-//    try {
-//        logger.info("Searching for user: " + data.getUserName());
-//        logger.info("Searching for pass: " + data.getPassword());
-//
-//        Optional<CustomerDb> userOptional = dataRepository.findByNameAndPass(
-//                data.getUserName().trim(), data.getPassword().trim()
-//        );
-//
-//        logger.info("User found: " + userOptional.isPresent());
-//
-//        if (userOptional.isPresent()) {
-//            CustomerDb user = userOptional.get();
-//            String role = user.getRole();
-//
-//            if ("admin".equals(role)) {
-//                return new UserResult("Admin", user);
-//            } else if ("customer".equals(role)) {
-//                return new UserResult("Customer", user);
-//            } else if ("installer".equals(role)) {
-//                return new UserResult("Installer", user);
-//            }
-//        }
-//
-//        return new UserResult("Not Found", null);
-//    } catch (Exception e) {
-//        // Handle the exception, log it, or return an appropriate error message
-//        return new UserResult("Error", null);
-//    }
-//}
-//
-//    public static class UserResult {
-//        private final String role;
-//        private final CustomerDb user;
-//
-//        public UserResult(String role, CustomerDb user) {
-//            this.role = role;
-//            this.user = user;
-//        }
-//
-//        public String getRole() {
-//            return role;
-//        }
-//
-//        public CustomerDb getUser() {
-//            return user;
-//        }
-//    }
-
 }

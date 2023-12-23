@@ -10,19 +10,20 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.logging.Logger;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class})
 @ComponentScan(basePackages = {"com.app.*", "StepDefinitions","com.app.ManegerAndProduct"})
 public class SpringJdbcTemplate2OracleApplication implements CommandLineRunner {
-
-    public static void main(String[] args) {
+    Logger logger = Logger.getLogger(getClass().getName());
+    public static void main(String [] args) {
         SpringApplication.run(SpringJdbcTemplate2OracleApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("Application is running.");
+        logger.info("Application is running.");
 
     }
 

@@ -4,9 +4,9 @@ import com.app.installation.InstallationService;
 import com.app.maneger_and_product.Catagroies;
 import com.app.maneger_and_product.CatagroisRepositary;
 import com.app.maneger_and_product.ProductRepository;
-import com.app.order.orderDB;
-import com.app.order.orderRepository;
-import com.app.order.orderService;
+import com.app.order.OrderDatabase;
+import com.app.order.OrderRepository;
+import com.app.order.OrderService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,8 +27,8 @@ public class LogInController {
     private final ProductRepository productRepository;
     private final DataService customerService;
     private final InstallationService installationService;
-    private final com.app.order.orderService orderService;
-    private final com.app.order.orderRepository orderRepository;
+    private final OrderService orderService;
+    private final OrderRepository orderRepository;
     private static final String LOGGED_IN_USER ="loggedInUser";
     private static final String USER_ROLE = "userRole";
     private static final String CUSTOMER = "customer";
@@ -38,9 +38,9 @@ public class LogInController {
     private static final String SUCCESS = "success";
 
     @Autowired
-    public LogInController(DataService customerService , orderRepository orderRepository
-            , CatagroisRepositary catagroisRepositary ,ProductRepository productRepository
-            , InstallationService installationService ,orderService orderService ) {
+    public LogInController(DataService customerService , OrderRepository orderRepository
+            , CatagroisRepositary catagroisRepositary , ProductRepository productRepository
+            , InstallationService installationService , OrderService orderService ) {
         this.catagroisRepositary=catagroisRepositary;
         this.productRepository=productRepository;
         this.installationService=installationService;
@@ -100,14 +100,14 @@ public class LogInController {
 
     private void handleCustomerLogic(CustomerDb user, Model model) {
         List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", user.getId());
-        List<orderDB> orders = orderService.getOrderByPopUpUser("NO", user.getId());
+        List<OrderDatabase> orders = orderService.getOrderByPopUpUser("NO", user.getId());
 
         String message = "";
         StringBuilder messageBuilder = new StringBuilder(message);
         if (!installations.isEmpty()) {
             messageBuilder.append("You have ").append(installations.size()).append(" Requests to check \n");
         }
-        for (orderDB order : orders) {
+        for (OrderDatabase order : orders) {
             messageBuilder.append("Your order with id : ")
                     .append(order.getId())
                     .append(" have been confirmed \n");

@@ -136,8 +136,6 @@ public class InstallationController {
     }
 
     private void handleApprovalByUserRole(int id, Object userRole) {
-        logger.info(userRole.toString());
-
         if (ADMIN.equals(userRole.toString()) || INSTALLER.equals(userRole.toString())) {
             handleAdminInstallerApproval(id);
         } else if (CUSTOMER.equals(userRole.toString())) {

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static junit.framework.TestCase.assertEquals;
 
 
-public class ManagementTest {
+public class Management {
     ProductDb productDb=new ProductDb();
 
     @Autowired

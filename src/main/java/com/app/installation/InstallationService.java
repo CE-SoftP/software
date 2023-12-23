@@ -8,8 +8,11 @@ import java.util.List;
 @Service
 public class InstallationService {
 
+    private final InstallationRepository installationRepository;
     @Autowired
-    private InstallationRepository installationRepository;
+    public InstallationService(InstallationRepository installationRepository){
+        this.installationRepository=installationRepository;
+    }
 
 
     public List<InstallationDB> getInstallationsByCheckedUserAndCustomerId(String checkedUser, int customerId) {

@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "ORDERTABLE")
-public class orderDB {
+public class OrderDatabase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -19,7 +19,8 @@ public class orderDB {
     @Column(name="ORDERDATE")
     private Date orderDate;
 
-    private int TOTALPRICE;
+    @Column(name="TOTALPRICE")
+    private int totalPrice;
 
 
     @Column(name="CONFBYADMIN")
@@ -53,12 +54,12 @@ public class orderDB {
         this.orderDate = orderDate;
     }
 
-    public int getTOTALPRICE() {
-        return TOTALPRICE;
+    public int getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setTOTALPRICE(int TOTALPRICE) {
-        this.TOTALPRICE = TOTALPRICE;
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public String getConfAdmin() {
