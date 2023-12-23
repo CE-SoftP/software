@@ -35,21 +35,22 @@ public class ViewCustomerSteps {
     private  int customerId ;
     private String NewName;
     private String OldName;
-    private LogInSteps logInSteps;
+
     private String oldTime;
     private String newTime;
     int numberOfRows;
 
-    public ViewCustomerSteps(){
-        this.logInSteps=new LogInSteps();
-    }
+
     @Given("the Admin is logged in")
     public void the_admin_is_logged_in() {
-        logInSteps.i_am_on_the_login_page();
-        logInSteps.i_enter_my_admin_username_and_password("eman","555");
-        logInSteps.i_click_the_button("LogInBtn");
+        webDriver.get("http://localhost:"+CucumberIT.getPort()+"/");
 
-        sleep(6000);
+        webDriver.findElement(By.id("user_name")).sendKeys("toqa22");
+        webDriver.findElement(By.id("pass")).sendKeys("666");
+        sleep(2000);
+
+        webDriver.findElement(By.id("LogInBtn")).click();
+        sleep(2000);
 
     }
 
