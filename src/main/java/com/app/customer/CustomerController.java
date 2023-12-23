@@ -45,7 +45,7 @@ public class CustomerController {
     @GetMapping("/customers/{customerId}")
     public String showCustomerDetails(@PathVariable Long customerId, Model model) {
         CustomerDb customer = customerRepository.findById(Math.toIntExact(customerId))
-                .orElseThrow(() -> new IllegalArgumentException("Invalid customer id: " + customerId));
+               .orElseThrow(() -> new IllegalArgumentException("Invalid customer id: " + customerId));
         model.addAttribute(CUSTOMER, customer);
         return "customerDetails";
     }
@@ -66,12 +66,8 @@ public class CustomerController {
     public String sendRequest(@ModelAttribute AppointmentForm appoitmentForm){
       boolean sendResult=appointmentService.creatRequast(appoitmentForm,appoinmentDb);
         appointmenRepository.save(appoinmentDb);
-        if(sendResult){
-        return "Home";}
-        else{
-
-        return "signup";
-    }}
+        return sendResult ? "Home" : "signup";
+    }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {

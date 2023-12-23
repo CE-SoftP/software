@@ -34,10 +34,7 @@ public class InstallationController {
         List<InstallationDB> installations = installationRepository.findAll();
         model.addAttribute(INSTALLATIONS, installations);
         session.setAttribute(BUTTONS, "NO");
-        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
-        String userRole = loggedInUser.getRole();
-        session.setAttribute(USER_ROLE, userRole);
-        model.addAttribute(USER_ROLE, userRole );
+        setUserRoleAttributes(session, model);
         return "ViewInstallReqManeger";
     }
 
@@ -47,15 +44,9 @@ public class InstallationController {
         InstallationDB installation = installationRepository.findById(Math.toIntExact(installationId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid installation id: " + installationId));
         model.addAttribute("installation", installation);
-        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
-        String userRole = loggedInUser.getRole();
-        session.setAttribute(USER_ROLE, userRole);
-
+        setUserRoleAttributes(session, model);
         String buttonsValue = (String) session.getAttribute(BUTTONS);
         model.addAttribute(BUTTONS, buttonsValue);
-
-        logger.info(userRole);
-        model.addAttribute(USER_ROLE, userRole );
         return "installationDetails";
     }
 
@@ -64,21 +55,9 @@ public class InstallationController {
         Object userRole = session.getAttribute(USER_ROLE);
         CustomerDb loggedInUser = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
         if (userRole != null) {
-            if (ADMIN.equals(userRole.toString()) || INSTALLER.equals(userRole.toString())) {
-
-                List<InstallationDB> installations = installationService.getInstallationsByCheckedAdmin("NO");
-                model.addAttribute(INSTALLATIONS, installations);
-                session.setAttribute(BUTTONS,"YES");
-
-            } else if (CUSTOMER.equals(userRole.toString())) {
-
-                List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", loggedInUser.getId());
-                model.addAttribute(INSTALLATIONS, installations);
-                session.setAttribute(BUTTONS,"YES");
-            }
+            handleInstallationsByUserRole(model, session, loggedInUser, userRole);
         }
-        session.setAttribute(USER_ROLE, userRole);
-        model.addAttribute(USER_ROLE, userRole );
+        setUserRoleAttributes(session, model);
         return "CustomerInstallReq";
     }
 
@@ -87,13 +66,8 @@ public class InstallationController {
 
         CustomerDb loggedInUser = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
         int userId = loggedInUser.getId();
-        String userRole = loggedInUser.getRole();
-        session.setAttribute(USER_ROLE, userRole);
-        model.addAttribute(USER_ROLE, userRole );
-
-        List<InstallationDB> installations = installationService.getInstallationsByCustomerId(userId);
-        model.addAttribute(INSTALLATIONS, installations);
-        session.setAttribute(BUTTONS, "NO");
+        setInstallationsByCustomerId(model, session, userId);
+        setUserRoleAttributes(session, model);
         return "CustomerInstallReq";
     }
 
@@ -102,15 +76,7 @@ public class InstallationController {
         InstallationDB existingInstallation = installationRepository.findById(id).orElse(null);
         Object userRole = session.getAttribute(USER_ROLE);
         if (existingInstallation != null) {
-            existingInstallation.setInstallDate(installation.getInstallDate());
-            existingInstallation.setInstallTime(installation.getInstallTime());
-            if(userRole.equals(ADMIN) || userRole.equals(INSTALLER)) {
-                existingInstallation.setChecked("YES");
-                existingInstallation.setCheckedUser("NO");
-            } else if (userRole.equals(CUSTOMER)) {
-                existingInstallation.setChecked("NO");
-                existingInstallation.setCheckedUser("YES");
-            }
+            updateInstallationAttributes(installation, existingInstallation, userRole);
             installationRepository.save(existingInstallation);
         }
 
@@ -123,27 +89,79 @@ public class InstallationController {
         Object userRole = session.getAttribute(USER_ROLE);
 
         if (userRole != null) {
-            logger.info(userRole.toString());
-            if (ADMIN.equals(userRole.toString()) || INSTALLER.equals(userRole.toString())) {
-                logger.info("ADMIN APPROVED");
-                InstallationDB installation = installationRepository.findById(id).orElse(null);
-                if (installation != null) {
-                    installation.setChecked("YES");
-                    installationRepository.save(installation);
-                }
-            } else if (CUSTOMER.equals(userRole.toString())) {
-                logger.info("CUSTOMER APPROVED");
-                InstallationDB installation = installationRepository.findById(id).orElse(null);
-                if (installation != null) {
-                    installation.setCheckedUser("YES");
-                    installationRepository.save(installation);
-                }
-            }
+            handleApprovalByUserRole(id, userRole);
         } else {
             logger.info("ERROR: User role not found");
         }
 
         return "redirect:/CustomerInstallReq";
     }
+
+    private void setUserRoleAttributes(HttpSession session, Model model) {
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
+        String userRole = loggedInUser.getRole();
+        session.setAttribute(USER_ROLE, userRole);
+        model.addAttribute(USER_ROLE, userRole);
+    }
+
+    private void handleInstallationsByUserRole(Model model, HttpSession session, CustomerDb loggedInUser, Object userRole) {
+        if (ADMIN.equals(userRole.toString()) || INSTALLER.equals(userRole.toString())) {
+            List<InstallationDB> installations = installationService.getInstallationsByCheckedAdmin("NO");
+            model.addAttribute(INSTALLATIONS, installations);
+            session.setAttribute(BUTTONS, "YES");
+        } else if (CUSTOMER.equals(userRole.toString())) {
+            List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", loggedInUser.getId());
+            model.addAttribute(INSTALLATIONS, installations);
+            session.setAttribute(BUTTONS, "YES");
+        }
+    }
+
+    private void setInstallationsByCustomerId(Model model, HttpSession session, int userId) {
+        List<InstallationDB> installations = installationService.getInstallationsByCustomerId(userId);
+        model.addAttribute(INSTALLATIONS, installations);
+        session.setAttribute(BUTTONS, "NO");
+    }
+
+    private void updateInstallationAttributes(InstallationDB source, InstallationDB target, Object userRole) {
+        target.setInstallDate(source.getInstallDate());
+        target.setInstallTime(source.getInstallTime());
+
+        if (userRole.equals(ADMIN) || userRole.equals(INSTALLER)) {
+            target.setChecked("YES");
+            target.setCheckedUser("NO");
+        } else if (userRole.equals(CUSTOMER)) {
+            target.setChecked("NO");
+            target.setCheckedUser("YES");
+        }
+    }
+
+    private void handleApprovalByUserRole(int id, Object userRole) {
+        logger.info(userRole.toString());
+
+        if (ADMIN.equals(userRole.toString()) || INSTALLER.equals(userRole.toString())) {
+            handleAdminInstallerApproval(id);
+        } else if (CUSTOMER.equals(userRole.toString())) {
+            handleCustomerApproval(id);
+        }
+    }
+
+    private void handleAdminInstallerApproval(int id) {
+        logger.info("ADMIN APPROVED");
+        InstallationDB installation = installationRepository.findById(id).orElse(null);
+        if (installation != null) {
+            installation.setChecked("YES");
+            installationRepository.save(installation);
+        }
+    }
+
+    private void handleCustomerApproval(int id) {
+        logger.info("CUSTOMER APPROVED");
+        InstallationDB installation = installationRepository.findById(id).orElse(null);
+        if (installation != null) {
+            installation.setCheckedUser("YES");
+            installationRepository.save(installation);
+        }
+    }
+
 
 }

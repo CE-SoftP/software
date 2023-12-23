@@ -30,10 +30,6 @@ public class DataForm {
         this.gender = gender;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -51,10 +47,6 @@ public class DataForm {
     }
 
     private String gender;
-
-    public DataForm() {
-        // default constructor
-    }
     public String getUserName() {
         return userName;
     }

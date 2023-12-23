@@ -29,47 +29,26 @@ public class CustomerDb {
     public String getEmail() {
         return email;
     }
-
-    public String getConfPass() {
-        return confPass;
-    }
-
     public void setConfPass(String confPass) {
         this.confPass = confPass;
     }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
     public void setGender(String gender) {
         this.gender = gender;
     }
-
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
-
-    public int getId() {
-
-        return id;
-    }
+    public int getId() {return id;}
 
     public String getPass() {
         return pass;
     }
 
     public void setPass(String pass) {
-
         this.pass = pass;
     }
 
     public String getName() {
-
         return name;
     }
 
@@ -98,23 +77,4 @@ public class CustomerDb {
     @Column(name = "profile_image")
     private String profileImage;
 
-    // ... existing methods
-
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
-
-    @Override
-    public String toString() {
-        return "CustomerDb{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                // Add other fields as needed
-                '}';
-    }
 }

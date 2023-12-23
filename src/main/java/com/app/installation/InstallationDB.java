@@ -41,11 +41,6 @@ public class InstallationDB {
     @Column(name = "INSTALLTIME")
     private String installTime;
 
-
-    public String getCheckedUser() {
-        return checkedUser;
-    }
-
     public void setCheckedUser(String checkedUser) {
         this.checkedUser = checkedUser;
     }
@@ -66,14 +61,6 @@ public class InstallationDB {
         this.id = id;
     }
 
-    public String getCarModel() {
-        return carModel;
-    }
-
-    public void setCarModel(String carModel) {
-        this.carModel = carModel;
-    }
-
     public int getCustomerId() {
         return customerId;
     }
@@ -89,33 +76,8 @@ public class InstallationDB {
     public void setInstallDate(Date installDate) {
         this.installDate = installDate;
     }
-
-    public Date getOtherDate() {
-        return otherDate;
-    }
-
-    public void setOtherDate(Date otherDate) {
-        this.otherDate = otherDate;
-    }
-
-    public String getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(String availability) {
-        this.availability = availability;
-    }
-
-    public String getChecked() {
-        return checked;
-    }
-
     public void setChecked(String checked) {
         this.checked = checked;
-    }
-
-    public void setCHECKED_USER(String yes) {
-
     }
 }
 
