@@ -81,10 +81,10 @@ return PRODUCT_LIST;
      model.addAttribute(POPUP_TYPE, SUCCESS);
      model.addAttribute(POPUP_MESSAGE, "Product added successfully");
      productRepository.save(productDb);
-     Optional<ProductDb> productList1= productRepository.findById(productInfo.getProductId());
+     Optional<ProductDb> productList1= productRepository.findById(productInfo.getProId());
      if(productList1.isPresent()){
          ProductDb product=productList1.get();
-         return REDIRECT_CATEGORY +product.getCategories().getId();
+         return REDIRECT_CATEGORY +product.getCategory().getId();
      }
      else
          return REDIRECT_HOME;
@@ -184,7 +184,7 @@ public String viewProduct(@PathVariable Long productId, Model model) {
             productService.deleteproduct(productId);
             model.addAttribute(POPUP_TYPE, SUCCESS);
             model.addAttribute(POPUP_MESSAGE, "Product Deleted Successfully");
-            return REDIRECT_CATEGORY + product.getCategories().getId();
+            return REDIRECT_CATEGORY + product.getCategory().getId();
         }
         return REDIRECT_HOME;
     }
@@ -197,7 +197,7 @@ public String viewProduct(@PathVariable Long productId, Model model) {
       Optional<ProductDb> productList1= productRepository.findById(productId);
       if(productList1.isPresent()){
           ProductDb product=productList1.get();
-          return REDIRECT_CATEGORY +product.getCategories().getId();
+          return REDIRECT_CATEGORY +product.getCategory().getId();
       }
       return REDIRECT_HOME;
 
@@ -216,7 +216,7 @@ public String viewProduct(@PathVariable Long productId, Model model) {
 
     @PostMapping("/search-product")
     public String searchProduct(@ModelAttribute ProductInfo productInfo,Model model){
-        Optional<ProductDb> productOptional = productRepository.findByProNameContainingIgnoreCase(productInfo.getProductName());
+        Optional<ProductDb> productOptional = productRepository.findByProductNameContainingIgnoreCase(productInfo.getProName());
 
         if (productOptional.isPresent()) {
             ProductDb product = productOptional.get();
