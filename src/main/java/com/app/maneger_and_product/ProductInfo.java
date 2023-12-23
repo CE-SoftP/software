@@ -1,71 +1,71 @@
 package com.app.maneger_and_product;
 
 public class ProductInfo {
-        private int productId;
+        private int proId;
 
-        private String productName;
-        private String information;
-        private int price;
+        private String proName;
+        private String info;
+        private int proPrice;
 
-        private int numberOf;
+        private int numberOfPro;
 
-        private String image;
-        private String section;
+        private String proImage;
+        private String proSection;
 
-        public int getProductId() {
-            return productId;
+        public int getProId() {
+            return proId;
         }
 
-        public void setProductId(int productId) {
-            this.productId = productId;
+        public void setProId(int proId) {
+            this.proId = proId;
         }
 
-        public String getProductName() {
-            return productName;
+        public String getProName() {
+            return proName;
         }
 
-        public void setProductName(String productName) {
-            this.productName = productName;
+        public void setProName(String proName) {
+            this.proName = proName;
         }
 
-        public String getInformation() {
-            return information;
+        public String getInfo() {
+            return info;
         }
 
-        public void setInformation(String information) {
-            this.information = information;
+        public void setInfo(String info) {
+            this.info = info;
         }
 
-        public int getPrice() {
-            return price;
+        public int getProPrice() {
+            return proPrice;
         }
 
-        public void setPrice(int price) {
-            this.price = price;
+        public void setProPrice(int proPrice) {
+            this.proPrice = proPrice;
         }
 
-        public int getNumberOf() {
-            return numberOf;
+        public int getNumberOfPro() {
+            return numberOfPro;
         }
 
-    public void setNumberOf(int num) {
-        numberOf=num;
+    public void setNumberOfPro(int num) {
+        numberOfPro =num;
     }
 
-        public String getImage() {
-            return image;
+        public String getProImage() {
+            return proImage;
         }
 
-        public void setImage(String image) {
-            this.image = image;
+        public void setProImage(String proImage) {
+            this.proImage = proImage;
         }
 
-        public String getSection() {
-            return section;
+        public String getProSection() {
+            return proSection;
         }
 
-        public void setSection(String section) {
-            this.section = section;
+        public void setProSection(String proSection) {
+            this.proSection = proSection;
         }
 
 

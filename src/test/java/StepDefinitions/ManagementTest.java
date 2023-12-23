@@ -173,25 +173,25 @@ System.out.println("hello");
         select2.selectByVisibleText(section);
         webDriver.findElement(By.id("numberOf")).sendKeys(number);
 
-        productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId")).getAttribute("value")));
-        productInfo.setProductName(webDriver.findElement(By.id("productName")).getAttribute("value"));
-        productInfo.setInformation(webDriver.findElement(By.id("information")).getAttribute("value"));
-        productInfo.setPrice(Integer.parseInt(webDriver.findElement(By.id("price")).getAttribute("value")));
-        productInfo.setSection(webDriver.findElement(By.id("section")).getAttribute("value"));
-        productInfo.setSection(webDriver.findElement(By.id("numberOf")).getAttribute("value"));
-        productInfo.setImage(webDriver.findElement(By.id("image")).getAttribute("value"));
+        productInfo.setProId(Integer.parseInt(webDriver.findElement(By.id("productId")).getAttribute("value")));
+        productInfo.setProName(webDriver.findElement(By.id("productName")).getAttribute("value"));
+        productInfo.setInfo(webDriver.findElement(By.id("information")).getAttribute("value"));
+        productInfo.setProPrice(Integer.parseInt(webDriver.findElement(By.id("price")).getAttribute("value")));
+        productInfo.setProSection(webDriver.findElement(By.id("section")).getAttribute("value"));
+        productInfo.setProSection(webDriver.findElement(By.id("numberOf")).getAttribute("value"));
+        productInfo.setProImage(webDriver.findElement(By.id("image")).getAttribute("value"));
         sleep(2000);
 
     }
     @Then("the added product details should be visible in the product list")
     public void the_added_product_details_should_be_visible_in_the_product_list() {
-productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId")).getAttribute("value")));
-        productInfo.setProductName(webDriver.findElement(By.id("productName")).getAttribute("value"));
-        productInfo.setInformation(webDriver.findElement(By.id("information")).getAttribute("value"));
-        productInfo.setPrice(Integer.parseInt(webDriver.findElement(By.id("price")).getAttribute("value")));
-        productInfo.setSection(webDriver.findElement(By.id("section")).getAttribute("value"));
-        productInfo.setSection(webDriver.findElement(By.id("numberOf")).getAttribute("value"));
-        productInfo.setImage(webDriver.findElement(By.id("image")).getAttribute("value"));
+productInfo.setProId(Integer.parseInt(webDriver.findElement(By.id("productId")).getAttribute("value")));
+        productInfo.setProName(webDriver.findElement(By.id("productName")).getAttribute("value"));
+        productInfo.setInfo(webDriver.findElement(By.id("information")).getAttribute("value"));
+        productInfo.setProPrice(Integer.parseInt(webDriver.findElement(By.id("price")).getAttribute("value")));
+        productInfo.setProSection(webDriver.findElement(By.id("section")).getAttribute("value"));
+        productInfo.setProSection(webDriver.findElement(By.id("numberOf")).getAttribute("value"));
+        productInfo.setProImage(webDriver.findElement(By.id("image")).getAttribute("value"));
 
         String isAdd=productService.saveProduct(productInfo,productDb);
         assertEquals(isAdd,"Product added successfully");
@@ -221,13 +221,13 @@ productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId
         select2.selectByVisibleText(section);
         webDriver.findElement(By.id("numberOf")).sendKeys(number);
 
-        productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId")).getAttribute("value")));
-        productInfo.setProductName(webDriver.findElement(By.id("productName")).getAttribute("value"));
-        productInfo.setInformation(webDriver.findElement(By.id("information")).getAttribute("value"));
-        productInfo.setPrice(Integer.parseInt(webDriver.findElement(By.id("price")).getAttribute("value")));
-        productInfo.setSection(webDriver.findElement(By.id("section")).getAttribute("value"));
-        productInfo.setSection(webDriver.findElement(By.id("numberOf")).getAttribute("value"));
-        productInfo.setImage(webDriver.findElement(By.id("image")).getAttribute("value"));
+        productInfo.setProId(Integer.parseInt(webDriver.findElement(By.id("productId")).getAttribute("value")));
+        productInfo.setProName(webDriver.findElement(By.id("productName")).getAttribute("value"));
+        productInfo.setInfo(webDriver.findElement(By.id("information")).getAttribute("value"));
+        productInfo.setProPrice(Integer.parseInt(webDriver.findElement(By.id("price")).getAttribute("value")));
+        productInfo.setProSection(webDriver.findElement(By.id("section")).getAttribute("value"));
+        productInfo.setProSection(webDriver.findElement(By.id("numberOf")).getAttribute("value"));
+        productInfo.setProImage(webDriver.findElement(By.id("image")).getAttribute("value"));
         sleep(2000);
     }
 
@@ -282,11 +282,11 @@ productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId
         webDriver.findElement(By.id("updateNumberOf")).sendKeys(number);
 
 
-        productInfo.setProductName(webDriver.findElement(By.id("updateProductName")).getAttribute("value"));
-        productInfo.setInformation(webDriver.findElement(By.id("updateInformation")).getAttribute("value"));
-        productInfo.setPrice(Integer.parseInt(webDriver.findElement(By.id("updatePrice")).getAttribute("value")));
-        productInfo.setSection(webDriver.findElement(By.id("updateSection")).getAttribute("value"));
-        productInfo.setSection(webDriver.findElement(By.id("updateNumberOf")).getAttribute("value"));
+        productInfo.setProName(webDriver.findElement(By.id("updateProductName")).getAttribute("value"));
+        productInfo.setInfo(webDriver.findElement(By.id("updateInformation")).getAttribute("value"));
+        productInfo.setProPrice(Integer.parseInt(webDriver.findElement(By.id("updatePrice")).getAttribute("value")));
+        productInfo.setProSection(webDriver.findElement(By.id("updateSection")).getAttribute("value"));
+        productInfo.setProSection(webDriver.findElement(By.id("updateNumberOf")).getAttribute("value"));
 
         sleep(2000);
     }
