@@ -1,17 +1,11 @@
 package com.app.ManegerAndProduct;
 import com.app.customer.CustomerDb;
-import com.app.customer.CustomerRepository;
-import com.app.customer.DataForm;
-import com.app.customer.DataService;
-import io.cucumber.core.logging.Logger;
-import io.cucumber.messages.types.Product;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.support.SessionStatus;
 
 
 import java.util.List;
@@ -97,57 +91,20 @@ else {
     private final CatagroisRepositary catagroisRepositary;
 
 
-    @GetMapping("/select")
-    public String yourMapping(Model model) {
-        List<String> sections = productService.getAllCategories();
-        List<ProductDb> products=productRepository.findAll();
-        model.addAttribute("sections", sections);
-        model.addAttribute("products", products);
-        return "Home";
-    }
-
-
-
-
-
  @PostMapping("/add-catagroies")
     public String addCatagroies(@ModelAttribute CatagroiesForm catagroiesForm,Model model){
 System.out.println(catagroiesForm.getCataName());
-
      String isAdd =productService.SaveCatagroies(catagroiesForm);
      System.out.println(isAdd);
-     if (isAdd.equals("The Id already exist")){
-         model.addAttribute("popupType", "error");
-         model.addAttribute("popupMessage", "The Id already exist");
 
-     }
-
-
-   else if (isAdd.equals("Category already exists")){
-         model.addAttribute("popupType", "error");
-         model.addAttribute("popupMessage", "Category already exists");
-     }
-     else if (isAdd.equals("Category Name already exists")){
+      if (isAdd.equals("Category Name already exists")){
          model.addAttribute("popupType", "error");
          model.addAttribute("popupMessage", "Category Name already exists");
 }
 
      return "redirect:/home";
-
  }
 
-
-
-
- @GetMapping("/search/{productId}")
-public String viewProduct(@PathVariable Long productId, Model model) {
-     List<ProductDb> productList = productRepository.findAll();
-
-     model.addAttribute("products", productList);
-
-     return "productList";
-
-}
 
     @PostMapping("/add-to-cart/{productId}")
     public String addToCart(@PathVariable int productId, Model model) {
@@ -157,7 +114,6 @@ public String viewProduct(@PathVariable Long productId, Model model) {
        // int userId = (int) session.getAttribute("userId");
         String result=productService.addToCart(productId,987);
         model.addAttribute("errorMessage", result);
-
 
         return "productList";
     }
@@ -188,19 +144,13 @@ public String viewProduct(@PathVariable Long productId, Model model) {
 
         productService.updateProduct(productId,productInfo);
         model.addAttribute("popupType", "success");
-        model.addAttribute("popupMessage", "Category Updated Successfully");
+        model.addAttribute("popupMessage", "Product Updated Successfully");
       Optional<ProductDb> productList1= productRepository.findById(productId);
       ProductDb product=productList1.get();
 
-
-
     return "redirect:/category/"+product.getCategory().getId();
 
-
     }
-
-
-
     @PostMapping("/delete-categories/{id}")
     public String deleteCategories(@PathVariable String id,Model model){
 
@@ -209,9 +159,8 @@ public String viewProduct(@PathVariable Long productId, Model model) {
         model.addAttribute("popupMessage", "Category Deleted Successfully");
         return "redirect:/home";
     }
-
     @PostMapping("/search-product")
-    public String searchProduct(@ModelAttribute ProductInfo productInfo,Model model){
+    public String searchProduct(@ModelAttribute ProductInfo productInfo, Model model, SessionStatus sessionStatus){
         Optional<ProductDb> productOptional = productRepository.findByProductNameContainingIgnoreCase(productInfo.getProductName());
 
         if (productOptional.isPresent()) {
@@ -223,6 +172,7 @@ public String viewProduct(@PathVariable Long productId, Model model) {
             model.addAttribute("errorMessage", "The product not found");
 
         }
+        sessionStatus.setComplete();
         return "error";
     }
 

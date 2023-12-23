@@ -7,9 +7,9 @@ Given the user is on the home page
   Scenario: search Product successfully
     And  the user see all categories
     When the user click on "searchMenu" button
-    And the user want to search for "Car paint"
+    And the user want to search for "Light"
     Then the user click on search button
-    Then the user should see the searched product "Car paint"
+    Then the user should see the searched product "Light"
 
 
   Scenario: Searching for Nonexistent Product
@@ -45,10 +45,10 @@ Given the user is on the home page
 
 
   Scenario: Adding unAvailable Product
-    When the user clicks on the "Interior Accessories" div
-    Then the user navigates to the "Interior Accessories" section
+    When the user clicks on the "Exterior Accessories" div
+    Then the user navigates to the "Exterior Accessories" section
     When the user clicks on the "Dashboard covers" to see it's Information
-    Then the user should see information about "Floor mats"
+    Then the user should see information about "Dashboard covers"
     When the user click on "add_toCart" button
     Then  the user should receive an message indicating that "the product not available for now"
 

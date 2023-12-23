@@ -36,8 +36,7 @@ public class LogInSteps {
     @InjectMocks
     private LogInSteps forgotPasswordSteps;
 
-    @Mock
-    private MockEmailService mockEmailService;
+
     @Autowired
     CustomerController customerController;
     @Autowired
@@ -56,7 +55,7 @@ public class LogInSteps {
     private CustomerRepository cutomerRepository;
 
     private String userEmail;
-    private ForgotPasswordController forgotPasswordController;
+
 
 //    public LogInSteps(){
 //        MockitoAnnotations.initMocks(this);

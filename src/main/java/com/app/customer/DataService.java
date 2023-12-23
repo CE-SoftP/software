@@ -90,10 +90,9 @@ public class DataService {
 
     public void saveData(DataForm dataForm) {
         CustomerDb dataEntity = new CustomerDb();
-        // Map data from DataForm to DataEntity (assuming DataEntity is your JPA entity)
         dataEntity.setId((dataForm.getUserId()));
         dataEntity.setName(dataForm.getUserName());
-        // Set other fields accordingly
+
 
         dataRepository.save(dataEntity);
     }

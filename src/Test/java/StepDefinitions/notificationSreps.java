@@ -9,6 +9,7 @@ import com.app.order.orderService;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class notificationSreps {
     private LogInSteps logInSteps;
     boolean popUp;
     int count ;
-    private WebDriver driver =new ChromeDriver();
+    @Autowired
+    private WebDriver driver;
     private List<orderDB> orders;
     String userName;
     List<InstallationDB> installations ;
@@ -38,9 +40,15 @@ public class notificationSreps {
 
     @When("I logged in as a customer with name {string} and password {string}")
     public void i_logged_in_as_a_customer_with_name_and_password(String name, String pass) {
-        logInSteps.i_am_on_the_login_page();
-        logInSteps.i_enter_my_customer_username_and_password(name,pass);
-        logInSteps.i_click_the_button("LogInBtn");
+        driver.get("http://localhost:"+CucumberIT.getPort()+"/");
+
+        driver.findElement(By.id("user_name")).sendKeys("eman");
+        driver.findElement(By.id("pass")).sendKeys("555");
+        sleep(2000);
+
+        driver.findElement(By.id("LogInBtn")).click();
+
+        sleep(6000);
         userName=name;
     }
 
@@ -131,10 +139,24 @@ public class notificationSreps {
 
     @When("I logged in as an admin with name {string} and password {string}")
     public void i_logged_in_as_an_admin_with_name_and_password(String name, String pass) {
-        logInSteps.i_am_on_the_login_page();
-        logInSteps.i_enter_my_admin_username_and_password(name,pass);
-        logInSteps.i_click_the_button("LogInBtn");
+        driver.get("http://localhost:"+CucumberIT.getPort()+"/");
 
+        driver.findElement(By.id("user_name")).sendKeys("eman");
+        driver.findElement(By.id("pass")).sendKeys("555");
+        sleep(2000);
+
+        driver.findElement(By.id("LogInBtn")).click();
+
+        sleep(6000);
     }
+    private  void sleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        }
 
+        catch (Exception e) {
+
+
+        }
+    }
 }

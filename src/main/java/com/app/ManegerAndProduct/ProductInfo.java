@@ -13,10 +13,10 @@ public class ProductInfo {
         private int price;
 
         private int numberOf;
-        private int discount;
+
         private String image;
         private String section;
-        private String available;
+
         public int getProductId() {
             return productId;
         }
@@ -53,17 +53,9 @@ public class ProductInfo {
             return numberOf;
         }
 
-        public void setNumberOf(int numberOf) {
-            this.numberOf = numberOf;
-        }
-
-        public int getDiscount() {
-            return discount;
-        }
-
-        public void setDiscount(int discount) {
-            this.discount = discount;
-        }
+    public void setNumberOf(int num) {
+        numberOf=num;
+    }
 
         public String getImage() {
             return image;
@@ -81,12 +73,6 @@ public class ProductInfo {
             this.section = section;
         }
 
-        public String getAvailable() {
-            return available;
-        }
 
-        public void setAvailable(String available) {
-            this.available = available;
-        }
 
 }

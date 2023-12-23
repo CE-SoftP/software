@@ -2,12 +2,9 @@ package com.app.ManegerAndProduct;
 
 import com.app.customer.CustomerDb;
 import com.app.customer.CustomerRepository;
-import com.app.customer.DataForm;
-import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-/*import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;*/
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,11 +64,9 @@ public class ProductService {
         System.out.println(exist);
         boolean nameExist=catagroiesRepository.existsByName(catagroiesForm.getCataName());
 
-        if(exist){
-            return "Category already exists";
-        }
 
-        else if(nameExist){
+
+        if(nameExist){
             return "Category Name already exists";
         }
 
@@ -83,11 +78,11 @@ public class ProductService {
             catagroies.setImageUrl(catagroiesForm.getImage());
             catagroies.setCategory(catagroiesForm.getCataName());
             catagroiesRepository.save(catagroies);
-            return "Category added successfully";
+
         }
 
 
-        return "The Id already exist";
+        return "Category added successfully";
 
 }
 

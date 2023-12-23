@@ -81,22 +81,9 @@ public class DataForm {
         return email;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getRole() {
-        return role;
-    }
 
 
-    @Override
-    public String toString() {
-        return "DataForm{" +
-                "userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
+
+
 }
 

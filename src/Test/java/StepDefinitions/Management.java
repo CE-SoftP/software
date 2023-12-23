@@ -20,6 +20,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static junit.framework.TestCase.assertEquals;
 
@@ -238,7 +240,6 @@ productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId
     @Then("an alert should appear asking for confirmation Delete {string}")
     public void anAlertShouldAppearAskingForConfirmationDelete(String category) {
         boolean result= webDriver.findElement(By.id("deleteConfirmation "+category)).isDisplayed();
-        sleep(200);
         assertTrue(result);
         sleep(2000);
     }
@@ -261,6 +262,7 @@ productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId
     @Then("a form should appear with the previous product data")
     public void a_form_should_appear_with_the_previous_product_data() {
         boolean result= webDriver.findElement(By.id("updateForm")).isDisplayed();
+        webDriver.findElement(By.id("updateProductName")).sendKeys("");
         assertTrue(result);
         sleep(2000);
     }
@@ -268,8 +270,9 @@ productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId
 
     @And("the admin fills in the updated product details: Product Name {string}, Information {string}, Price {string}, Section {string}, Number {string}, Image {string}")
     public void theAdminFillsInTheUpdatedProductDetailsProductNameInformationPriceSectionNumberImage(String productName, String info, String price, String section, String number, String img) {
-
+        webDriver.findElement(By.id("updateProductName")).clear();
         webDriver.findElement(By.id("updateProductName")).sendKeys(productName);
+        webDriver.findElement(By.id("updateInformation")).clear();
         webDriver.findElement(By.id("updateInformation")).sendKeys(info);
         webDriver.findElement(By.id("updatePrice")).sendKeys(price);
 
@@ -371,14 +374,33 @@ productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId
 
     @When("the admin clicks on Update {string} Product")
     public void theAdminClicksOnUpdateProduct(String productName) {
-        webDriver.findElement(By.id("updateButtons "+ productName)).click();
+        String updateButtonId = "updateButtons " + productName;
+
+        Duration duration =Duration.ofSeconds(10);
+        WebElement updateButton = new WebDriverWait(webDriver, duration)
+                .until(ExpectedConditions.elementToBeClickable(By.id(updateButtonId)));
+
+
+        updateButton.click();
+
         sleep(200);
     }
 
     @And("the manager click on update to Sumbit the form and {string} be updated")
     public void theManagerClickOnUpdateToSumbitTheFormAndBeUpdated(String productName) {
-        webDriver.findElement(By.id("updateButton "+ productName)).click();
+
+        String updateButtonId = "update" + productName;
+
+        Duration duration =Duration.ofSeconds(10);
+        WebElement updateButton = new WebDriverWait(webDriver, duration)
+                .until(ExpectedConditions.elementToBeClickable(By.id(updateButtonId)));
+
+
+        updateButton.click();
+
         sleep(200);
+
+
     }
 
     @Then("admin clicks on Delete {string} Product")
@@ -420,5 +442,12 @@ productInfo.setProductId(Integer.parseInt(webDriver.findElement(By.id("productId
         boolean result= webDriver.findElement(By.id("updateForm")).isDisplayed();
         assertFalse(result);
         sleep(2000);
+    }
+
+    @And("the admin keep in the home page")
+    public void theAdminKeepInTheHomePage() {
+       String title= webDriver.getTitle();
+       assertEquals(title,"Home page");
+
     }
 }

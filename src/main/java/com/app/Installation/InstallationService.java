@@ -11,9 +11,6 @@ public class InstallationService {
     @Autowired
     private InstallationRepository installationRepository;
 
-//    public List<InstallationDB> getInstallationsByCheckedUser(String checkedUser) {
-//        return installationRepository.findByCHECKED_USER(checkedUser);
-//    }
 
     public List<InstallationDB> getInstallationsByCheckedUserAndCustomerId(String checkedUser, int customerId) {
         return installationRepository.findByCHECKED_USERAndCustomerId(checkedUser, customerId);
@@ -27,5 +24,5 @@ public class InstallationService {
         return installationRepository.findByCustomerId(customerId);
     }
 
-    // Other service methods...
+
 }

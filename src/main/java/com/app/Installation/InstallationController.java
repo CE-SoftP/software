@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class InstallationController {
     public String viewInstallationRequests(Model model) {
         List<InstallationDB> installations = installationRepository.findAll();
         model.addAttribute("installations", installations);
-        return "ViewInstallReqManeger"; // Thymeleaf template name
+        return "ViewInstallReqManeger";
     }
 
     @GetMapping("/installations/{installationId}")
@@ -93,7 +94,7 @@ public class InstallationController {
     }
 
     @PostMapping("/approveInstall/{id}")
-    public String approveInstall(@PathVariable int id, HttpSession session) {
+    public String approveInstall(@PathVariable int id, HttpSession session , SessionStatus sessionStatus) {
         System.out.println("In approve method");
         Object userRole = session.getAttribute("userRole");
 
@@ -117,8 +118,9 @@ public class InstallationController {
         } else {
             System.out.println("ERROR: User role not found");
         }
-
+        sessionStatus.setComplete();
         return "redirect:/installations/" + id;
+
     }
 
 }

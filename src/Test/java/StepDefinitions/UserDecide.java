@@ -72,10 +72,8 @@ public class UserDecide {
         appointmentForm.setHour( webDriver.findElement(By.id("hours")).getAttribute("value"));
 
         appointmentForm.setService(String.valueOf(webDriver.findElement(By.id("Service"))));
-        AppointmentDb appointmentDb =new AppointmentDb();
-     boolean isSend =appointmentService.creatRequast(appointmentForm,appointmentDb);
-     assertTrue(isSend);
 
+     webDriver.findElement(By.id("save")).click();
     }
 
     @Then("the request should be saved successfully")

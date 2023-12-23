@@ -24,6 +24,7 @@ Then a form should appear
 And the admin fills in the product details: Product ID "157", Product Name "Light", Information "Record your driving experiences...", Price "500", Section "Electronics", Number "60", Image "url"
 And the manager submits the form
 Then the system should display an error message: "Error: Product Name already exist!"
+  And the admin keep in the home page
 
   Scenario: Delete a product successfully
     When the admin clicks on "Electronics" category
@@ -36,14 +37,14 @@ Then the system should display an error message: "Error: Product Name already ex
     Then the system should display an success message: "Success: Product Deleted Successfully"
 
   Scenario: Update a product successfully
-  When the admin clicks on "Exterior Accessories" category
-  Then the admin should be in a "Exterior Accessories" product page
+  When the admin clicks on "Interior Accessories" category
+  Then the admin should be in a "Interior Accessories" product page
   When the admin clicks on Management
   Then the "Add Product" section should appear with delete and update buttons
-  When the admin clicks on Update "Window Tint" Product
+  When the admin clicks on Update "Ring" Product
   Then a form should appear with the previous product data
-    And the admin fills in the updated product details: Product Name "Window Tint", Information "Enhanced recording experiences...", Price "600", Section "Electronics", Number "70", Image "new_url"
-   And the manager click on update to Sumbit the form and "Window Tint" be updated
+    And the admin fills in the updated product details: Product Name "Ring", Information "Enhanced recording experiences...", Price "600", Section "Electronics", Number "70", Image "new_url"
+   And the manager click on update to Sumbit the form and "Ring" be updated
    Then the system should display a success message: "Success: Product updated successfully"
 
   Scenario: Cancel delete

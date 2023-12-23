@@ -20,6 +20,7 @@ public class ProductDb {
     @Column(name = "number_of")
     private int numberOf;
 
+
     private String image;
     private String section;
     private String available;
@@ -102,4 +103,7 @@ public class ProductDb {
     public void setCategory(Catagroies category) {
         this.category = category;
     }
+
+
+
 }

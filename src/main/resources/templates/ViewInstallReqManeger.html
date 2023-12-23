@@ -76,7 +76,7 @@
     <td th:text="${installation.customerId}"></td>
     <td th:text="${installation.carModel}"></td>
     <td>
-      <a th:href="@{/installations/{id}(id=${installation.id})}" th:text="'View ' + ${installation.id} + ' Details'">View Details</a>
+      <a th:text="'View ' + ${installation.id} + ' Details'"th:href="@{/installations/{id}(id=${installation.id})}" th:id="'View ' + ${installation.id} + ' Details'">View Details</a>
     </td>
   </tr>
   </tbody>

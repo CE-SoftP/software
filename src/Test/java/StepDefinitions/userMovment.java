@@ -27,7 +27,7 @@ public class userMovment {
     }
     @Given("the user see all categories")
     public void the_user_see_all_categories() {
-       boolean result =webDriver.findElement(By.id("Exterior Accessories")).isDisplayed();
+       boolean result =webDriver.findElement(By.id("Electronics")).isDisplayed();
         Assert.assertTrue(result);
     }
 

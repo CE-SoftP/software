@@ -65,8 +65,7 @@ public class orderController {
         session.setAttribute("userRole", userRole);
         System.out.println(userRole);
         model.addAttribute("userRole", userRole );
-//        if(loggedInUser.getRole().equals("admin") | loggedInUser.getRole().equals("installer"))
-//            return "AdminOrderDetails";
+
         return "OrderDetails";
     }
      @PostMapping("/approveOrder/{id}")

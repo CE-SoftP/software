@@ -220,7 +220,7 @@
 
         <!-- Add other fields as needed -->
 
-        <button th:id="'updateButton ' + ${product.getProductName()}" type="submit">Update Product</button>
+        <button th:id="'update' + ${product.getProductName()}" type="submit">Update Product</button>
         <button id="CancelUpdate" type="button" onclick="cancelUpdateForm()">Cancel</button>
       </form>
     </div>

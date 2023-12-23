@@ -235,11 +235,6 @@ ProductRepository productRepository;
 
 
 
-    @GetMapping ("/manager")
-    public String showManager() {
-        return "manager";
-    }
-
 
 
 

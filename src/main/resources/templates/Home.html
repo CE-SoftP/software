@@ -15,7 +15,7 @@
     <input type="hidden" id="popupMessage" th:value="${popupMessage}" />
     <nav>
         <ul>
-            <li><a href="/profile">Profile</a></li>
+            <li id="profile"><a href="/profile">Profile</a></li>
             <li><a href="#">category</a></li>
             <li><a th:href="@{'/user/' + ${userId} + '/card'}">Bag</a></li>
             <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
@@ -207,6 +207,13 @@
         } else if (popupType === 'error') {
             alert("Error: " + popupMessage);
         }
+
+         function searchElement(){
+   var updateConfirmation = document.getElementById('searchElement');
+    if (searchElement) {
+      updateConfirmation.style.display = 'block';
+    }
+  }
     </script>
 </body>
 
