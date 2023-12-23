@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @SessionAttributes({"popupType", "popupMessage"})
@@ -40,14 +39,14 @@ public class CustomerController {
     private final orderService orderService;
     private AppointmentDb appoinmentDb;
     private final orderRepository orderRepository;
-    private final static String loggedInConst ="loggedInUser";
-    private final static String userRoleConst = "userRole";
-    private final static String customerConst = "customer";
-    private final static String popUpTypeConst = "popupType";
-    private final static String popUpMessageConst = "popupMessage";
-    private final static String errorConst = "error";
-    private final static String successConst = "success";
-    private final static String redirectForm = "redirect:/form";
+    private static final String LOGGED_IN_USER ="loggedInUser";
+    private static final String USER_ROLE = "userRole";
+    private static final String CUSTOMER = "customer";
+    private static final String POPUP_TYPE = "popupType";
+    private static final String POPUP_MESSAGE = "popupMessage";
+    private static final String ERROR = "error";
+    private static final String SUCCESS = "success";
+    private static final String REDIRECT_FORM = "redirect:/form";
 
     @Autowired
     public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust, DataService customerService , orderRepository orderRepository
@@ -74,15 +73,15 @@ public class CustomerController {
     @GetMapping(value = "/home")
     public String showForm2(Model model,DataForm dataForm,HttpSession session) {
         List<Catagroies> productList = catagroisRepositary.findAll();
-        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(loggedInConst);
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
         String userRole = loggedInUser.getRole();
-        model.addAttribute(userRoleConst, userRole);
+        model.addAttribute(USER_ROLE, userRole);
         model.addAttribute("categories", productList);
         return "Home";
     }
     @GetMapping(value = "/")
     public String showForm3(HttpSession session,Model model) {
-        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(loggedInConst);
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
         model.addAttribute("user", loggedInUser);
         return "Login";
     }
@@ -100,24 +99,24 @@ public class CustomerController {
     public String showCustomerDetails(@PathVariable Long customerId, Model model) {
         CustomerDb customer = customerRepository.findById(Math.toIntExact(customerId))
                 .orElseThrow(() -> new IllegalArgumentException("Invalid customer id: " + customerId));
-        model.addAttribute(customerConst, customer);
+        model.addAttribute(CUSTOMER, customer);
         return "customerDetails";
     }
 
     @GetMapping("/profile")
     public String showProfile(Model model, HttpSession session) {
-        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(loggedInConst);
+        CustomerDb loggedInUser = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
 
         if (loggedInUser != null) {
 
             model.addAttribute("user", loggedInUser);
-            model.addAttribute(customerConst, loggedInUser);
+            model.addAttribute(CUSTOMER, loggedInUser);
 
-            CustomerDb loggedIn = (CustomerDb) session.getAttribute(loggedInConst);
+            CustomerDb loggedIn = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
             String userRole = loggedIn.getRole();
-            session.setAttribute(userRoleConst, userRole);
+            session.setAttribute(USER_ROLE, userRole);
             logger.info(userRole);
-            model.addAttribute(userRoleConst, userRole );
+            model.addAttribute(USER_ROLE, userRole );
 
             return "profile";
         } else {
@@ -151,38 +150,38 @@ public class CustomerController {
         String signUpResult = customerService.createAccount(data, dataEntity);
         logger.info(signUpResult);
         if (signUpResult.equals("Account created successfully")) {
-            model.addAttribute(popUpTypeConst, successConst);
-            model.addAttribute(popUpMessageConst, "Account created successfully");
+            model.addAttribute(POPUP_TYPE, SUCCESS);
+            model.addAttribute(POPUP_MESSAGE, "Account created successfully");
             return "redirect:/home";
 
         }
 
         else if (signUpResult.equals("User Name already exists")) {
-            model.addAttribute(popUpTypeConst, errorConst);
-            model.addAttribute(popUpMessageConst, "User Name already exists");
-            return redirectForm;
+            model.addAttribute(POPUP_TYPE, ERROR);
+            model.addAttribute(POPUP_MESSAGE, "User Name already exists");
+            return REDIRECT_FORM;
 
         }
         else if(signUpResult.equals("Password and Confirm Password do not match")) {
 
-            model.addAttribute(popUpTypeConst, errorConst);
-            model.addAttribute(popUpMessageConst, "Password and Confirm Password do not match");
-            return redirectForm;
+            model.addAttribute(POPUP_TYPE, ERROR);
+            model.addAttribute(POPUP_MESSAGE, "Password and Confirm Password do not match");
+            return REDIRECT_FORM;
 
         }
 
 
          else if(signUpResult.equals("Email already exists Enter another one")) {
 
-            model.addAttribute(popUpTypeConst, errorConst);
-            model.addAttribute(popUpMessageConst, "Email already exists Enter another one");
-            return redirectForm;
+            model.addAttribute(POPUP_TYPE, ERROR);
+            model.addAttribute(POPUP_MESSAGE, "Email already exists Enter another one");
+            return REDIRECT_FORM;
 
         }
             else {
-            model.addAttribute(popUpTypeConst, successConst);
-            model.addAttribute(popUpMessageConst, "Please enter a valid email address");
-            return redirectForm;
+            model.addAttribute(POPUP_TYPE, SUCCESS);
+            model.addAttribute(POPUP_MESSAGE, "Please enter a valid email address");
+            return REDIRECT_FORM;
 
         }
 
@@ -213,7 +212,7 @@ public class CustomerController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable int id, Model model) {
         Optional<CustomerDb> customer = customerService.findById(id);
-        model.addAttribute(customerConst, customer);
+        model.addAttribute(CUSTOMER, customer);
         return "edit-customer";
     }
 
@@ -234,7 +233,7 @@ public class CustomerController {
     @GetMapping("/delete/{id}")
     public String showDeleteConfirmation(@PathVariable int id, Model model) {
         Optional<CustomerDb> customer = customerService.findById(id);
-        model.addAttribute(customerConst, customer.orElse(null));
+        model.addAttribute(CUSTOMER, customer.orElse(null));
         return "delete-confirmation";
     }
 
@@ -248,33 +247,33 @@ public class CustomerController {
     @PostMapping("/editProfile/{id}")
     public String processEditProfileForm(@PathVariable int id, @ModelAttribute CustomerDb editedCustomer , Model model , SessionStatus sessionStatus) {
         CustomerDb updatedCustomer =  customerService.updateCustomer(id, editedCustomer);
-        model.addAttribute(customerConst, updatedCustomer);
+        model.addAttribute(CUSTOMER, updatedCustomer);
         logger.info("Customer updated successfully");
         sessionStatus.setComplete();
         return "profile";
     }
 
     private void handleNotFound(Model model) {
-        model.addAttribute(popUpTypeConst, errorConst);
-        model.addAttribute(popUpMessageConst, "You have entered wrong value");
+        model.addAttribute(POPUP_TYPE, ERROR);
+        model.addAttribute(POPUP_MESSAGE, "You have entered wrong value");
         logger.info("NOT FOUND");
     }
 
     private void handleLoggedInUser(DataForm data, Model model, HttpSession session, String logInResult) {
         CustomerDb user = customerService.findByUsername(data.getUserName());
         model.addAttribute("userId", user.getId());
-        model.addAttribute(userRoleConst, logInResult);
+        model.addAttribute(USER_ROLE, logInResult);
         model.addAttribute("categories", catagroisRepositary.findAll());
-        session.setAttribute(loggedInConst, user);
+        session.setAttribute(LOGGED_IN_USER, user);
         model.addAttribute("products", productRepository.findAll());
 
         handleUserRoleSpecificLogic(user, model, session);
     }
     private void handleUserRoleSpecificLogic(CustomerDb user, Model model, HttpSession session) {
         String userRole = user.getRole();
-        session.setAttribute(userRoleConst, userRole);
+        session.setAttribute(USER_ROLE, userRole);
 
-        if (userRole.equals(customerConst)) {
+        if (userRole.equals(CUSTOMER)) {
             handleCustomerLogic(user, model);
         } else if (userRole.equals("admin") || userRole.equals("installer")) {
             handleAdminInstallerLogic(model);
@@ -301,15 +300,15 @@ public class CustomerController {
         logger.info(message);
 
         if (!installations.isEmpty() || !orders.isEmpty()) {
-            model.addAttribute(popUpTypeConst, successConst);
-            model.addAttribute(popUpMessageConst, messageBuilder);
+            model.addAttribute(POPUP_TYPE, SUCCESS);
+            model.addAttribute(POPUP_MESSAGE, messageBuilder);
         }
     }
     private void handleAdminInstallerLogic(Model model) {
         List<InstallationDB> installations = installationService.getInstallationsByCheckedAdmin("NO");
         if (!installations.isEmpty()) {
-            model.addAttribute(popUpTypeConst, successConst);
-            model.addAttribute(popUpMessageConst, "You have " + installations.size() + " Requests to check");
+            model.addAttribute(POPUP_TYPE, SUCCESS);
+            model.addAttribute(POPUP_MESSAGE, "You have " + installations.size() + " Requests to check");
         }
     }
 

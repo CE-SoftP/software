@@ -18,10 +18,10 @@ public class AppointmentService {
     }
 
     public boolean creatRequast(AppointmentForm appointmentForm, AppointmentDb appointmentDb) {
-       appointmentDb.setService(appointmentForm.getService());
-       appointmentDb.setHour(appointmentForm.getHour());
-       appointmentDb.setDay(appointmentForm.getDay());
-appointmentDb.setAppId(223);
+       appointmentDb.setApponitmentService(appointmentForm.getService());
+       appointmentDb.setApponitmentHour(appointmentForm.getHour());
+       appointmentDb.setApponitmentDay(appointmentForm.getDay());
+appointmentDb.setAppointmentId(223);
 
 return true;
     }

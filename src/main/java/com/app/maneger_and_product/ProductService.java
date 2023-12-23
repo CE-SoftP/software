@@ -38,14 +38,14 @@ public class ProductService {
         boolean exist = productRepository.existsById(productInfo.getProductId());
         if (!exist) {
 
-            productDb.setProductId(productInfo.getProductId());
-            productDb.setProductName(productInfo.getProductName());
-            productDb.setPrice(productInfo.getPrice());
-            productDb.setSection(productInfo.getSection());
-            productDb.setNumberOf(productInfo.getNumberOf());
-            productDb.setImage(productInfo.getImage());
-            productDb.setInformation(productInfo.getInformation());
-            productDb.setCategory(catagroies1);
+            productDb.setProId(productInfo.getProductId());
+            productDb.setProName(productInfo.getProductName());
+            productDb.setProPrice(productInfo.getPrice());
+            productDb.setProductSection(productInfo.getSection());
+            productDb.setNumberOfProducts(productInfo.getNumberOf());
+            productDb.setProductImage(productInfo.getImage());
+            productDb.setInfo(productInfo.getInformation());
+            productDb.setCategories(catagroies1);
 
             return "Product added successfully";
         }
@@ -100,16 +100,16 @@ public String addToCart(int productId,int userId) {
 
     if (productOptional.isPresent()) {
         ProductDb product = productOptional.get();
-        totalPrice += product.getPrice();
+        totalPrice += product.getProPrice();
         if (totalPrice <= 1000) {
-            int number = product.getNumberOf();
+            int number = product.getNumberOfProducts();
             if (number == 0) {
                 return "the product not available for now";
             }
             number -= 1;
-            product.setNumberOf(number);
+            product.setNumberOfProducts(number);
             if (number == 0) {
-                product.setAvailable("false");
+                product.setProductIsAvailable("false");
             }
 
             productRepository.save(product);
@@ -119,7 +119,7 @@ public String addToCart(int productId,int userId) {
                 CardDb cartItem = new CardDb();
                 cartItem.setProductDb(product);
                 cartItem.setCustomerDb(customer);
-                cartItem.setTotalPrice(product.getPrice());
+                cartItem.setTotalPrice(product.getProPrice());
                 cartItem.setCardId(2);
 
                 cardRepository.save(cartItem);
@@ -150,7 +150,7 @@ public String addToCart(int productId,int userId) {
         Optional<ProductDb> productDb1= productRepository.findById(productId);
         if(productDb1.isPresent()) {
             ProductDb productDb2 = productDb1.get();
-            productRepository.deleteAllById(Collections.singleton(productDb2.getProductId()));
+            productRepository.deleteAllById(Collections.singleton(productDb2.getProId()));
         }
     return "delete successfully";
 
@@ -166,14 +166,14 @@ public String addToCart(int productId,int userId) {
         Optional<ProductDb> optionalProduct = productRepository.findById(id);
         if(optionalProduct.isPresent()) {
             ProductDb product = optionalProduct.get();
-            product.setProductId(productInfo.getProductId());
-            product.setProductName(productInfo.getProductName());
-            product.setPrice(productInfo.getPrice());
-            product.setSection(productInfo.getSection());
-            product.setNumberOf(productInfo.getNumberOf());
-            product.setImage(productInfo.getImage());
-            product.setInformation(productInfo.getInformation());
-            product.setCategory(catagroies1);
+            product.setProId(productInfo.getProductId());
+            product.setProName(productInfo.getProductName());
+            product.setProPrice(productInfo.getPrice());
+            product.setProductSection(productInfo.getSection());
+            product.setNumberOfProducts(productInfo.getNumberOf());
+            product.setProductImage(productInfo.getImage());
+            product.setInfo(productInfo.getInformation());
+            product.setCategories(catagroies1);
             productRepository.save(product);
         }
         return "hi ";

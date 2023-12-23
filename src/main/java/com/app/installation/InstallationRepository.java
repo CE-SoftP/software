@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface InstallationRepository extends JpaRepository<InstallationDB, Integer> {
-    @Query("SELECT i FROM InstallationDB i WHERE i.CHECKED_USER = :checkedUser AND i.customerId = :customerId")
+    @Query("SELECT i FROM InstallationDB i WHERE i.checkedUser = :checkedUser AND i.customerId = :customerId")
     List<InstallationDB> findByCHECKED_USERAndCustomerId(@Param("checkedUser") String checkedUser, @Param("customerId") int customerId);
 
 

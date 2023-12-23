@@ -8,98 +8,104 @@ import jakarta.persistence.*;
 public class ProductDb {
     @Id
     @Column(name = "pro_id")
-    private int productId;
+    private int proId;
     @Column(name = "pro_name")
-    private String productName;
-    private String information;
-    private int price;
-    private int discount ;
+    private String proName;
+    @Column(name = "INFORMATION")
+    private String info;
+    @Column(name = "price")
+    private int proPrice;
+    @Column(name = "discount")
+    private int productDiscount;
     @ManyToOne
     @JoinColumn(name = "catid", nullable = false)
-    private Catagroies category;
+    private Catagroies categories;
     @Column(name = "number_of")
-    private int numberOf;
+    private int numberOfProducts;
 
-    private String image;
-    private String section;
-    private String available;
-    public int getProductId() {
-        return productId;
+    @Column(name = "image")
+    private String productImage;
+    @Column(name = "section")
+    private String productSection;
+    @Column(name = "available")
+    private String productIsAvailable;
+    public int getProId() {
+        return proId;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setProId(int proId) {
+        this.proId = proId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getProName() {
+        return proName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setProName(String proName) {
+        this.proName = proName;
     }
 
-    public String getInformation() {
-        return information;
+    public String getInfo() {
+        return info;
     }
 
-    public void setInformation(String information) {
-        this.information = information;
+    public void setInfo(String info) {
+        this.info = info;
     }
 
-    public int getPrice() {
-        return price;
+    public int getProPrice() {
+        return proPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setProPrice(int proPrice) {
+        this.proPrice = proPrice;
     }
 
-    public int getNumberOf() {
-        return numberOf;
+    public int getNumberOfProducts() {
+        return numberOfProducts;
     }
 
-    public void setNumberOf(int numberOf) {
-        this.numberOf = numberOf;
+    public void setNumberOfProducts(int numberOfProducts) {
+        this.numberOfProducts = numberOfProducts;
     }
 
-    public int getDiscount() {
-        return discount;
+    public int getProductDiscount() {
+        return productDiscount;
     }
 
-    public void setDiscount(int discount) {
-        this.discount = discount;
+    public void setProductDiscount(int productDiscount) {
+        this.productDiscount = productDiscount;
     }
 
-    public String getImage() {
-        return image;
+    public String getProductImage() {
+        return productImage;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
-    public String getSection() {
-        return section;
+    public String getProductSection() {
+        return productSection;
     }
 
-    public void setSection(String section) {
-        this.section = section;
+    public void setProductSection(String productSection) {
+        this.productSection = productSection;
     }
 
-    public String getAvailable() {
-        return available;
+    public String getProductIsAvailable() {
+        return productIsAvailable;
     }
 
-    public void setAvailable(String available) {
-        this.available = available;
+    public void setProductIsAvailable(String productIsAvailable) {
+        this.productIsAvailable = productIsAvailable;
     }
 
-    public Catagroies getCategory() {
-        return category;
+    public Catagroies getCategories() {
+        return categories;
     }
 
-    public void setCategory(Catagroies category) {
-        this.category = category;
+    public void setCategories(Catagroies categories) {
+        this.categories = categories;
     }
 }
