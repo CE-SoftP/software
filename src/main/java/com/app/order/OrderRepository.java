@@ -6,14 +6,14 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface orderRepository extends JpaRepository<orderDB, Integer> {
+public interface OrderRepository extends JpaRepository<OrderDatabase, Integer> {
 
     @Query("SELECT i FROM orderDB i WHERE i.customerId = :customerId")
-    List<orderDB> findByCustomerId(@Param("customerId")int userId);
+    List<OrderDatabase> findByCustomerId(@Param("customerId")int userId);
 
     @Query("SELECT i FROM orderDB i WHERE i.confAdmin = :confAdmin")
-    List<orderDB> findByConfAdmin(@Param("confAdmin")String confAdmin);
+    List<OrderDatabase> findByConfAdmin(@Param("confAdmin")String confAdmin);
 
     @Query("SELECT i FROM orderDB i WHERE i.popUpUser = :popUpUser AND i.customerId = :customerId")
-    List<orderDB> findByPopUpUser(@Param("popUpUser")String popUpUser ,@Param("customerId")int customerId );
+    List<OrderDatabase> findByPopUpUser(@Param("popUpUser")String popUpUser , @Param("customerId")int customerId );
 }

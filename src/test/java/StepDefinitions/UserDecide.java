@@ -13,6 +13,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertTrue;
@@ -23,19 +24,19 @@ public class UserDecide {
     @Autowired
     AppointmenRepository appointmenRepository;
     @Autowired
-    AppointmentService appointmentService=new AppointmentService(appointmenRepository );
+    AppointmentService appointmentService=new AppointmentService();
  WebDriver webDriver=null;
     @Given("the user is on the chosen page")
     public void the_user_is_on_the_chosen_page() {
        webDriver=new ChromeDriver();
        webDriver.get("file://C://Users//PC//Desktop//SoftPro//src//main//resources//templates//chose.html");
-       sleep(500);
+       sleep(5);
     }
 
     @When("the user clicks on the {string} button")
     public void the_user_clicks_on_the_button(String string) {
         webDriver.findElement(By.id("Appointment")).click();
-        sleep(500);
+        sleep(5);
     }
 
     @Then("a dialog box should appear")
@@ -45,7 +46,7 @@ public class UserDecide {
         By dialogBoxLocator = By.id("appointmentForm");
         WebElement dialogBox = webDriver.findElement(dialogBoxLocator);
         assertTrue("Dialog box should be visible", dialogBox.isDisplayed());
-        sleep(2000);
+        sleep(2);
     }
 
     @And("the user selects {string} and {string} and {string}")
@@ -92,11 +93,11 @@ public class UserDecide {
 
         webDriver.findElement(By.id("user_name")).sendKeys("toqa22");
         webDriver.findElement(By.id("pass")).sendKeys("666");
-        sleep(2000);
+        sleep(2);
 
         webDriver.findElement(By.id("LogInBtn")).click();
 
-        sleep(6000);
+        sleep(6);
 
     }
 
@@ -207,11 +208,12 @@ public class UserDecide {
     }
 
 
-    private  void sleep(int millis) {
+    private  void sleep(int seconds) {
         try {
-            Thread.sleep(millis);
+            TimeUnit.SECONDS.sleep(seconds);
         } catch (Exception e) {
-           logger.info("Erooooooooooooooooooooor");
+
+            logger.info("Erooooooooooooooooooooor");
         }
     }
 

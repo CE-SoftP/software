@@ -63,7 +63,6 @@ public class ProductService {
 
 
         boolean exist = catagroisRepositary.existsById( catagroiesForm.getCataId());
-        logger.info("Existence: " + exist);
         boolean nameExist= catagroisRepositary.existsByName(catagroiesForm.getCataName());
 
         if(exist){

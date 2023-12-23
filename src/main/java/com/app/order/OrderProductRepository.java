@@ -6,8 +6,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface orderProductRepository extends JpaRepository<orderProductDB,Integer> {
+public interface OrderProductRepository extends JpaRepository<OrderProductDatabase,Integer> {
 
     @Query("SELECT i FROM orderProductDB i WHERE i.orderId = :orderId")
-    List<orderProductDB> findByOrderID(@Param("orderId")int orderId);
+    List<OrderProductDatabase> findByOrderID(@Param("orderId")int orderId);
 }

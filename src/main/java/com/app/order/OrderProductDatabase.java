@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ORDER_PRODUCT")
-public class orderProductDB {
+public class OrderProductDatabase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID;
+    private int id;
 
     @Column(name = "ORDERID")
     private int orderId;
@@ -23,12 +23,12 @@ public class orderProductDB {
 
     @Column(name = "PRODUCTPRICE")
     private int productPrice;
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getOrderId() {

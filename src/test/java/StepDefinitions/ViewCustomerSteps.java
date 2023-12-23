@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.ui.Model;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
@@ -47,17 +48,17 @@ public class ViewCustomerSteps {
 
         webDriver.findElement(By.id("user_name")).sendKeys("toqa22");
         webDriver.findElement(By.id("pass")).sendKeys("666");
-        sleep(2000);
+        sleep(2);
 
         webDriver.findElement(By.id("LogInBtn")).click();
-        sleep(2000);
+        sleep(2);
 
     }
 
     @When("the Admin navigates to the {string} section")
     public void the_admin_navigates_to_the_section(String link) {
         webDriver.findElement(By.id(link)).click();
-        sleep(3000);
+        sleep(3);
     }
 
     @Then("the Admin should be redirected to the {string} page")
@@ -76,7 +77,7 @@ public class ViewCustomerSteps {
         WebElement timeElement = webDriver.findElement(By.id("time"));
         String timeText = timeElement.getText();
         oldTime= timeText;
-        sleep(1000);
+        sleep(1);
         webDriver.findElement(By.id("time")).sendKeys(time);
         newTime=time;
     }
@@ -84,7 +85,7 @@ public class ViewCustomerSteps {
     @When("the admin click on {string}")
     public void the_admin_click_on(String button) {
         webDriver.findElement(By.id(button)).click();
-        sleep(3000);
+        sleep(3);
     }
 
     @Then("the changes should be edited successfully")
@@ -129,14 +130,14 @@ public class ViewCustomerSteps {
     public void selects_a_customer_account_to(String string){
 
         webDriver.findElement(By.id("tot2")).click();
-        sleep(3000);
+        sleep(3);
     }
 
 
     @Then("the customer details should be displayed successfully")
     public void the_customer_details_should_be_displayed_successfully() {
         Assertions.assertTrue(true);
-        sleep(2000);
+        sleep(2);
     }
 
 
@@ -180,9 +181,9 @@ public class ViewCustomerSteps {
         WebElement nameField = webDriver.findElement(By.id(FieldId)); // Replace "id" with the actual identifier of your name textfield
         return nameField.getAttribute("value");
     }
-    private  void sleep(int millis) {
+    private  void sleep(int seconds) {
         try {
-            Thread.sleep(millis);
+            TimeUnit.SECONDS.sleep(seconds);
         } catch (Exception e) {
 
             logger.info("Erooooooooooooooooooooor");

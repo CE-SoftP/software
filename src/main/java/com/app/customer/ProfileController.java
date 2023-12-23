@@ -19,9 +19,7 @@ public class ProfileController {
     private static final String CUSTOMER = "customer";
     private static final String POPUP_TYPE = "popupType";
     private static final String POPUP_MESSAGE = "popupMessage";
-    private static final String ERROR = "error";
     private static final String SUCCESS = "success";
-    private static final String REDIRECT_FORM = "redirect:/form";
 
     @Autowired
     public ProfileController(DataService customerService){

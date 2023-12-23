@@ -3,6 +3,7 @@ package StepDefinitions;
 
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import com.app.customer.*;
@@ -30,9 +31,9 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 
 import java.time.Duration;
-public class LogInStepsTest {
+public class LogInSteps {
     @InjectMocks
-    private LogInStepsTest forgotPasswordSteps;
+    private LogInSteps forgotPasswordSteps;
 
 
 
@@ -75,12 +76,12 @@ public class LogInStepsTest {
     public void i_enter_my_admin_username_and_password(String name, String pass) {
         driver.findElement(By.id("user_name")).sendKeys(name);
         driver.findElement(By.id("pass")).sendKeys(pass);
-        sleep(2000);
+        sleep(2);
     }
 
-    private  void sleep(int millis) {
+    private  void sleep(int seconds) {
         try {
-            Thread.sleep(millis);
+            TimeUnit.SECONDS.sleep(seconds);
         } catch (Exception e) {
 
             logger.info("Erooooooooooooooooooooor");
@@ -90,7 +91,7 @@ public class LogInStepsTest {
     @When("I click the {string} button")
     public void i_click_the_button(String string) {
             driver.findElement(By.id(string)).click();
-        sleep(6000);
+        sleep(6);
     }
 
     @Then("I should be redirected to the admin dashboard")
@@ -155,7 +156,7 @@ public class LogInStepsTest {
     public void i_enter_my_customer_username_and_password(String name, String pass) {
         driver.findElement(By.id("user_name")).sendKeys(name);
         driver.findElement(By.id("pass")).sendKeys(pass);
-        sleep(2000);
+        sleep(2);
     }
 
 
@@ -220,7 +221,7 @@ public class LogInStepsTest {
     public void i_enter_my_installer_username_and_password(String name, String pass) {
         driver.findElement(By.id("user_name")).sendKeys(name);
         driver.findElement(By.id("pass")).sendKeys(pass);
-        sleep(200);
+        sleep(2);
     }
 
     @Then("I should be redirected to the installer dashboard")
@@ -256,7 +257,7 @@ public class LogInStepsTest {
     public void i_enter_an_invalid_username_and_password(String name, String pass) {
         driver.findElement(By.id("user_name")).sendKeys(name);
         driver.findElement(By.id("pass")).sendKeys(pass);
-        sleep(200);
+        sleep(2);
     }
 
     @Then("I should see an error message {string}")

@@ -13,15 +13,15 @@ import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class profileStepsTest {
+public class profileSteps {
     Logger logger = Logger.getLogger(getClass().getName());
     @Autowired
     WebDriver driver;
-    private LogInStepsTest logInStepsTest;
+    private LogInSteps logInStepsTest;
     String newName="new";
     String oldName;
-    public profileStepsTest(){
-        this.logInStepsTest = new LogInStepsTest();
+    public profileSteps(){
+        this.logInStepsTest = new LogInSteps();
     }
 
 
