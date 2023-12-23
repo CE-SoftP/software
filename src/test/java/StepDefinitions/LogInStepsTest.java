@@ -14,7 +14,6 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.*;
 
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -23,18 +22,17 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
 
 
 import java.net.http.HttpClient;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+
 import java.time.Duration;
-public class LogInSteps {
+public class LogInStepsTest {
     @InjectMocks
-    private LogInSteps forgotPasswordSteps;
+    private LogInStepsTest forgotPasswordSteps;
 
 
 

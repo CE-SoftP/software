@@ -7,11 +7,14 @@
   <name>Archetype - selcuc</name>
   <url>http://maven.apache.org</url>
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <sonar.organization>ce-softp</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
+
   </properties>
   <dependencies>
 
@@ -66,10 +69,11 @@
 
 
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.33</version> <!-- Use the version compatible with your MySQL server -->
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.0.33</version>
     </dependency>
+
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -132,14 +136,16 @@
 
   </dependencies>
   <build>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M5</version>
         <configuration>
+            <encoding>UTF-8</encoding>
           <includes>
-            <include>**/*Steps.java</include>
+            <include>**/*Test.java</include>
           </includes>
         </configuration>
       </plugin>
@@ -147,6 +153,55 @@
         <groupId>org.sonarsource.scanner.maven</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
         <version>3.9.0.2155</version> <!-- Use the latest version -->
+      </plugin>
+
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M5</version> <!-- Use the latest version -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>**/*Test.java</include>
+              </includes>
+              <systemPropertyVariables>
+                <cucumber.options>--tags @Given --glue StepDefenitions</cucumber.options>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>java</executable>
+              <arguments>
+                <argument>-classpath</argument>
+                <classpath/>
+                <argument>io.cucumber.core.cli.Main</argument>
+                <argument>--tags</argument>
+                <argument>@Given</argument>
+                <argument>--glue</argument>
+                <argument>StepDefenitions</argument>
+                <argument>src/test/resources</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
@@ -165,11 +220,7 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M5</version> <!-- Use the latest version -->
-      </plugin>
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -189,6 +240,8 @@
             </goals>
           </execution>
         </executions>
+
+
       </plugin>
 
 

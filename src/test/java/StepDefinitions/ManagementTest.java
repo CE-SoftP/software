@@ -14,7 +14,9 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -24,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static junit.framework.TestCase.assertEquals;
 
 
-public class Management {
+public class ManagementTest {
     ProductDb productDb=new ProductDb();
 
     @Autowired
@@ -116,7 +118,7 @@ public class Management {
 
         WebElement element = webDriver.findElement(By.id(ExteriorAccesoris));
         element.click();
-
+System.out.println("hello");
 
     }
 

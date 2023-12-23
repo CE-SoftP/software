@@ -48,7 +48,7 @@ ProductDb productDb=new ProductDb();
 
     @GetMapping("/category/{categoryId}")
     public String getProductFromCatagroies(@PathVariable int categoryId, Model model, HttpSession session , SessionStatus sessionStatus) {
-        List<ProductDb> productList =productRepository.findByCategoryId(categoryId);
+        List<ProductDb> productList =productRepository.findByCategoryId(1);
 
         CustomerDb loggedInUser = (CustomerDb) session.getAttribute("loggedInUser");
         logger.info(loggedInUser.getRole());

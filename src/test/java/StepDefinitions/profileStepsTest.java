@@ -6,7 +6,6 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.logging.Logger;
@@ -14,15 +13,15 @@ import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class profileSteps {
+public class profileStepsTest {
     Logger logger = Logger.getLogger(getClass().getName());
     @Autowired
     WebDriver driver;
-    private LogInSteps logInSteps;
+    private LogInStepsTest logInStepsTest;
     String newName="new";
     String oldName;
-    public profileSteps(){
-        this.logInSteps = new LogInSteps();
+    public profileStepsTest(){
+        this.logInStepsTest = new LogInStepsTest();
     }
 
 
