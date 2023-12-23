@@ -142,7 +142,7 @@ public class DataService {
             dataRepository.save(existingCustomer);
             return  existingCustomer;
         } else {
-            logger.info("Customer not found with id: " + id);
+            logger.info("Customer not found ");
         }
         return editedCustomer;
     }
