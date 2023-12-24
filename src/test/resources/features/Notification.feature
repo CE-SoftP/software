@@ -11,7 +11,7 @@ Feature: Notification
     Then a pop up for "installation" will be shown
 
   Scenario: customer had installation updates and order confirmation to see
-    When I logged in as a customer with name "toqa" and password "555"
+    When I logged in as a customer with name "Hani" and password "s123ss"
     And I have installation updates
     And I have order confirmation
     Then a pop up for "installation and order" will be shown

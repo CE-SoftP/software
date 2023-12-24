@@ -21,7 +21,7 @@
             <li><a href="#" onclick="searchElement()" id="searchMenu">Search</a></li>
             <li><a href="#">Exit</a></li>
             <li th:id="management" th:if="${userRole == 'admin'}" onclick="showDeleteButton(); return false;"><a href="#">Management</a></li>
-            <li id="view" th:if="${userRole == 'admin'}"><a href="/ViewCustomers">View Customers</a></li>
+            <li id="View Customers" th:if="${userRole == 'admin'}"><a href="/ViewCustomers">View Customers</a></li>
             <li id="viewInstall" th:if="${userRole == 'admin' or userRole == 'Installer'}"><a href="/installation-requests">View Installation</a></li>
             <li id="viewInstallReq" th:if="${userRole == 'customer' or userRole == 'admin' or userRole == 'installer'}"><a href="/CustomerInstallReq">View Intallation Requests</a></li>
             <li id="viewInstallHistory"th:if="${userRole == 'customer'}"><a href="/CustomerAllInstallReq">View Intallation Requests History</a></li>

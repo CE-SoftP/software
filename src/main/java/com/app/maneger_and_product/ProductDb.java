@@ -73,7 +73,9 @@ public class ProductDb {
         return discount;
     }
 
-
+    public String getAvailable() {
+        return available;
+    }
 
     public String getImage() {
         return image;

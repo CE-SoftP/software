@@ -79,16 +79,6 @@ public class DataService {
 
 
 
-
-    public void saveData(DataForm dataForm) {
-        CustomerDb dataEntity = new CustomerDb();
-        dataEntity.setId((dataForm.getUserId()));
-        dataEntity.setName(dataForm.getUserName());
-
-
-        dataRepository.save(dataEntity);
-    }
-
     public String searchAccount(DataForm data) {
         try {
 
@@ -120,17 +110,10 @@ public class DataService {
     public CustomerDb findByUsername(String username) {
         return dataRepository.findByName(username);
     }
-    public List<CustomerDb> getAllCustomers() {
-        return dataRepository.findAll();
-    }
 
-    public Optional<CustomerDb> findById(int id) {
-        return dataRepository.findById(id);
-    }
 
-    public CustomerDb saveCustomer(CustomerDb customer) {
-        return dataRepository.save(customer);
-    }
+
+
 
     public CustomerDb updateCustomer(int id, CustomerDb editedCustomer) {
         Optional<CustomerDb> existingCustomerOptional = dataRepository.findById(id);

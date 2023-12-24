@@ -33,7 +33,11 @@ public class CustomerController {
     }
 
 
+    @GetMapping(value = "/install")
+    public String show() {
 
+        return "chose";
+    }
 
     @GetMapping(value = "/ViewCustomers")
     public String showCustomers(Model model) {
@@ -51,37 +55,11 @@ public class CustomerController {
     }
 
 
-
-
-
-    @GetMapping ("/manager")
-    public String showManager() {
-        return "manager";
-    }
-
-
-
-
     @PostMapping(value = "/saveAppointment")
     public String sendRequest(@ModelAttribute AppointmentForm appoitmentForm){
       boolean sendResult=appointmentService.creatRequast(appoitmentForm,appoinmentDb);
         appointmenRepository.save(appoinmentDb);
         return sendResult ? "Home" : "signup";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable int id, Model model) {
-        Optional<CustomerDb> customer = customerService.findById(id);
-        model.addAttribute(CUSTOMER, customer);
-        return "edit-customer";
-    }
-
-
-
-    @PostMapping("/delete-customer/{id}")
-    public String deleteCustomer(@PathVariable int id ){
-        customerRepository.deleteById(id);
-        return "redirect:/ViewCustomers";
     }
 
     @PostMapping("/edit/{id}")
@@ -90,18 +68,7 @@ public class CustomerController {
         return "redirect:/customers/" + id;
     }
 
-    @GetMapping("/delete/{id}")
-    public String showDeleteConfirmation(@PathVariable int id, Model model) {
-        Optional<CustomerDb> customer = customerService.findById(id);
-        model.addAttribute(CUSTOMER, customer.orElse(null));
-        return "delete-confirmation";
-    }
 
-    @PostMapping("/delete/{id}")
-    public String processDelete(@PathVariable int id) {
 
-        customerService.deleteCustomer(id);
-        return "redirect:/ViewCustomers";
-    }
 
 }

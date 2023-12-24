@@ -79,5 +79,21 @@ public class InstallationDB {
     public void setChecked(String checked) {
         this.checked = checked;
     }
+
+    public String getCarModel() {
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
 }
 

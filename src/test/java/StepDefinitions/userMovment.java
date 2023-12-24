@@ -3,6 +3,7 @@ package StepDefinitions;
 import com.app.maneger_and_product.ManegerController;
 import io.cucumber.java.en.*;
 import org.junit.Assert;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class userMovment {
         webDriver.findElement(By.id("pass")).sendKeys("666");
         sleep(2);
 
-        webDriver.findElement(By.id("LogInBtn")).click();
-        sleep(2);
+
+
     }
     @Given("the user see all categories")
     public void the_user_see_all_categories() {

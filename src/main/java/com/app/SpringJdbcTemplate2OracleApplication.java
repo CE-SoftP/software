@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {MongoAutoConfiguration.class})
-@ComponentScan(basePackages = {"com.app.*", "StepDefinitions","com.app.ManegerAndProduct"})
+@ComponentScan(basePackages = {"com.app.*", "StepDefinitions"})
 public class SpringJdbcTemplate2OracleApplication implements CommandLineRunner {
     Logger logger = Logger.getLogger(getClass().getName());
     public static void main(String [] args) {

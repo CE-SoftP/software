@@ -3,9 +3,11 @@ package StepDefinitions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.logging.Logger;
@@ -17,11 +19,11 @@ public class profileSteps {
     Logger logger = Logger.getLogger(getClass().getName());
     @Autowired
     WebDriver driver;
-    private LogInSteps logInStepsTest;
+    private LogInSteps logInSteps;
     String newName="new";
     String oldName;
     public profileSteps(){
-        this.logInStepsTest = new LogInSteps();
+        this.logInSteps = new LogInSteps();
     }
 
 
@@ -34,8 +36,11 @@ public class profileSteps {
         sleep(2000);
 
         driver.findElement(By.id("LogInBtn")).click();
+        Alert alert = driver.switchTo().alert();
 
-        oldName="customer_user";
+
+        oldName="noor";
+        alert.accept();
         sleep(3000);
     }
 

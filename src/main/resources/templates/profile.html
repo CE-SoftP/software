@@ -107,7 +107,7 @@
   <div class="profile-info">
     <h2 id="userName" th:text="${customer.name}" contenteditable="false"></h2>
     Email : <p id="userEmail" th:text="${customer.email}" contenteditable="false"></p>
-    Birthdate : <p id="userBirthdate" th:text="${#dates.format(customer.birthDate, 'yyyy-MM-dd')}" contenteditable="false"></p>
+
     Gender : <p id="userGender" th:text="${customer.gender}" contenteditable="false"></p>
     <form id="editForm" th:action="@{'/editProfile/' + ${customer.id}}" method="post" th:object="${customer}" style="display :none;">
 

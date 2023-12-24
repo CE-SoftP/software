@@ -6,6 +6,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,7 +25,7 @@ public class ViewCustomerSteps {
     DataForm dataForm=new DataForm();
     @Autowired
     private TestRestTemplate restTemplate;
-    CustomerController customerController ;
+
     @Autowired
     private WebDriver webDriver ;
     Logger logger = Logger.getLogger(getClass().getName());
@@ -46,12 +47,13 @@ public class ViewCustomerSteps {
     public void the_admin_is_logged_in() {
         webDriver.get("http://localhost:"+CucumberIT.getPort()+"/");
 
-        webDriver.findElement(By.id("user_name")).sendKeys("toqa22");
-        webDriver.findElement(By.id("pass")).sendKeys("666");
+        webDriver.findElement(By.id("user_name")).sendKeys("eman");
+        webDriver.findElement(By.id("pass")).sendKeys("555");
         sleep(2);
 
         webDriver.findElement(By.id("LogInBtn")).click();
         sleep(2);
+
 
     }
 
@@ -118,10 +120,7 @@ public class ViewCustomerSteps {
         String currentUrl = webDriver.getCurrentUrl();
         Assert.assertEquals(currentUrl, expectedUrl);
 
-// Check if the title matches
-//        String expectedTitle = "Expected Page Title";
-//        String currentTitle = webDriver.getTitle();
-//        Assert.assertEquals(currentTitle, expectedTitle);
+
 
     }
 
@@ -129,7 +128,7 @@ public class ViewCustomerSteps {
     @When("selects a customer account to {string}")
     public void selects_a_customer_account_to(String string){
 
-        webDriver.findElement(By.id("tot2")).click();
+        webDriver.findElement(By.id(string)).click();
         sleep(3);
     }
 
@@ -144,13 +143,14 @@ public class ViewCustomerSteps {
     @When("edit the {string} value to {string}")
     public void edit_the_value_to(String name, String newName) {
         NewName=newName;
-        webDriver.findElement(By.id(name)).sendKeys(newName);
+        webDriver.findElement(By.id("name")).clear();
+        webDriver.findElement(By.id("name")).sendKeys(newName);
 
     }
 
     @When("Click on {string} button")
     public void click_on_button(String button) {
-        WebElement customerDetailsLink = webDriver.findElement(By.linkText(button));
+        WebElement customerDetailsLink = webDriver.findElement(By.id(button));
         customerDetailsLink.click();
 
 

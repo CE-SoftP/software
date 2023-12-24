@@ -53,7 +53,6 @@ public class Management {
 
         webDriver.findElement(By.id("LogInBtn")).click();
 
-         sleep(6000);
 
     }
 
@@ -369,7 +368,7 @@ productInfo.setProId(Integer.parseInt(webDriver.findElement(By.id("productId")).
     @When("the admin clicks on Delete {string} Product")
     public void theAdminClicksOnDeleteProduct(String productName) {
         webDriver.findElement(By.id("deleteButton "+ productName)).click();
-        sleep(200);
+        sleep(20000);
     }
 
     @When("the admin clicks on Update {string} Product")

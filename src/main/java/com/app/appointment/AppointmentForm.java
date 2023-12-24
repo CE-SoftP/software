@@ -8,21 +8,7 @@ public class AppointmentForm {
     private String isreceive;
     private String hour;
 
-    public int getAppId() {
-        return appId;
-    }
 
-    public void setAppId(int appId) {
-        this.appId = appId;
-    }
-
-    public int getCustId() {
-        return custId;
-    }
-
-    public void setCustId(int custId) {
-        this.custId = custId;
-    }
 
     public String getDay() {
         return day;
@@ -38,14 +24,6 @@ public class AppointmentForm {
 
     public void setService(String service) {
         this.service = service;
-    }
-
-    public String getIsreceive() {
-        return isreceive;
-    }
-
-    public void setIsreceive(String isreceive) {
-        this.isreceive = isreceive;
     }
 
     public String getHour() {

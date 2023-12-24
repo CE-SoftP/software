@@ -25,12 +25,12 @@ public class UserDecide {
     AppointmenRepository appointmenRepository;
     @Autowired
     AppointmentService appointmentService=new AppointmentService();
- WebDriver webDriver=null;
+
+    @Autowired
+     WebDriver webDriver;
     @Given("the user is on the chosen page")
     public void the_user_is_on_the_chosen_page() {
-       webDriver=new ChromeDriver();
-       webDriver.get("file://C://Users//PC//Desktop//SoftPro//src//main//resources//templates//chose.html");
-       sleep(5);
+        webDriver.get("http://localhost:"+CucumberIT.getPort()+"/install");
     }
 
     @When("the user clicks on the {string} button")

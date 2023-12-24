@@ -21,7 +21,7 @@ public class OrderService {
     }
 
     public List<OrderProductDatabase> getOrderProductByID(int orderID) {
-        return orderProductRepository.findByOrderID(orderID);
+        return orderProductRepository.findByOrderId(orderID);
     }
 
     public List<OrderDatabase> getOrderByConfAdmin(String confAdmin) {

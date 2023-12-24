@@ -85,7 +85,7 @@ public class LogInController {
         model.addAttribute("products", productRepository.findAll());
 
         handleUserRoleSpecificLogic(user, model, session);
-    }
+     }
     private void handleUserRoleSpecificLogic(CustomerDb user, Model model, HttpSession session) {
         String userRole = user.getRole();
         session.setAttribute(USER_ROLE, userRole);
@@ -94,8 +94,8 @@ public class LogInController {
             handleCustomerLogic(user, model);
         } else if (userRole.equals("admin") || userRole.equals("installer")) {
             handleAdminInstallerLogic(model);
-        }
-    }
+         }
+     }
 
     private void handleCustomerLogic(CustomerDb user, Model model) {
         List<InstallationDB> installations = installationService.getInstallationsByCheckedUserAndCustomerId("NO", user.getId());
@@ -104,7 +104,7 @@ public class LogInController {
         String message = "";
         StringBuilder messageBuilder = new StringBuilder(message);
         if (!installations.isEmpty()) {
-            messageBuilder.append("You have ").append(installations.size()).append(" Requests to check \n");
+            messageBuilder.append("You have ").append(installations.size()).append(" Requests to check");
         }
         for (OrderDatabase order : orders) {
             messageBuilder.append("Your order with id : ")
@@ -119,14 +119,14 @@ public class LogInController {
         if (!installations.isEmpty() || !orders.isEmpty()) {
             model.addAttribute(POPUP_TYPE, SUCCESS);
             model.addAttribute(POPUP_MESSAGE, messageBuilder);
-        }
+         }
     }
     private void handleAdminInstallerLogic(Model model) {
         List<InstallationDB> installations = installationService.getInstallationsByCheckedAdmin("NO");
         if (!installations.isEmpty()) {
             model.addAttribute(POPUP_TYPE, SUCCESS);
             model.addAttribute(POPUP_MESSAGE, "You have " + installations.size() + " Requests to check");
-        }
+         }
     }
 
 
@@ -138,6 +138,6 @@ public class LogInController {
         model.addAttribute(USER_ROLE, userRole);
         model.addAttribute("categories", productList);
         sessionStatus.setComplete();
-        return "Home";
-    }
+         return "Home";
+      }
 }

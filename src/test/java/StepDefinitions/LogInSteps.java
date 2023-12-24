@@ -76,7 +76,11 @@ public class LogInSteps {
     public void i_enter_my_admin_username_and_password(String name, String pass) {
         driver.findElement(By.id("user_name")).sendKeys(name);
         driver.findElement(By.id("pass")).sendKeys(pass);
-        sleep(2);
+        Alert alert = driver.switchTo().alert();
+        String actualMessage = alert.getText();
+
+
+        alert.accept();
     }
 
     private  void sleep(int seconds) {

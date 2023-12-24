@@ -81,7 +81,7 @@
     <td th:text="${order.id}"></td>
     <td th:text="${order.customerId}"></td>
     <td th:text="${order.orderDate}"></td>
-      <td th:text="${order.TOTALPRICE}"></td>
+      <td th:text="${order.totalPrice}"></td>
     <td>
       <a th:id ="'View ' + ${order.id} + ' Details'" th:href="@{/orders/{id}(id=${order.id})}" th:text="'View ' + ${order.id} + ' Details'">View Details</a>
     </td>

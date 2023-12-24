@@ -16,6 +16,18 @@ public class CustomerDb {
     private int id;
     private String name;
 
+    public String getGender() {
+        return gender;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
     private String email;
  private String pass;
     @Column(name="conf_pass")

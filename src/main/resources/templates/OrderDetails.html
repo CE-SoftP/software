@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="/static/css/Home.css">
 <head>
   <meta charset="UTF-8">
-  <title>Order <span th:text="${order.id}"></span> Details</title>
+  <title th:utext="'Order: ' + ${order.id}+ ' Details'"></title>
 
 
   <style>
@@ -70,7 +70,7 @@
 <h2>Order Details</h2>
 <p>ID: <span th:text="${order.id}"></span></p>
 <p>Customer Id: <span th:text="${order.customerId}"></span></p>
-<p>Price: <span th:text="${order.TOTALPRICE}"></span></p>
+<p>Price: <span th:text="${order.totalPrice}"></span></p>
 
 <table>
   <thead>

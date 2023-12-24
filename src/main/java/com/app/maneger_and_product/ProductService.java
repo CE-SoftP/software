@@ -35,6 +35,9 @@ public class ProductService {
 
         Catagroies catagroies1= this.catagroisRepositary.findByName("Electronics");
         boolean exist = productRepository.existsById(productInfo.getProId());
+        logger.info(String.valueOf(productInfo.getProId()));
+        logger.info(String.valueOf(exist));
+
         if (!exist) {
 
             productDb.setProductId(productInfo.getProId());

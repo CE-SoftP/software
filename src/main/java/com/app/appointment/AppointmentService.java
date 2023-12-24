@@ -14,8 +14,5 @@ appointmentDb.setAppointmentId(223);
 return true;
     }
 
-    public String online() {
 
-        return "Home";
-    }
 }
