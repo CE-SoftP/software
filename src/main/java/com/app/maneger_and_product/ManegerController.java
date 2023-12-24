@@ -180,4 +180,17 @@ else {
         return ERROR;
      }
 
+    @PostMapping("/submitRating/{productId}")
+    public String submitRating(@PathVariable int productId , int userRating) {
+        ProductDb product = productRepository.findById(productId).orElse(null);
+        int totalRatings = product.getAverageRating();
+        int newTotalRatings = totalRatings + 1;
+        int newAverageRating = (totalRatings * product.getAverageRating() + userRating) / newTotalRatings;
+
+        product.setAverageRating(newAverageRating);
+        productRepository.save(product);
+
+        return "redirect:/product";
+    }
+
 }
