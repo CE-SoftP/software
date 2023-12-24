@@ -116,6 +116,7 @@
       <p><strong>Discount:</strong> <span th:text="${product.discount}"></span>%</p>
       <p><strong>Information:</strong> <span th:text="${product.information}"></span></p>
       <p><strong>Available:</strong> <span th:text="${product.available}"></span></p>
+      <p id="rating"><strong>Rating:</strong> <span th:text="${product.averageRating}"></span></p>
       <form th:action="@{'/add-to-cart/' + ${product.productId}}" method="post">
       <button id="add_toCart" class="btn btn-primary">Add to Cart</button>
 
@@ -124,6 +125,11 @@
     </div>
   </div>
 
+  <form th:action="@{'/submitRating/' + ${product.productId}}" method="post">
+    <label for="userRating">Your Rating:</label>
+    <input type="number" id="userRating" name="userRating" min="1" max="5">
+    <button id="submitRating" type="submit">Submit Rating</button>
+  </form>
 
 </div>
 

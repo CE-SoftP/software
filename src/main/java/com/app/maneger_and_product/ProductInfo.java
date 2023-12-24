@@ -3,6 +3,8 @@ package com.app.maneger_and_product;
 public class ProductInfo {
         private int proId;
 
+        private int userRating;
+
         private String proName;
         private String info;
         private int proPrice;
@@ -68,6 +70,11 @@ public class ProductInfo {
             this.proSection = proSection;
         }
 
+    public int getUserRating() {
+        return userRating;
+    }
 
-
+    public void setUserRating(int userRating) {
+        this.userRating = userRating;
+    }
 }

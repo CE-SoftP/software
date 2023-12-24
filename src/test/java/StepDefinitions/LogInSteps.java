@@ -38,9 +38,9 @@ public class LogInSteps {
 
 
     @Autowired
-    DataService dataService;
+    CustomerService customerService;
 
-   DataForm dataForm=new DataForm();
+   CustomerForm customerForm =new CustomerForm();
 
     private static HttpClient httpClient = HttpClient.newHttpClient();
     Logger logger = Logger.getLogger(getClass().getName());

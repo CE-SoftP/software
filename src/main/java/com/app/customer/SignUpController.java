@@ -15,14 +15,14 @@ import java.util.logging.Logger;
 @SessionAttributes({"popupType", "popupMessage"})
 public class SignUpController {
     Logger logger = Logger.getLogger(getClass().getName());
-    private final DataService customerService;
+    private final CustomerService customerService;
     private static final String POPUP_TYPE = "popupType";
     private static final String POPUP_MESSAGE = "popupMessage";
     private static final String ERROR = "error";
     private static final String SUCCESS = "success";
     private static final String REDIRECT_FORM = "redirect:/form";
     @Autowired
-    public SignUpController(DataService customerService){
+    public SignUpController(CustomerService customerService){
         this.customerService=customerService;
     }
     @GetMapping(value = "/form")
@@ -32,7 +32,7 @@ public class SignUpController {
     }
 
     @PostMapping(value = "/saveData")
-    public String signUp(@ModelAttribute DataForm data , Model model , SessionStatus sessionStatus) {
+    public String signUp(@ModelAttribute CustomerForm data , Model model , SessionStatus sessionStatus) {
 
         CustomerDb dataEntity = new CustomerDb();
         logger.info("Are you reach ???");

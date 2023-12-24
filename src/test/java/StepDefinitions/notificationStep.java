@@ -3,7 +3,7 @@ package StepDefinitions;
 import com.app.installation.InstallationDB;
 import com.app.installation.InstallationService;
 import com.app.customer.CustomerDb;
-import com.app.customer.DataService;
+import com.app.customer.CustomerService;
 import com.app.order.OrderDatabase;
 import com.app.order.OrderService;
 import io.cucumber.java.en.Then;
@@ -11,7 +11,6 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class notificationStep {
     @Autowired
     private InstallationService installationService;
     @Autowired
-    private DataService customerService;
+    private CustomerService customerService;
     @Autowired
     private OrderService OrderService;
 

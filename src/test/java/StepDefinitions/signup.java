@@ -33,9 +33,9 @@ public class signup {
     Logger logger = Logger.getLogger(getClass().getName());
     @Autowired
     private WebDriver webDriver;
-    private DataForm data = new DataForm();
+    private CustomerForm data = new CustomerForm();
     @Autowired
-    private DataService dataService;
+    private CustomerService customerService;
     @Autowired
     private CustomerController customerController;
  private Model model;
@@ -117,7 +117,7 @@ public class signup {
         data.setUserName(webDriver.findElement(By.id("user_name")).getAttribute("value"));
         data.setPassword("123");
         data.setConfirmPassword("123");
-        String result = dataService.createAccount(data,customerDb);
+        String result = customerService.createAccount(data,customerDb);
 
 
         if (result.equals("User ID already exists")) {
@@ -159,7 +159,7 @@ public class signup {
 
 
 
-        String result = dataService.createAccount(data,customerDb);
+        String result = customerService.createAccount(data,customerDb);
         if (result.equals("Password and Confirm Password do not match.")) {
             assertTrue(true);
 

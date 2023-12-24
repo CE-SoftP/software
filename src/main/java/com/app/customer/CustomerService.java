@@ -6,11 +6,10 @@ import org.springframework.stereotype.Service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 @Service
-public class DataService {
+public class CustomerService {
 
     Logger logger = Logger.getLogger(getClass().getName());
     private static final String CUSTOMER = "customer";
@@ -20,13 +19,13 @@ public class DataService {
 
 
     @Autowired
-    public DataService (CustomerRepository dataRepository) {
+    public CustomerService(CustomerRepository dataRepository) {
         this.dataRepository = dataRepository;
 
     }
 
 
-    public String createAccount(DataForm data, CustomerDb dataEntity) {
+    public String createAccount(CustomerForm data, CustomerDb dataEntity) {
         boolean existingData = dataRepository.existsByName(data.getUserName());
         boolean emailExist =dataRepository.existsByEmail(data.getEmail());
        boolean n= (data.getPassword().equals(data.getConfirmPassword()));
@@ -79,7 +78,7 @@ public class DataService {
 
 
 
-    public String searchAccount(DataForm data) {
+    public String searchAccount(CustomerForm data) {
         try {
 
             Optional<CustomerDb> userOptional = dataRepository.findByNameAndPass(

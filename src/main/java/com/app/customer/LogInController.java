@@ -24,7 +24,7 @@ public class LogInController {
     Logger logger = Logger.getLogger(getClass().getName());
     private final CatagroisRepositary catagroisRepositary;
     private final ProductRepository productRepository;
-    private final DataService customerService;
+    private final CustomerService customerService;
     private final InstallationService installationService;
     private final OrderService orderService;
     private final OrderRepository orderRepository;
@@ -37,7 +37,7 @@ public class LogInController {
     private static final String SUCCESS = "success";
 
     @Autowired
-    public LogInController(DataService customerService , OrderRepository orderRepository
+    public LogInController(CustomerService customerService , OrderRepository orderRepository
             , CatagroisRepositary catagroisRepositary , ProductRepository productRepository
             , InstallationService installationService , OrderService orderService ) {
         this.catagroisRepositary=catagroisRepositary;
@@ -56,7 +56,7 @@ public class LogInController {
     }
 
     @PostMapping(value = "/search")
-    public String logInFunc(DataForm data, Model model, HttpSession session) {
+    public String logInFunc(CustomerForm data, Model model, HttpSession session) {
         String logInResult = customerService.searchAccount(data);
         logger.info(logInResult);
         if(logInResult.equals("Not Found")) {
@@ -75,7 +75,7 @@ public class LogInController {
         logger.info("NOT FOUND");
     }
 
-    private void handleLoggedInUser(DataForm data, Model model, HttpSession session, String logInResult) {
+    private void handleLoggedInUser(CustomerForm data, Model model, HttpSession session, String logInResult) {
         CustomerDb user = customerService.findByUsername(data.getUserName());
 
         model.addAttribute("userId", user.getId());
@@ -131,7 +131,7 @@ public class LogInController {
 
 
     @GetMapping(value = "/home")
-    public String showHomeForm(Model model,DataForm dataForm,HttpSession session , SessionStatus sessionStatus) {
+    public String showHomeForm(Model model, CustomerForm customerForm, HttpSession session , SessionStatus sessionStatus) {
         List<Catagroies> productList = catagroisRepositary.findAll();
         CustomerDb loggedInUser = (CustomerDb) session.getAttribute(LOGGED_IN_USER);
         String userRole = loggedInUser.getRole();

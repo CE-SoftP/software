@@ -29,6 +29,15 @@ public class ProductDb {
     private String section;
     @Column(name = "available")
     private String available;
+    @Column(name = "AVERAGERATING")
+    private int averageRating ;
+    public int getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(int averageRating) {
+        this.averageRating = averageRating;
+    }
     public int getProductId() {
         return productId;
     }

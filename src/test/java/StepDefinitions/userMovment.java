@@ -15,6 +15,8 @@ public class userMovment {
 
     @Autowired
     WebDriver webDriver;
+    private int oldRating;
+    private int userRating;
     @Autowired
     private ManegerController manegerController;
     @Given("the user is on the home page")
@@ -108,4 +110,28 @@ public class userMovment {
         String actualErrorMessage = webDriver.findElement(By.id("errorMessage")).getText();
         Assert.assertEquals(expectedErrorMessage, actualErrorMessage);
     }
+
+
+    @Then("the user should see the rating of {string}")
+    public void the_user_should_see_the_rating_of(String string) {
+   Boolean isDis= webDriver.findElement(By.id("rating")).isDisplayed();
+      oldRating=  Integer.parseInt(webDriver.findElement(By.id("rating")).getText());
+   Assert.assertTrue(isDis);
+
+    }
+
+    @When("the user submits a rating of {int} for the product")
+    public void the_user_submits_a_rating_of_for_the_product(Integer rate) {
+      webDriver.findElement(By.id("userRating")).sendKeys(String.valueOf(rate));
+      webDriver.findElement(By.id("submitRating")).click();
+      userRating=rate;
+    }
+    @Then("the product's average rating should be updated")
+    public void theProductSAverageRatingShouldBeUpdated() {
+        int avg=oldRating+1;
+        int newAverageRating = (oldRating * oldRating + userRating) / avg;
+        int newRate =  Integer.parseInt(webDriver.findElement(By.id("rating")).getText());
+        Assert.assertEquals(newAverageRating,newRate);
+    }
+
 }

@@ -449,4 +449,6 @@ productInfo.setProId(Integer.parseInt(webDriver.findElement(By.id("productId")).
        assertEquals(title,"Home page");
 
     }
+
+
 }

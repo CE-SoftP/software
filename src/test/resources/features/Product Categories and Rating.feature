@@ -53,3 +53,11 @@ Given the user is on the home page
     Then  the user should receive an message indicating that "the product not available for now"
 
 
+  Scenario: User submits a valid rating for a product
+    When the user clicks on the "Exterior Accessories" div
+    Then the user navigates to the "Exterior Accessories" section
+    When the user clicks on the "Window Tint" to see it's Information
+    Then the user should see information about "Window Tint"
+    And the user should see the rating of "Window Tint"
+    When the user submits a rating of 4 for the product
+    Then the product's average rating should be updated

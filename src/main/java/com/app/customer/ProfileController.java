@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 @SessionAttributes({"popupType", "popupMessage"})
 public class ProfileController {
     Logger logger = Logger.getLogger(getClass().getName());
-    private final DataService customerService;
+    private final CustomerService customerService;
     private static final String LOGGED_IN_USER ="loggedInUser";
     private static final String USER_ROLE = "userRole";
     private static final String CUSTOMER = "customer";
@@ -22,7 +22,7 @@ public class ProfileController {
     private static final String SUCCESS = "success";
 
     @Autowired
-    public ProfileController(DataService customerService){
+    public ProfileController(CustomerService customerService){
         this.customerService=customerService;
     }
     @GetMapping("/profile")

@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-public class DataForm {
+public class CustomerForm {
 
     private int userId;
     private String userName;

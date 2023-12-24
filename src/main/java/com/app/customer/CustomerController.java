@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,13 +18,13 @@ public class CustomerController {
     private final AppointmentService appointmentService;
     private final AppointmenRepository appointmenRepository;
     private final CustomerRepository customerRepository;
-    private final DataService customerService;
+    private final CustomerService customerService;
     private AppointmentDb appoinmentDb;
     private static final String CUSTOMER = "customer";
 
     @Autowired
     public CustomerController(AppointmenRepository appointmenRepository, CustomerRepository cust
-            , DataService customerService, AppointmentService appointmentService) {
+            , CustomerService customerService, AppointmentService appointmentService) {
         this.appointmentService=appointmentService;
         this.appointmenRepository = appointmenRepository;
         this.customerRepository = cust;
