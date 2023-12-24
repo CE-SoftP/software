@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 @Controller

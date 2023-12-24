@@ -68,7 +68,7 @@ return PRODUCT_LIST;
 
     @PostMapping("/add-product")
     public String addProduct(ProductInfo productInfo,Model model) {
-logger.info("the Section is "+productInfo.getProSection());
+
     productDb=new ProductDb();
    String isAdd =productService.saveProduct(productInfo,productDb);
  if (isAdd.equals("Product added successfully")){
